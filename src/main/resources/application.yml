@@ -6,12 +6,13 @@ spring:
   messages:
     encoding: UTF-8
     basename: classpath:/i18n/messages, classpath:/i18n/error_messages
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   devtools:
     livereload:
       enabled: true
   config:
-    activate:
-      on-profile: database,value
+    import:
+      - classpath:application-database.yml
+      - classpath:application-value.yml
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
