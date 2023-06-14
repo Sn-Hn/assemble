@@ -84,4 +84,19 @@ public class User {
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;
     }
+
+    public static User signupUser(SignupRequest signupRequest, PasswordEncoder passwordEncoder) {
+
+        return new User(
+                new Email(signupRequest.getEmail()),
+                new Name(signupRequest.getName()),
+                signupRequest.getNickname(),
+                new Password(signupRequest.getPassword(), passwordEncoder),
+                new PhoneNumber(signupRequest.getPhoneNumber())
+        );
+    }
+
+    public void login(LoginRequest loginRequest) {
+        this.password.isComparePassword(loginRequest.getPasword());
+    }
 }
