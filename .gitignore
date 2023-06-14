@@ -40,3 +40,5 @@ out/
 
 ### setting ###
 **/application-*.yml
+**/environment/
+**/banner.txt
