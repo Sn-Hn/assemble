@@ -2,11 +2,13 @@ package com.assemble.user.domain;
 
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Name {
 
+    @Column(name="USER_NAME")
     private String value;
 
     public Name(String value) {

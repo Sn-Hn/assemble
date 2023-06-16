@@ -2,6 +2,7 @@ package com.assemble.user.domain;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.util.regex.Pattern;
@@ -11,18 +12,15 @@ public class Password {
     @Transient
     private final Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$");
 
-    @Transient
-    private PasswordEncoder passwordEncoder;
-
+    @Column(name="PASSWORD")
     private String value;
 
     public Password(String value, PasswordEncoder passwordEncoder) {
         verifyPasswordFormat(value);
         this.value = passwordEncoder.encode(value);
-        this.passwordEncoder = passwordEncoder;
     }
 
-    public Password() {
+    protected Password() {
     }
 
     private void verifyPasswordFormat(String password) {
@@ -31,9 +29,11 @@ public class Password {
         }
     }
 
-    public void isComparePassword(String password) {
-        if (!passwordEncoder.matches(password, this.value)) {
-            throw new IllegalArgumentException("invalid password");
+    public boolean isComparePassword(String password, PasswordEncoder passwordEncoder) {
+        if (passwordEncoder.matches(password, this.value)) {
+            return true;
         }
+
+        return false;
     }
 }

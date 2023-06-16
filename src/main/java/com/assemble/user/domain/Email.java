@@ -1,7 +1,6 @@
 package com.assemble.user.domain;
 
-import org.springframework.util.StringUtils;
-
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.util.regex.Pattern;
@@ -10,6 +9,8 @@ import java.util.regex.Pattern;
 public class Email {
     @Transient
     private final Pattern pattern = Pattern.compile("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
+
+    @Column(name="EMAIL")
     private String value;
 
     protected Email() {}
