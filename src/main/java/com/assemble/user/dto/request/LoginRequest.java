@@ -1,21 +1,26 @@
 package com.assemble.user.dto.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@AllArgsConstructor
 public class LoginRequest {
 
     private String email;
 
-    private String pasword;
+    private String password;
 
-    public LoginRequest(String email, String pasword) {
-        this.email = email;
-        this.pasword = pasword;
+    private LoginRequest() {
+
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPasword() {
-        return pasword;
+    @Override
+    public String toString() {
+        return "LoginRequest{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
