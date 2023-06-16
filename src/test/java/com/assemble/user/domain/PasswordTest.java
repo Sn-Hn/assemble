@@ -43,7 +43,7 @@ class PasswordTest {
 
         assertAll(
                 () -> assertThat(password).isNotNull(),
-                () -> assertThatCode(() -> password.isComparePassword(value)).doesNotThrowAnyException()
+                () -> assertThatCode(() -> password.isComparePassword(value, passwordEncoder)).doesNotThrowAnyException()
         );
     }
 }
