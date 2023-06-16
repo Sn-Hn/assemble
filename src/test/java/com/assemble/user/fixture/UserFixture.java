@@ -14,6 +14,7 @@ public class UserFixture {
     private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private static final String email = "test@test.com";
     private static final String password = "password1!";
+    private static final String failedLoginPassword = "password12345!@#$%^%";
     private static final String name = "test";
     private static final String phoneNumber = "01011112222";
     private static final String nickname = "test developer";
@@ -24,6 +25,10 @@ public class UserFixture {
 
     public static LoginRequest 로그인_시도_회원() {
         return new LoginRequest(email, password);
+    }
+
+    public static LoginRequest 로그인_실패_회원() {
+        return new LoginRequest(email, failedLoginPassword);
     }
 
     public static User 회원() {
