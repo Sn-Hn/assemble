@@ -27,6 +27,10 @@ public class ApiError {
         return message;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return "ApiError{" +
