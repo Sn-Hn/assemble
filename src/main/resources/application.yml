@@ -13,6 +13,7 @@ spring:
     import:
       - classpath:application-database.yml
       - classpath:application-value.yml
+      - classpath:application-file.yml
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
