@@ -16,4 +16,20 @@ public abstract class BaseUserEntity extends BaseDateEntity {
 
     @LastModifiedBy
     private Long modifier;
+
+    public Long getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Long creator) {
+        this.creator = creator;
+    }
+
+    public Long getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(Long modifier) {
+        this.modifier = modifier;
+    }
 }
