@@ -13,6 +13,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -66,11 +67,12 @@ class UserServiceTest {
     void 회원가입_성공() {
         // given
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
+        MultipartFile profileImage = null;
         given(userRepository.save(any()))
                 .willReturn(UserFixture.회원());
 
         // when
-        User signupUser = userService.signup(signupRequest);
+        User signupUser = userService.signup(signupRequest, profileImage);
 
         // then
         assertAll(

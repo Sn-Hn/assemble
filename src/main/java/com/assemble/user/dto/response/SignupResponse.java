@@ -28,6 +28,9 @@ public class SignupResponse {
     @ApiModelProperty(value = "회원 역할")
     private String role;
 
+    @ApiModelProperty(value = "프로필 사진")
+    private String profilePath;
+
     public static SignupResponse from(User user) {
         return new SignupResponse(
                 user.getId(),
@@ -35,7 +38,8 @@ public class SignupResponse {
                 user.getName().getValue(),
                 user.getNickName(),
                 user.getPhoneNumber().getValue(),
-                user.getRole().toString()
+                user.getRole().toString(),
+                user.getProfile().getPath()
         );
     }
     @Override

@@ -4,9 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @ApiModel(value = "SignupRequest : 회원가입 요청 값")
 @Getter
+@Setter
 @AllArgsConstructor
 public class SignupRequest {
     @ApiModelProperty(value = "이메일", required = true)
@@ -24,7 +27,7 @@ public class SignupRequest {
     @ApiModelProperty(value = "비밀번호", required = true)
     private String password;
 
-    private SignupRequest() {
+    public SignupRequest() {
     }
 
     @Override
@@ -34,7 +37,7 @@ public class SignupRequest {
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + password +
                 '}';
     }
 }

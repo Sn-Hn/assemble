@@ -1,6 +1,7 @@
 package com.assemble.user.entity;
 
 import com.assemble.commons.base.BaseDateEntity;
+import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
@@ -39,11 +40,15 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToOne
+    @JoinColumn(name = "file_id")
+    private AttachedFile profile;
+
     public User() {
     }
 
     public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber) {
-        this(null, email, name, nickName, password, phoneNumber, UserRole.USER);
+        this(null, email, name, nickName, password, phoneNumber, UserRole.USER, null);
     }
 
     public User(Email email, Password password) {
@@ -64,5 +69,9 @@ public class User extends BaseDateEntity {
         if (!this.password.isComparePassword(loginRequest.getPassword(), passwordEncoder)) {
             throw new IllegalArgumentException("invalid password");
         }
+    }
+
+    public void setProfile(AttachedFile file) {
+        this.profile = file;
     }
 }
