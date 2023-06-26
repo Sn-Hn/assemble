@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserFixture {
     private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private static final String email = "test@test.com";
+
+    private static final String successLoginEmail = "test00@gmail.com";
     private static final String password = "password1!";
     private static final String failedLoginPassword = "password12345!@#$%^%";
     private static final String name = "test";
@@ -29,6 +31,10 @@ public class UserFixture {
 
     public static LoginRequest 로그인_실패_회원() {
         return new LoginRequest(email, failedLoginPassword);
+    }
+
+    public static LoginRequest 로그인_성공_회원() {
+        return new LoginRequest(successLoginEmail, password);
     }
 
     public static User 회원() {
