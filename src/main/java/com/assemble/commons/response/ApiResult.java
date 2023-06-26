@@ -6,22 +6,26 @@ import org.springframework.http.HttpStatus;
 public class ApiResult<T> {
 
     @ApiModelProperty(value = "API 요청 처리 결과", required = true)
-    private final boolean success;
+    private boolean success;
 
     @ApiModelProperty(value = "HTTP 응답 코드")
-    private final int status;
+    private int status;
 
     @ApiModelProperty(value = "API 요청 성공 시 응답 값")
-    private final T response;
+    private T response;
 
     @ApiModelProperty(value = "API 요청 실패 시 응답 값")
-    private final ApiError error;
+    private ApiError error;
 
     public ApiResult(boolean success, int status, T response, ApiError error) {
         this.success = success;
         this.status = status;
         this.response = response;
         this.error = error;
+    }
+
+    private ApiResult() {
+
     }
 
     public static ApiResult ok() {
@@ -54,6 +58,10 @@ public class ApiResult<T> {
 
     public T getResponse() {
         return response;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     @Override

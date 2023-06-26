@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 public class ApiError {
 
     @ApiModelProperty(value = "오류 메시지", required = true)
-    private final String message;
+    private String message;
 
-    private final int status;
+    private int status;
 
     public ApiError(String message, int status) {
         this.message = message;
@@ -22,6 +22,8 @@ public class ApiError {
     public ApiError(Throwable throwable, HttpStatus status) {
         this(throwable.getMessage(), status);
     }
+
+    private ApiError() {}
 
     public String getMessage() {
         return message;
