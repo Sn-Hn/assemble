@@ -4,6 +4,7 @@ import com.assemble.file.entity.AttachedFile;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ public class UploadFile {
     private String basePath;
 
     public AttachedFile upload(MultipartFile multipartFile) {
+        verifyEmptyFile(multipartFile);
         createDirectory();
         String originalFilename = multipartFile.getOriginalFilename();
         String defaultExtension = multipartFile.getContentType();
@@ -48,6 +50,12 @@ public class UploadFile {
 
         if (!file.exists()) {
             file.mkdirs();
+        }
+    }
+
+    private void verifyEmptyFile(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("empty file");
         }
     }
 }
