@@ -1,6 +1,7 @@
 package com.assemble.user.domain;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,11 +17,18 @@ public class Password {
     private String value;
 
     public Password(String value, PasswordEncoder passwordEncoder) {
+        verifyEmptyPassword(value);
         verifyPasswordFormat(value);
         this.value = passwordEncoder.encode(value);
     }
 
     protected Password() {
+    }
+
+    private void verifyEmptyPassword(String password) {
+        if (!StringUtils.hasText(password)) {
+            throw new IllegalArgumentException("empty password");
+        }
     }
 
     private void verifyPasswordFormat(String password) {

@@ -1,5 +1,7 @@
 package com.assemble.user.domain;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
@@ -16,12 +18,19 @@ public class Email {
     protected Email() {}
 
     public Email(String value) {
+        verifyEmptyEmail(value);
         verifyEmailFormat(value);
         this.value = value;
     }
 
     public String getValue() {
         return value;
+    }
+
+    private void verifyEmptyEmail(String email) {
+        if (!StringUtils.hasText(email)) {
+            throw new IllegalArgumentException("empty email");
+        }
     }
 
     private void verifyEmailFormat(String email) {

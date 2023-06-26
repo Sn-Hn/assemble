@@ -1,5 +1,7 @@
 package com.assemble.user.domain;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
@@ -23,6 +25,12 @@ public class PhoneNumber {
 
     public String getValue() {
         return value;
+    }
+
+    private void verifyEmptyPhoneNumber(String phoneNumber) {
+        if (!StringUtils.hasText(phoneNumber)) {
+            throw new IllegalArgumentException("empty phoneNumber");
+        }
     }
 
     private void verifyPhoneNumberFormat(String phoneNumber) {
