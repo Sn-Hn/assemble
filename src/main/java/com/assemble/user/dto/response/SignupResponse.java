@@ -39,7 +39,7 @@ public class SignupResponse {
                 user.getNickName(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.getProfile() != null ? user.getProfile().getPath() : null
+                user.getProfile() != null ? user.getProfile().getPath() + "/" + user.getProfile().getName() : null
         );
     }
     @Override
