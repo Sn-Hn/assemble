@@ -1,16 +1,16 @@
 package com.assemble.file.domain;
 
 import com.assemble.file.entity.AttachedFile;
-import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Component
@@ -22,11 +22,11 @@ public class UploadFile {
     public AttachedFile upload(MultipartFile multipartFile) {
         verifyEmptyFile(multipartFile);
         createDirectory();
-        String originalFilename = multipartFile.getOriginalFilename();
-        String defaultExtension = multipartFile.getContentType();
-        String fileName = createFileName(defaultExtension, originalFilename);
-        long size = multipartFile.getSize();
         try {
+            String originalFilename = new String(multipartFile.getOriginalFilename().getBytes("8859_1"), StandardCharsets.UTF_8);
+            String defaultExtension = multipartFile.getContentType();
+            String fileName = createFileName(defaultExtension, originalFilename);
+            long size = multipartFile.getSize();
             multipartFile.transferTo(new File(fileName));
             return new AttachedFile(basePath, basePath + "/" + fileName, originalFilename, size, fileName);
         } catch (IOException e) {
