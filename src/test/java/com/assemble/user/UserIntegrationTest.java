@@ -1,6 +1,7 @@
 package com.assemble.user;
 
 import com.assemble.commons.response.ApiResult;
+import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.LoginRequest;
 import com.assemble.user.dto.request.NicknameRequest;
@@ -126,14 +127,15 @@ public class UserIntegrationTest {
                 () -> assertThat(result.isSuccess()).isTrue(),
                 () -> assertThat(result.getResponse()).isNotNull(),
                 () -> assertThat(response.get("email")).isEqualTo(signupRequest.getEmail()),
-                () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName())
+                () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName()),
+                () -> assertThat(response.get("profilePath")).isNull()
         );
     }
 
     @Test
     void 회원가입_성공_프로필_사진_O() {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
-        File file = new File("C:/Users/P164960/Downloads/기본이미지.jpg");
+        File file = FileFixture.File_생성();
         ExtractableResponse<Response> signupResponse = given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
