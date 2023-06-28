@@ -10,6 +10,9 @@ import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -40,15 +43,14 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne
-    @JoinColumn(name = "file_id")
-    private AttachedFile profile;
+    @OneToMany(mappedBy = "user")
+    private List<UserImage> profiles = new ArrayList<>();
 
     public User() {
     }
 
     public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber) {
-        this(null, email, name, nickName, password, phoneNumber, UserRole.USER, null);
+        this(null, email, name, nickName, password, phoneNumber, UserRole.USER, new ArrayList<>());
     }
 
     public User(Email email, Password password) {
@@ -72,6 +74,12 @@ public class User extends BaseDateEntity {
     }
 
     public void setProfile(AttachedFile file) {
-        this.profile = file;
+        this.profiles.add(new UserImage(this, file));
+    }
+
+    public List<String> getUserImages() {
+        return getProfiles().stream()
+                .map(userImage -> userImage.getFile().getFullPath())
+                .collect(Collectors.toList());
     }
 }

@@ -6,6 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ApiModel(value = "SignupResponse : 회원가입 응답 값")
 @Getter
 @AllArgsConstructor
@@ -29,7 +33,7 @@ public class SignupResponse {
     private String role;
 
     @ApiModelProperty(value = "프로필 사진")
-    private String profilePath;
+    private List<String> profilePath = new ArrayList<>();
 
     public static SignupResponse from(User user) {
         return new SignupResponse(
@@ -39,9 +43,12 @@ public class SignupResponse {
                 user.getNickName(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.getProfile() != null ? user.getProfile().getPath() + "/" + user.getProfile().getName() : null
+                user.getProfiles().stream()
+                        .map(userImage -> userImage.getFile().getFullPath())
+                        .collect(Collectors.toList())
         );
     }
+
     @Override
     public String toString() {
         return "SignupResponse{" +
