@@ -10,6 +10,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,5 +55,19 @@ class UserTest {
         // when
         // then
         assertThatCode(() -> user.login(loginRequest, passwordEncoder)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void 회원_프로필_사진_조회_NULL() {
+        User user = UserFixture.회원();
+
+        List<UserImage> test = new ArrayList<>();
+
+        assertThat(user.getUserImages().size()).isEqualTo(0);
+    }
+
+    @Test
+    void 회원_프로필_사진_조회() {
+
     }
 }

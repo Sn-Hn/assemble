@@ -28,8 +28,8 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
@@ -129,7 +129,7 @@ public class UserIntegrationTest {
                 .extract();
 
         ApiResult result = signupResponse.jsonPath().getObject(".", ApiResult.class);
-        Map<String, String> response = (HashMap<String, String>) result.getResponse();
+        Map<String, Object> response = (HashMap<String, Object>) result.getResponse();
 
         assertAll(
                 () -> assertThat(result).isNotNull(),
@@ -137,7 +137,7 @@ public class UserIntegrationTest {
                 () -> assertThat(result.getResponse()).isNotNull(),
                 () -> assertThat(response.get("email")).isEqualTo(signupRequest.getEmail()),
                 () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName()),
-                () -> assertThat(response.get("profilePath")).isNull()
+                () -> assertThat(((List<String>) response.get("profilePath")).size()).isEqualTo(0)
         );
     }
 
@@ -162,7 +162,7 @@ public class UserIntegrationTest {
                 .extract();
 
         ApiResult result = signupResponse.jsonPath().getObject(".", ApiResult.class);
-        Map<String, String> response = (HashMap<String, String>) result.getResponse();
+        Map<String, Object> response = (HashMap<String, Object>) result.getResponse();
 
         assertAll(
                 () -> assertThat(result).isNotNull(),
