@@ -9,22 +9,26 @@ import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.config.HttpClientConfig;
+import io.restassured.config.MultiPartConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +53,11 @@ public class UserIntegrationTest {
     void setUp() {
         RestAssured.port = port;
     }
+
+    private RestAssuredConfig config = RestAssured.config()
+            .encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8"))
+            .multiPartConfig(MultiPartConfig.multiPartConfig().defaultCharset("UTF-8"))
+            .httpClient(HttpClientConfig.httpClientConfig().httpMultipartMode(HttpMultipartMode.BROWSER_COMPATIBLE));
 
     @Test
     void 로그인_성공() throws IOException {
@@ -137,11 +146,13 @@ public class UserIntegrationTest {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
         File file = FileFixture.File_생성();
         ExtractableResponse<Response> signupResponse = given()
+                .config(config)
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .queryParams(objectMapper.convertValue(signupRequest, Map.class))
                 .multiPart("profileImage", file)
+                .urlEncodingEnabled(true)
                 .log().all()
                 .when()
                 .post("signup")

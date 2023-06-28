@@ -23,7 +23,7 @@ public class UploadFile {
         verifyEmptyFile(multipartFile);
         createDirectory();
         try {
-            String originalFilename = new String(multipartFile.getOriginalFilename().getBytes("8859_1"), StandardCharsets.UTF_8);
+            String originalFilename = multipartFile.getOriginalFilename();
             String defaultExtension = multipartFile.getContentType();
             String fileName = createFileName(defaultExtension, originalFilename);
             long size = multipartFile.getSize();
