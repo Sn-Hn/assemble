@@ -1,5 +1,6 @@
 package com.assemble.file.fixture;
 
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,6 @@ public class FileFixture {
 
     public static MultipartFile MultipartFile_생성() throws IOException {
         File file = File_생성();
-        return new MockMultipartFile(file.getName(), new FileInputStream(file));
+        return new MockMultipartFile(file.getName(), file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
     }
 }
