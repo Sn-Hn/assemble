@@ -31,7 +31,7 @@ public class LoginResponse {
 
     public static LoginResponse from(User user) {
          return new LoginResponse(
-                user.getId(),
+                user.getUserId(),
                 user.getEmail().getValue(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),

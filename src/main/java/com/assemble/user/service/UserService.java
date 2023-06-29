@@ -41,7 +41,7 @@ public class UserService {
         User user = User.createUser(signupRequest, passwordEncoder);
 
         if (profileImage != null && !profileImage.isEmpty()) {
-            AttachedFile profile = fileService.uploadFile(profileImage, user.getId());
+            AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());
             user.setProfile(profile);
         }
 

@@ -37,7 +37,7 @@ public class SignupResponse {
 
     public static SignupResponse from(User user) {
         return new SignupResponse(
-                user.getId(),
+                user.getUserId(),
                 user.getEmail().getValue(),
                 user.getName().getValue(),
                 user.getNickName(),

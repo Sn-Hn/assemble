@@ -22,8 +22,7 @@ public class User extends BaseDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
-    private Long id;
+    private Long userId;
 
     @Embedded
     private Email email;
@@ -31,7 +30,6 @@ public class User extends BaseDateEntity {
     @Embedded
     private Name name;
 
-    @Column(name="NICKNAME")
     private String nickName;
 
     @Embedded
