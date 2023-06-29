@@ -4,9 +4,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @ApiModel(value = "LoginRequest : 회원가입 요청 값")
 @Getter
+@ToString
 @AllArgsConstructor
 public class LoginRequest {
 

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ApiResultTest {
 
     @Test
-    void 응답_성공_검증() {
+    void 성공_응답_검증() {
         // given
         // when
         ApiResult ok = ApiResult.ok(true);
@@ -29,7 +29,7 @@ class ApiResultTest {
     }
 
     @Test
-    void 응답_오류_검증() {
+    void 오류_응답_검증() {
         // given
         String errorMessage = "오류 발생";
 

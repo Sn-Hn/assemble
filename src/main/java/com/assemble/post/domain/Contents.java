@@ -4,11 +4,13 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 @Embeddable
 public class Contents {
 
     @Column(name = "POST_CONTENTS")
+    @Lob
     private String value;
 
     public Contents(String value) {

@@ -2,10 +2,12 @@ package com.assemble.user.entity;
 
 import com.assemble.file.entity.AttachedFile;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @AllArgsConstructor
 public class UserImage {
 
@@ -26,17 +28,5 @@ public class UserImage {
     }
 
     protected UserImage() {
-    }
-
-    public Long getUserImageId() {
-        return userImageId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public AttachedFile getFile() {
-        return file;
     }
 }

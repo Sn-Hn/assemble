@@ -1,6 +1,7 @@
 package com.assemble.file.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
+import com.assemble.file.dto.response.ProfileResponse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -54,5 +55,9 @@ public class AttachedFile extends BaseUserEntity {
 
     public void setModifierId(Long modifierId) {
         setModifier(modifierId);
+    }
+
+    public ProfileResponse mapProfile() {
+        return new ProfileResponse(this.name, this.fullPath);
     }
 }

@@ -16,8 +16,20 @@ public class FileService {
     private final FileRepository fileRepository;
 
     public AttachedFile uploadFile(MultipartFile file, Long creatorId) {
+        if (!existFile(file)) {
+            return null;
+        }
+
         AttachedFile attachedFile = uploadFile.upload(file);
-        attachedFile.setCreatorId(creatorId);
+        attachedFile.create(creatorId);
         return fileRepository.save(attachedFile);
+    }
+
+    private boolean existFile(MultipartFile file) {
+        if (file != null && !file.isEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 }

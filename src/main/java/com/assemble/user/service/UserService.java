@@ -40,10 +40,8 @@ public class UserService {
     public User signup(SignupRequest signupRequest, MultipartFile profileImage) {
         User user = User.createUser(signupRequest, passwordEncoder);
 
-        if (profileImage != null && !profileImage.isEmpty()) {
-            AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());
-            user.setProfile(profile);
-        }
+        AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());
+        user.setProfile(profile);
 
         User savedUser = userRepository.save(user);
 

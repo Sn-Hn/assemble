@@ -30,6 +30,7 @@ public class User extends BaseDateEntity {
     @Embedded
     private Name name;
 
+    @Column(name="NICKNAME")
     private String nickName;
 
     @Embedded
@@ -45,6 +46,10 @@ public class User extends BaseDateEntity {
     private List<UserImage> profiles = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(Long userId) {
+        this (userId, null, null, null, null, null, null, new ArrayList<>());
     }
 
     public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber) {

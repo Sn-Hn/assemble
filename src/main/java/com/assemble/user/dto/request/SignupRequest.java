@@ -5,12 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 @ApiModel(value = "SignupRequest : 회원가입 요청 값")
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 public class SignupRequest {
     @ApiModelProperty(value = "이메일", required = true)
     private String email;

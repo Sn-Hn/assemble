@@ -1,5 +1,6 @@
 package com.assemble.user.service;
 
+import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
@@ -30,6 +31,9 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private FileService fileService;
 
     @Spy
     private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -70,6 +74,8 @@ class UserServiceTest {
         MultipartFile profileImage = null;
         given(userRepository.save(any()))
                 .willReturn(UserFixture.회원());
+        given(fileService.uploadFile(any(), any()))
+                .willReturn(null);
 
         // when
         User signupUser = userService.signup(signupRequest, profileImage);

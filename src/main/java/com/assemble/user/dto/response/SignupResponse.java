@@ -1,10 +1,12 @@
 package com.assemble.user.dto.response;
 
+import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.user.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 @ApiModel(value = "SignupResponse : 회원가입 응답 값")
 @Getter
 @AllArgsConstructor
+@ToString
 public class SignupResponse {
     @ApiModelProperty(value = "회원 ID")
     private Long userId;
@@ -33,7 +36,7 @@ public class SignupResponse {
     private String role;
 
     @ApiModelProperty(value = "프로필 사진")
-    private List<String> profilePath = new ArrayList<>();
+    private List<ProfileResponse> profile;
 
     public static SignupResponse from(User user) {
         return new SignupResponse(
@@ -44,20 +47,9 @@ public class SignupResponse {
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
                 user.getProfiles().stream()
-                        .map(userImage -> userImage.getFile().getFullPath())
+                        .filter(userImage -> userImage.getFile() != null)
+                        .map(userImage -> userImage.getFile().mapProfile())
                         .collect(Collectors.toList())
         );
-    }
-
-    @Override
-    public String toString() {
-        return "SignupResponse{" +
-                "userId=" + userId +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", role='" + role + '\'' +
-                '}';
     }
 }

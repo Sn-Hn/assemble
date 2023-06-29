@@ -137,7 +137,7 @@ public class UserIntegrationTest {
                 () -> assertThat(result.getResponse()).isNotNull(),
                 () -> assertThat(response.get("email")).isEqualTo(signupRequest.getEmail()),
                 () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName()),
-                () -> assertThat(((List<String>) response.get("profilePath")).size()).isEqualTo(0)
+                () -> assertThat(((List<String>) response.get("profile")).size()).isEqualTo(0)
         );
     }
 
@@ -170,7 +170,7 @@ public class UserIntegrationTest {
                 () -> assertThat(result.getResponse()).isNotNull(),
                 () -> assertThat(response.get("email")).isEqualTo(signupRequest.getEmail()),
                 () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName()),
-                () -> assertThat(response.get("profilePath")).isNotNull()
+                () -> assertThat(response.get("profile")).isNotNull()
         );
     }
 

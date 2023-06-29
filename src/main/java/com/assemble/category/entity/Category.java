@@ -1,21 +1,35 @@
 package com.assemble.category.entity;
 
-import com.assemble.user.domain.Name;
+import com.assemble.category.domain.CategoryName;
+import com.assemble.commons.base.BaseUserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import javax.persistence.*;
 
+@Getter
 @AllArgsConstructor
 @Entity
-public class Category {
+public class Category extends BaseUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @AttributeOverride(name="value", column = @Column(name="CATEGORY_NAME"))
-    private Name name;
+    @Column(name="CATEGORY_NAME")
+    private CategoryName name;
 
     protected Category() {
+    }
+
+    private Category(CategoryName name) {
+        this (null, name);
+    }
+
+    public static Category createCategory(String name, Long creator) {
+        Category category = new Category(new CategoryName(name));
+        category.create(creator);
+
+        return category;
     }
 }

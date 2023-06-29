@@ -21,4 +21,8 @@ public class Comment extends BaseUserEntity {
     private Post post;
 
     protected Comment() {}
+
+    public Comment(String comment, Long postId) {
+        this(null, comment, new Post(postId));
+    }
 }
