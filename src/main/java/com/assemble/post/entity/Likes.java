@@ -1,27 +1,28 @@
 package com.assemble.post.entity;
 
+import com.assemble.commons.base.BaseDateEntity;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import javax.persistence.*;
 
 
+@Getter
 @AllArgsConstructor
 @Entity
-public class Like {
+public class Likes extends BaseDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long likeId;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "postId")
     private Post post;
 
-    protected Like() {
+    protected Likes() {
     }
 }
