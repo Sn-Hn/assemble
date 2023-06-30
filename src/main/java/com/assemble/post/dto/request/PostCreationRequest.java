@@ -1,7 +1,6 @@
 package com.assemble.post.dto.request;
 
 import com.assemble.category.entity.Category;
-import com.assemble.category.domain.CategoryName;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.Title;
 import com.assemble.post.entity.Post;
@@ -11,7 +10,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 @ApiModel(value = "PostCreationRequest : 게시글 작성 요청 값")
 @AllArgsConstructor
@@ -36,9 +34,6 @@ public class PostCreationRequest {
 
     @ApiModelProperty(value = "예상 기간")
     private int expectedPeriod;
-
-    @ApiModelProperty(value = "게시글 프로필 사진")
-    private MultipartFile multipartFile;
 
     private PostCreationRequest() {
     }

@@ -9,6 +9,7 @@ import com.assemble.post.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
@@ -19,11 +20,11 @@ public class PostService {
     private final FileService fileService;
 
     @Transactional
-    public PostCreationResponse createPost(PostCreationRequest postCreationRequest) {
+    public PostCreationResponse createPost(PostCreationRequest postCreationRequest, MultipartFile file) {
         Post post = postCreationRequest.toEntity();
         post.create(post.getUser().getUserId());
 
-        AttachedFile attachedFile = fileService.uploadFile(postCreationRequest.getMultipartFile(), post.getUser().getUserId());
+        AttachedFile attachedFile = fileService.uploadFile(file, post.getUser().getUserId());
         post.setProfile(attachedFile);
 
         Post savedPost = postRepository.save(post);
