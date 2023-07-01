@@ -2,6 +2,7 @@ package com.assemble.file.fixture;
 
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -10,10 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileFixture {
-    private final static String defaultProfilePath = "C:/Users/P164960/Downloads/기본이미지.jpg";
+    private final static String defaultProfilePath = "classpath:defaultProfile.jpg";
 
-    public static File File_생성() {
-        return new File(defaultProfilePath);
+    public static File File_생성() throws FileNotFoundException {
+        return ResourceUtils.getFile("classpath:defaultProfile.jpg");
     }
 
     public static MultipartFile MultipartFile_생성() throws IOException {

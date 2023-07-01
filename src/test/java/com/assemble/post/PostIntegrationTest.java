@@ -14,6 +14,7 @@ import io.restassured.config.RestAssuredConfig;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.apache.http.entity.mime.HttpMultipartMode;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,11 +26,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Post Integration Test")
@@ -56,30 +59,24 @@ public class PostIntegrationTest {
             .httpClient(HttpClientConfig.httpClientConfig().httpMultipartMode(HttpMultipartMode.BROWSER_COMPATIBLE));
 
     @Test
-    void 게시글_작성_프로필_사진_X() {
+    void 게시글_작성_프로필_사진_X() throws FileNotFoundException {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         File file = FileFixture.File_생성();
-        ExtractableResponse<Response> postCreationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .queryParams(objectMapper.convertValue(postCreationRequest, Map.class))
                 .multiPart("multipartFile", file, MediaType.APPLICATION_OCTET_STREAM_VALUE)
                 .log().all()
-                .when()
+        .when()
                 .config(config)
                 .post("post")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
-
-        ApiResult result = postCreationResponse.jsonPath().getObject(".", ApiResult.class);
-        Map<String, Object> response = (HashMap<String, Object>) result.getResponse();
-
-        assertAll(
-                () -> assertThat(result.isSuccess()).isTrue()
-        );
+                .body("success", equalTo(true),
+                        "response.title", equalTo(postCreationRequest.getTitle()))
+                .log().all();
 
     }
 }

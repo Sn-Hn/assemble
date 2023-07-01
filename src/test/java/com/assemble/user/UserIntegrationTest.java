@@ -1,6 +1,5 @@
 package com.assemble.user;
 
-import com.assemble.commons.response.ApiResult;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.LoginRequest;
@@ -13,8 +12,6 @@ import io.restassured.config.EncoderConfig;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.MultiPartConfig;
 import io.restassured.config.RestAssuredConfig;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,14 +24,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
 
 @DisplayName("User Integration Test")
 @TestPropertySource(properties = {"spring.config.location = classpath:application-test.yml"})
@@ -62,90 +57,66 @@ public class UserIntegrationTest {
     @Test
     void 로그인_성공() throws IOException {
         LoginRequest loginRequest = UserFixture.로그인_성공_회원();
-        ExtractableResponse<Response> authenticationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
                 .log().all()
-                .when()
+        .when()
                 .post("authentication")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
-
-        ApiResult result = authenticationResponse.jsonPath().getObject(".", ApiResult.class);
-        Map<String, String> response = (HashMap<String, String>) result.getResponse();
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isNotNull(),
-                () -> assertThat(response.get("email")).isEqualTo(loginRequest.getEmail())
-        );
+                .body("success", equalTo(true),
+                        "response.email", equalTo(loginRequest.getEmail()))
+                .log().all();
     }
 
     @Test
     void 로그인_실패() {
         LoginRequest loginRequest = UserFixture.로그인_실패_회원();
-        ExtractableResponse<Response> authenticationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
                 .log().all()
-                .when()
+        .when()
                 .post("authentication")
-                .then()
+        .then()
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .log().all()
-                .extract();
+                .body("success", equalTo(false),
+                        "response", equalTo(null),
+                        "error.status", equalTo(404),
+                        "status", equalTo(404))
+                .log().all();
 
-        ApiResult result = authenticationResponse.jsonPath().getObject(".", ApiResult.class);
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isFalse(),
-                () -> assertThat(result.getResponse()).isNull(),
-                () -> assertThat(result.getError()).isNotNull(),
-                () -> assertThat(result.getStatus()).isEqualTo(404)
-        );
     }
 
     @Test
     void 회원가입_성공_프로필_사진_X() {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
-        ExtractableResponse<Response> signupResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(signupRequest, Map.class))
                 .log().all()
-                .when()
+        .when()
                 .post("signup")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
-
-        ApiResult result = signupResponse.jsonPath().getObject(".", ApiResult.class);
-        Map<String, Object> response = (HashMap<String, Object>) result.getResponse();
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isNotNull(),
-                () -> assertThat(response.get("email")).isEqualTo(signupRequest.getEmail()),
-                () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName()),
-                () -> assertThat(((List<String>) response.get("profile")).size()).isEqualTo(0)
-        );
+                .body("success", equalTo(true),
+                        "error", equalTo(null),
+                        "response.email", equalTo(signupRequest.getEmail()),
+                        "response.profile.size()", equalTo(0))
+                .log().all();
     }
 
     @Test
-    void 회원가입_성공_프로필_사진_O() {
+    void 회원가입_성공_프로필_사진_O() throws FileNotFoundException {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
         File file = FileFixture.File_생성();
-        ExtractableResponse<Response> signupResponse = given()
+        given()
                 .config(config)
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -154,127 +125,92 @@ public class UserIntegrationTest {
                 .multiPart("profileImage", file)
                 .urlEncodingEnabled(true)
                 .log().all()
-                .when()
+        .when()
                 .post("signup")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
-
-        ApiResult result = signupResponse.jsonPath().getObject(".", ApiResult.class);
-        Map<String, Object> response = (HashMap<String, Object>) result.getResponse();
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isNotNull(),
-                () -> assertThat(response.get("email")).isEqualTo(signupRequest.getEmail()),
-                () -> assertThat(response.get("name")).isEqualTo(signupRequest.getName()),
-                () -> assertThat(response.get("profile")).isNotNull()
-        );
+                .body("success", equalTo(true),
+                        "error", equalTo(null),
+                        "response.email", equalTo(signupRequest.getEmail()),
+                        "response.profile.size()", equalTo(1))
+                .log().all();
     }
 
     @Test
     void 이메일_중복_검증_성공() {
         EmailRequest emailRequest = UserFixture.중복_아닌_이메일();
-        ExtractableResponse<Response> emailValidationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .formParam("emailRequest", emailRequest.getEmail())
                 .log().all()
-                .when()
+        .when()
                 .get("email/validation")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
+                .body("success", equalTo(true),
+                        "error", equalTo(null),
+                        "response", equalTo(true))
                 .log().all()
                 .extract();
-
-        ApiResult result = emailValidationResponse.jsonPath().getObject(".", ApiResult.class);
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isEqualTo(true),
-                () -> assertThat(result.getError()).isNull()
-        );
     }
 
     @Test
     void 이메일_중복_검증_실패() {
         EmailRequest emailRequest = UserFixture.중복_이메일();
-        ExtractableResponse<Response> emailValidationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .formParam("emailRequest", emailRequest.getEmail())
                 .log().all()
-                .when()
+        .when()
                 .get("email/validation")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
+                .body("success", equalTo(true),
+                        "error", equalTo(null),
+                        "response", equalTo(false))
+                .log().all();
 
-        ApiResult result = emailValidationResponse.jsonPath().getObject(".", ApiResult.class);
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isEqualTo(false),
-                () -> assertThat(result.getError()).isNull()
-        );
     }
 
     @Test
     void 닉네임_중복_검증_성공() {
         NicknameRequest nicknameRequest = UserFixture.중복_아닌_닉네임();
-        ExtractableResponse<Response> emailValidationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .formParam("nicknameRequest", nicknameRequest.getNickname())
                 .log().all()
-                .when()
+        .when()
                 .get("nickname/validation")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
-
-        ApiResult result = emailValidationResponse.jsonPath().getObject(".", ApiResult.class);
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isEqualTo(true),
-                () -> assertThat(result.getError()).isNull()
-        );
+                .body("success", equalTo(true),
+                        "error", equalTo(null),
+                        "response", equalTo(true))
+                .log().all();
     }
 
     @Test
     void 닉네임_중복_검증_실패() {
         NicknameRequest nicknameRequest = UserFixture.중복_닉네임();
-        ExtractableResponse<Response> emailValidationResponse = given()
+        given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .formParam("nicknameRequest", nicknameRequest.getNickname())
                 .log().all()
-                .when()
+        .when()
                 .get("nickname/validation")
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
-                .log().all()
-                .extract();
-
-        ApiResult result = emailValidationResponse.jsonPath().getObject(".", ApiResult.class);
-
-        assertAll(
-                () -> assertThat(result).isNotNull(),
-                () -> assertThat(result.isSuccess()).isTrue(),
-                () -> assertThat(result.getResponse()).isEqualTo(false),
-                () -> assertThat(result.getError()).isNull()
-        );
+                .body("success", equalTo(true),
+                        "error", equalTo(null),
+                        "response", equalTo(false))
+                .log().all();
     }
 }
