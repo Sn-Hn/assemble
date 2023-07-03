@@ -3,9 +3,11 @@ package com.assemble.comment.entity;
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.post.entity.Post;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
 @AllArgsConstructor
 public class Comment extends BaseUserEntity {
