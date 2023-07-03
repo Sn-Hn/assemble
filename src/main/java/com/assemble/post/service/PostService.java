@@ -49,6 +49,10 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
+        // 리팩터링 대상
+        // 게시글 클릭 시 조회수 계속 올라감
+        post.increaseHits();
+
         return post;
     }
 

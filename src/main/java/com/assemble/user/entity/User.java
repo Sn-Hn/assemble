@@ -49,7 +49,7 @@ public class User extends BaseDateEntity {
     }
 
     public User(Long userId) {
-        this (userId, null, null, null, null, null, null, new ArrayList<>());
+        this.userId = userId;
     }
 
     public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber) {

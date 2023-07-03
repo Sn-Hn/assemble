@@ -18,6 +18,8 @@ public class PostsResponse {
 
     private Long hits;
 
+    private Long likes;
+
     private int perssonelNumber;
 
     private int expectedPeriod;
@@ -33,6 +35,7 @@ public class PostsResponse {
                 post.getContents().getValue(),
                 post.getUser().getNickName(),
                 post.getHits(),
+                post.getLikes(),
                 post.getPersonnelNumber(),
                 post.getExpectedPeriod(),
                 post.getComments().getComments().size(),

@@ -41,6 +41,9 @@ public class Post extends BaseUserEntity {
     private Long hits;
 
     @ColumnDefault("0")
+    private Long likes;
+
+    @ColumnDefault("0")
     private int personnelNumber;
 
     @Embedded
@@ -58,11 +61,11 @@ public class Post extends BaseUserEntity {
     protected Post() {}
 
     public Post(Long postId) {
-        this (postId, null, null, null, null, 0, null, 0, null, new ArrayList<>());
+        this.postId = postId;
     }
 
     public Post(Title title, Contents contents, User user, int personnelNumber, int expectedPeriod, Category category) {
-        this (null, title, contents, user, 0L, personnelNumber, null, expectedPeriod, category, new ArrayList<>());
+        this (null, title, contents, user, 0L, 0L, personnelNumber, null, expectedPeriod, category, new ArrayList<>());
     }
 
     public void setProfile(AttachedFile file) {
@@ -75,5 +78,17 @@ public class Post extends BaseUserEntity {
         this.category = new Category(new CategoryName(modifiedPostRequest.getCategory()));
         this.personnelNumber = modifiedPostRequest.getPersonnelNumber();
         this.expectedPeriod = modifiedPostRequest.getExpectedPeriod();
+    }
+
+    public void increaseHits() {
+        this.hits ++;
+    }
+
+    public void increaseLikes() {
+        this.likes ++;
+    }
+
+    public void decreaseLikes() {
+        this.likes --;
     }
 }
