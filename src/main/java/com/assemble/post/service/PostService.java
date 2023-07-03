@@ -3,10 +3,13 @@ package com.assemble.post.service;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.service.FileService;
 import com.assemble.post.dto.request.PostCreationRequest;
+import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
 import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,5 +32,12 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
         return new PostCreationResponse(savedPost);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
+        Page<Post> posts = postRepository.findByEmail(postSearchRequest, pageable);
+
+        return posts;
     }
 }

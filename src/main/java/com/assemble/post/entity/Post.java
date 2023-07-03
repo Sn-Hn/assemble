@@ -31,7 +31,7 @@ public class Post extends BaseUserEntity {
     @Embedded
     private Contents contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
@@ -47,7 +47,7 @@ public class Post extends BaseUserEntity {
     @ColumnDefault("0")
     private int expectedPeriod;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Category category;
 
     @OneToMany(mappedBy = "post")
