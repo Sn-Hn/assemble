@@ -1,5 +1,6 @@
 package com.assemble.post.service;
 
+import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.service.FileService;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -39,5 +40,12 @@ public class PostService {
         Page<Post> posts = postRepository.findByEmail(postSearchRequest, pageable);
 
         return posts;
+    }
+
+    public Post getPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(Post.class, postId));
+
+        return post;
     }
 }

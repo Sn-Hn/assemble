@@ -4,6 +4,7 @@ import com.assemble.commons.response.ApiResult;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
+import com.assemble.post.dto.response.PostResponse;
 import com.assemble.post.dto.response.PostsResponse;
 import com.assemble.post.service.PostService;
 import io.swagger.annotations.Api;
@@ -35,5 +36,10 @@ public class PostController {
                                                    @PageableDefault(size = 12) Pageable pageable) {
         return ApiResult.ok(postService.getPosts(postSearchRequest, pageable)
                 .map(PostsResponse::new));
+    }
+
+    @GetMapping(path = "{postId}")
+    public ApiResult<PostResponse> getPost(@PathVariable Long postId) {
+        return ApiResult.ok(new PostResponse(postService.getPost(postId)));
     }
 }
