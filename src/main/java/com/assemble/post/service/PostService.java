@@ -1,8 +1,10 @@
 package com.assemble.post.service;
 
+import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.service.FileService;
+import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
@@ -23,7 +25,7 @@ public class PostService {
 
     private final FileService fileService;
 
-    @Transactional
+    @Transactional(rollbackFor = AssembleException.class)
     public PostCreationResponse createPost(PostCreationRequest postCreationRequest, MultipartFile file) {
         Post post = postCreationRequest.toEntity();
         post.create(post.getUser().getUserId());
@@ -37,15 +39,33 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
-        Page<Post> posts = postRepository.findByEmail(postSearchRequest, pageable);
+        Page<Post> posts = postRepository.findAllBySearch(postSearchRequest, pageable);
 
         return posts;
     }
 
+    @Transactional(readOnly = true)
     public Post getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
         return post;
+    }
+
+    @Transactional(rollbackFor = AssembleException.class)
+    public Post modifyPost(ModifiedPostRequest modifiedPostRequest) {
+        Post post = postRepository.findById(modifiedPostRequest.getPostId())
+                .orElseThrow(() -> new NotFoundException(Post.class, modifiedPostRequest.getPostId()));
+
+        post.modifyPost(modifiedPostRequest);
+
+        return post;
+    }
+
+    public boolean deletePost(Long postId) {
+        Post post = new Post(postId);
+        postRepository.delete(post);
+
+        return true;
     }
 }

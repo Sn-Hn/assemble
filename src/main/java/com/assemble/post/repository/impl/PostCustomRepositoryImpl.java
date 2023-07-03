@@ -25,7 +25,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     @Override
-    public Page<Post> findByEmail(PostSearchRequest postSearchRequest, Pageable pageable) {
+    public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable) {
         List<Post> posts = queryFactory.selectFrom(QPost.post)
                 .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()))
                 .orderBy(QPost.post.postId.desc())

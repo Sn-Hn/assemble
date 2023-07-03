@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostCustomRepository {
 
-    Page<Post> findByEmail(PostSearchRequest postSearchRequest, Pageable pageable);
+    Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable);
 
 }

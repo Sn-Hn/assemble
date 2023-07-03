@@ -1,11 +1,13 @@
 package com.assemble.post.entity;
 
+import com.assemble.category.domain.CategoryName;
 import com.assemble.category.entity.Category;
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.comment.domain.Comments;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.Title;
+import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.entity.UserImage;
 import lombok.AllArgsConstructor;
@@ -67,4 +69,11 @@ public class Post extends BaseUserEntity {
         this.profiles.add(new PostImage(this, this.user, file));
     }
 
+    public void modifyPost(ModifiedPostRequest modifiedPostRequest) {
+        this.title = new Title(modifiedPostRequest.getTitle());
+        this.contents = new Contents(modifiedPostRequest.getContents());
+        this.category = new Category(new CategoryName(modifiedPostRequest.getCategory()));
+        this.personnelNumber = modifiedPostRequest.getPersonnelNumber();
+        this.expectedPeriod = modifiedPostRequest.getExpectedPeriod();
+    }
 }

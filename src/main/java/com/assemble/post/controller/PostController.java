@@ -1,6 +1,7 @@
 package com.assemble.post.controller;
 
 import com.assemble.commons.response.ApiResult;
+import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
@@ -41,5 +42,15 @@ public class PostController {
     @GetMapping(path = "{postId}")
     public ApiResult<PostResponse> getPost(@PathVariable Long postId) {
         return ApiResult.ok(new PostResponse(postService.getPost(postId)));
+    }
+
+    @PatchMapping
+    public ApiResult<PostResponse> modifyPost(ModifiedPostRequest modifiedPostRequest) {
+        return ApiResult.ok(new PostResponse(postService.modifyPost(modifiedPostRequest)));
+    }
+
+    @DeleteMapping(path = "{postId}")
+    public ApiResult<Boolean> deletePost(@PathVariable Long postId) {
+        return ApiResult.ok(postService.deletePost(postId));
     }
 }

@@ -22,7 +22,7 @@ public class Category extends BaseUserEntity {
     protected Category() {
     }
 
-    private Category(CategoryName name) {
+    public Category(CategoryName name) {
         this (null, name);
     }
 
