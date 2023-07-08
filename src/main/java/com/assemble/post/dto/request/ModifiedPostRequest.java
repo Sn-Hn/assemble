@@ -18,7 +18,7 @@ public class ModifiedPostRequest {
     private String contents;
 
     @ApiModelProperty(value = "게시글 카테고리")
-    private String category;
+    private Long categoryId;
 
     @ApiModelProperty(value = "모집 인원")
     private int personnelNumber;

@@ -1,5 +1,6 @@
 package com.assemble.file.domain;
 
+import com.assemble.annotation.TestCustomProperty;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.fixture.FileFixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,7 @@ import java.lang.reflect.Field;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("UploadFile")
-@TestPropertySource(locations = "classpath:application-value.yml")
+@TestCustomProperty
 @ExtendWith(SpringExtension.class)
 class UploadFileTest {
 
