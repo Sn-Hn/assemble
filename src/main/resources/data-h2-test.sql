@@ -29,3 +29,19 @@ VALUES ('tester02',
         now(),
         now()); /* password3! */
 
+INSERT INTO category(category_name)
+VALUES (
+           '개발/프로그래밍'
+       );
+
+INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period)
+VALUES (
+           '1',
+           '게시글 제목입니다 ~',
+           '게시글 내용입니다 ~~~~~~~',
+           0,
+           0,
+           0,
+           1,
+           0
+       );
