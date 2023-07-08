@@ -34,7 +34,7 @@ VALUES (
            '개발/프로그래밍'
        );
 
-INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period)
+INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period, is_deleted)
 VALUES (
            '1',
            '게시글 제목입니다 ~',
@@ -43,5 +43,6 @@ VALUES (
            0,
            0,
            1,
-           0
+           0,
+        'N'
        );

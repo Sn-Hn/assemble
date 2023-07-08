@@ -22,6 +22,10 @@ public class Category extends BaseUserEntity {
     protected Category() {
     }
 
+    public Category(Long id) {
+        this(id, null);
+    }
+
     public Category(CategoryName name) {
         this (null, name);
     }

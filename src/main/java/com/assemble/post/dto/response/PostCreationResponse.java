@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,7 @@ public class PostCreationResponse {
     private String contents;
 
     @ApiModelProperty(value = "게시글 카테고리")
-    private String category;
+    private Long categoryId;
 
     @ApiModelProperty(value = "작성자 닉네임")
     private String writerNickname;
@@ -46,7 +45,7 @@ public class PostCreationResponse {
         this(
                 post.getTitle().getValue(),
                 post.getContents().getValue(),
-                post.getCategory().getName().getValue(),
+                post.getCategory().getId(),
                 post.getUser().getNickName(),
                 post.getUser().getUserId(),
                 post.getHits(),

@@ -24,7 +24,7 @@ public class PostCreationRequest {
     private String contents;
 
     @ApiModelProperty(value = "게시글 카테고리", required = true)
-    private String category;
+    private Long categoryId;
 
     @ApiModelProperty(value = "작성자", required = true)
     private Long writer;
@@ -45,7 +45,7 @@ public class PostCreationRequest {
                 new User(this.writer),
                 this.personnelNumber,
                 this.expectedPeriod,
-                Category.createCategory(this.category, this.writer)
+                new Category(categoryId)
         );
     }
 }
