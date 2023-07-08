@@ -1,44 +1,34 @@
 package com.assemble.post;
 
-import com.assemble.commons.response.ApiResult;
+import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.fixture.PostFixture;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.MultiPartConfig;
 import io.restassured.config.RestAssuredConfig;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.apache.http.entity.mime.HttpMultipartMode;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Post Integration Test")
-@TestPropertySource(properties = {"spring.config.location = classpath:application-test.yml"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PostIntegrationTest {
+@CustomIntegrationTest
+public class PostCustomIntegrationTest {
 
     private final String basePath = "/assemble/";
 

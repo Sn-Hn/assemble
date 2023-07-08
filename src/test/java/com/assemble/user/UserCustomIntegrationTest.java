@@ -1,5 +1,6 @@
 package com.assemble.user;
 
+import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.LoginRequest;
@@ -17,11 +18,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,9 +31,8 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("User Integration Test")
-@TestPropertySource(properties = {"spring.config.location = classpath:application-test.yml"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserIntegrationTest {
+@CustomIntegrationTest
+public class UserCustomIntegrationTest {
 
     private final String basePath = "/assemble/";
 

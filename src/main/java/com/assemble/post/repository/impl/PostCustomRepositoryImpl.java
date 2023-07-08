@@ -6,12 +6,10 @@ import com.assemble.post.entity.Post;
 import com.assemble.post.entity.QPost;
 import com.assemble.post.repository.PostCustomRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 
 import javax.persistence.EntityManager;
 import java.util.List;
