@@ -1,6 +1,6 @@
 package com.assemble.user.entity;
 
-import com.assemble.user.dto.request.LoginRequest;
+import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.fixture.UserFixture;
 import org.junit.jupiter.api.BeforeAll;

@@ -5,7 +5,7 @@ import com.assemble.user.domain.Name;
 import com.assemble.user.domain.Password;
 import com.assemble.user.domain.PhoneNumber;
 import com.assemble.user.dto.request.EmailRequest;
-import com.assemble.user.dto.request.LoginRequest;
+import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;

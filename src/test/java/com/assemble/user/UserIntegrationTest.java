@@ -3,7 +3,6 @@ package com.assemble.user;
 import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.EmailRequest;
-import com.assemble.user.dto.request.LoginRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.fixture.UserFixture;
@@ -24,7 +23,6 @@ import org.springframework.http.MediaType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
@@ -51,45 +49,6 @@ public class UserIntegrationTest {
             .encoderConfig(EncoderConfig.encoderConfig().defaultContentCharset("UTF-8"))
             .multiPartConfig(MultiPartConfig.multiPartConfig().defaultCharset("UTF-8"))
             .httpClient(HttpClientConfig.httpClientConfig().httpMultipartMode(HttpMultipartMode.BROWSER_COMPATIBLE));
-
-    @Test
-    void 로그인_성공() throws IOException {
-        LoginRequest loginRequest = UserFixture.로그인_성공_회원();
-        given()
-                .basePath(basePath)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(loginRequest)
-                .log().all()
-        .when()
-                .post("authentication")
-        .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("success", is(true),
-                        "response.email", equalTo(loginRequest.getEmail()))
-                .log().all();
-    }
-
-    @Test
-    void 로그인_실패() {
-        LoginRequest loginRequest = UserFixture.로그인_실패_회원();
-        given()
-                .basePath(basePath)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(loginRequest)
-                .log().all()
-        .when()
-                .post("authentication")
-        .then()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("success", is(false),
-                        "response", equalTo(null),
-                        "error.status", equalTo(404),
-                        "status", equalTo(404))
-                .log().all();
-
-    }
 
     @Test
     void 회원가입_성공_프로필_사진_X() {

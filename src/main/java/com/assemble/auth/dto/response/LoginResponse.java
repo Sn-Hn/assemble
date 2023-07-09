@@ -1,4 +1,4 @@
-package com.assemble.user.dto.response;
+package com.assemble.auth.dto.response;
 
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.user.entity.User;
@@ -36,6 +36,25 @@ public class LoginResponse {
     @ApiModelProperty(value = "프로필 사진")
     private List<ProfileResponse> profile;
 
+    @ApiModelProperty(value = "Access Token, Refresh Token")
+    private TokenResponse token;
+
+    public static LoginResponse from(User user, TokenResponse token) {
+        return new LoginResponse(
+                user.getUserId(),
+                user.getEmail().getValue(),
+                user.getPhoneNumber().getValue(),
+                user.getRole().toString(),
+                user.getNickName(),
+                user.getName().getValue(),
+                user.getProfiles().stream()
+                        .filter(userImage -> userImage.getFile() != null)
+                        .map(userImage -> userImage.getFile().mapProfile())
+                        .collect(Collectors.toList()),
+                token
+        );
+    }
+
     public static LoginResponse from(User user) {
         return new LoginResponse(
                 user.getUserId(),
@@ -47,7 +66,8 @@ public class LoginResponse {
                 user.getProfiles().stream()
                         .filter(userImage -> userImage.getFile() != null)
                         .map(userImage -> userImage.getFile().mapProfile())
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                null
         );
     }
 

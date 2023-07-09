@@ -3,7 +3,7 @@ package com.assemble.user.entity;
 import com.assemble.commons.base.BaseDateEntity;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
-import com.assemble.user.dto.request.LoginRequest;
+import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

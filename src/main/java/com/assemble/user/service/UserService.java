@@ -1,11 +1,9 @@
 package com.assemble.user.service;
 
 import com.assemble.commons.exception.AssembleException;
-import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.service.FileService;
 import com.assemble.user.domain.Email;
-import com.assemble.user.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
@@ -24,17 +22,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final FileService fileService;
-
-    @Transactional(rollbackFor = AssembleException.class)
-    public User login(LoginRequest loginRequest) {
-        Email email = new Email(loginRequest.getEmail());
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(User.class, email));
-
-        user.login(loginRequest, passwordEncoder);
-
-        return user;
-    }
 
     @Transactional(rollbackFor = AssembleException.class)
     public User signup(SignupRequest signupRequest, MultipartFile profileImage) {
