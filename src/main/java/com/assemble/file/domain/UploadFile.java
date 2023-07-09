@@ -26,12 +26,24 @@ public class UploadFile {
             String originalFilename = multipartFile.getOriginalFilename();
             String defaultExtension = multipartFile.getContentType();
             String fileName = createFileName(defaultExtension, originalFilename);
+            String fileFullpath = basePath + "/" + fileName;
             long size = multipartFile.getSize();
-            multipartFile.transferTo(new File(fileName));
-            return new AttachedFile(basePath, basePath + "/" + fileName, originalFilename, size, fileName);
+            multipartFile.transferTo(new File(fileFullpath));
+            return new AttachedFile(basePath, fileFullpath, originalFilename, size, fileName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean delete(String filePath) {
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            file.delete();
+            return true;
+        }
+
+        return false;
     }
 
     private static String createFileName(String defaultExtension, String originalFileName) {
@@ -49,7 +61,9 @@ public class UploadFile {
         File file = new File(basePath);
 
         if (!file.exists()) {
-            file.mkdirs();
+            boolean mkdirs = file.mkdirs();
+
+            System.out.println(mkdirs);
         }
     }
 

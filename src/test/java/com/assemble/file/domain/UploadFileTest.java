@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +28,7 @@ class UploadFileTest {
         Class<? extends UploadFile> uploadFileClass = uploadFile.getClass();
         Field field = uploadFileClass.getDeclaredField("basePath");
         field.setAccessible(true);
-        field.set(uploadFile, "C:/Users/test/file");
+        field.set(uploadFile, "D:/shinhan/project/test-file");
     }
 
     @Test
@@ -50,4 +49,5 @@ class UploadFileTest {
         // then
         assertThat(file.getName()).isEqualTo(multipartFile.getName());
     }
+
 }

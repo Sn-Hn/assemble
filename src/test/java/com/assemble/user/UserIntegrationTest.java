@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.*;
 
 @DisplayName("User Integration Test")
 @CustomIntegrationTest
-public class UserCustomIntegrationTest {
+public class UserIntegrationTest {
 
     private final String basePath = "/assemble/";
 
@@ -65,7 +65,7 @@ public class UserCustomIntegrationTest {
                 .post("authentication")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "response.email", equalTo(loginRequest.getEmail()))
                 .log().all();
     }
@@ -83,7 +83,7 @@ public class UserCustomIntegrationTest {
                 .post("authentication")
         .then()
                 .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("success", equalTo(false),
+                .body("success", is(false),
                         "response", equalTo(null),
                         "error.status", equalTo(404),
                         "status", equalTo(404))
@@ -103,7 +103,7 @@ public class UserCustomIntegrationTest {
                 .post("signup")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "error", equalTo(null),
                         "response.email", equalTo(signupRequest.getEmail()),
                         "response.profile.size()", equalTo(0))
@@ -127,7 +127,7 @@ public class UserCustomIntegrationTest {
                 .post("signup")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "error", equalTo(null),
                         "response.email", equalTo(signupRequest.getEmail()),
                         "response.profile.size()", equalTo(1))
@@ -147,9 +147,9 @@ public class UserCustomIntegrationTest {
                 .get("email/validation")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "error", equalTo(null),
-                        "response", equalTo(true))
+                        "response", is(true))
                 .log().all()
                 .extract();
     }
@@ -167,9 +167,9 @@ public class UserCustomIntegrationTest {
                 .get("email/validation")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "error", equalTo(null),
-                        "response", equalTo(false))
+                        "response", is(false))
                 .log().all();
 
     }
@@ -187,9 +187,9 @@ public class UserCustomIntegrationTest {
                 .get("nickname/validation")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "error", equalTo(null),
-                        "response", equalTo(true))
+                        "response", is(true))
                 .log().all();
     }
 
@@ -206,9 +206,9 @@ public class UserCustomIntegrationTest {
                 .get("nickname/validation")
         .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("success", equalTo(true),
+                .body("success", is(true),
                         "error", equalTo(null),
-                        "response", equalTo(false))
+                        "response", is(false))
                 .log().all();
     }
 }

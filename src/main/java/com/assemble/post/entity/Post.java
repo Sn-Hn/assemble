@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 @Entity
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE post SET isDeleted = true WHERE postId = ?")
+@SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE post_Id = ?")
 @Where(clause = "is_deleted = 'N'")
 public class Post extends BaseUserEntity {
 
