@@ -6,6 +6,8 @@ import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,11 +29,15 @@ public class JwtFilter extends OncePerRequestFilter {
         String api = request.getRequestURI();
         String method = request.getMethod();
 
+        ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
+
 //        if (!excludeValidationApi(exclusionApis.getExclusionApis(), api, method) && !jwtProvider.validateToken(JwtUtils.getAccessToken(request))) {
 //            throw new IllegalArgumentException("expired access token");
 //        }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(wrappingRequest, wrappingResponse);
+        wrappingResponse.copyBodyToResponse();
     }
 
     private boolean excludeValidationApi(Map<String, String> exclusionApis, String api, String method) {
