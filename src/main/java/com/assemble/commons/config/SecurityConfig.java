@@ -1,4 +1,4 @@
-package com.assemble.config;
+package com.assemble.commons.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

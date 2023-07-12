@@ -1,4 +1,4 @@
-package com.assemble.config;
+package com.assemble.commons.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
