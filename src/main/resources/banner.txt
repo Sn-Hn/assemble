@@ -1,0 +1,9 @@
+${AnsiColor.BLUE}
+
+ _____ _____ _____ _____ _____ _____ __    _____
+|  _  |   __|   __|   __|     | __  |  |  |   __|
+|     |__   |__   |   __| | | | __ -|  |__|   __|
+|__|__|_____|_____|_____|_|_|_|_____|_____|_____|
+
+${AnsiColor.BRIGHT_GREEN}Spring Boot ${AnsiColor.RED}${spring-boot.formatted-version}
+${AnsiColor.BRIGHT_GREEN}Author SH (tlsgks8668@gmail.com)
