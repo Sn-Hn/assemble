@@ -41,3 +41,4 @@ out/
 ### setting ###
 **/application-*.yml
 **/environment/
+!**/application-test.yml

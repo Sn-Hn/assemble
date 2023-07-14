@@ -12,8 +12,8 @@ spring:
   config:
     import:
       - classpath:application-database.yml
-      - classpath:application-value.yml
       - classpath:application-file.yml
+      - classpath:application-value.yml
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

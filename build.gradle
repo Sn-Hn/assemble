@@ -56,7 +56,7 @@ sourceSets {
     main.java.srcDir querydslDir
     main {
         resources {
-            srcDirs "src/main/environment/${profile}"
+            srcDirs "src/main/resources", "src/main/environment/${profile}"
         }
     }
 }
@@ -72,6 +72,12 @@ configurations {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks{
+    processResources{
+        duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+    }
 }
 
 task copyPrivate(type: Copy) {

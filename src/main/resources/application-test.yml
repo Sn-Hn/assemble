@@ -1,0 +1,40 @@
+server:
+  servlet:
+    context-path: /assemble
+  port: 8090
+
+spring:
+  datasource:
+    username: sa
+    url: jdbc:h2:mem:assemble;MODE=MYSQL
+    driverClassName: org.h2.Driver
+    password: ''
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      mode: always
+      platform: h2-test
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+  messages:
+    encoding: UTF-8
+    basename: classpath:/i18n/messages, classpath:/i18n/error_messages
+  devtools:
+    livereload:
+      enabled: true
+  config:
+    import:
+      - classpath:application-value.yml
+      - classpath:application-file.yml
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
