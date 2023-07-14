@@ -25,13 +25,14 @@ public class PostController {
 
     private final PostService postService;
 
-    @ApiOperation(value = "게시글 작성 (모임 등록)")
+    @ApiOperation(value = "모임 등록")
     @PostMapping
     public ApiResult<PostCreationResponse> createPost(PostCreationRequest postCreationRequest,
                                                       @RequestPart(required = false) MultipartFile multipartFile) {
         return ApiResult.ok(postService.createPost(postCreationRequest, multipartFile));
     }
-
+    
+    @ApiOperation(value = "모임 목록 조회")
     @GetMapping
     public ApiResult<Page<PostsResponse>> getPosts(PostSearchRequest postSearchRequest,
                                                    @PageableDefault(size = 12) Pageable pageable) {
@@ -39,16 +40,19 @@ public class PostController {
                 .map(PostsResponse::new));
     }
 
+    @ApiOperation(value = "모임 상세 조회")
     @GetMapping(path = "{postId}")
     public ApiResult<PostResponse> getPost(@PathVariable Long postId) {
         return ApiResult.ok(new PostResponse(postService.getPost(postId)));
     }
 
+    @ApiOperation(value = "모임 수정")
     @PatchMapping
     public ApiResult<PostResponse> modifyPost(ModifiedPostRequest modifiedPostRequest) {
         return ApiResult.ok(new PostResponse(postService.modifyPost(modifiedPostRequest)));
     }
 
+    @ApiOperation(value = "모임 삭제")
     @DeleteMapping(path = "{postId}")
     public ApiResult<Boolean> deletePost(@PathVariable Long postId) {
         return ApiResult.ok(postService.deletePost(postId));
