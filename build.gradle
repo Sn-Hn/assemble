@@ -76,7 +76,7 @@ tasks.named('test') {
 
 task copyPrivate(type: Copy) {
     copy {
-        from './auth/*.yml'
+        from "./auth/${profile}/*.yml"
         include "*.yml"
         into 'src/main/resources'
     }

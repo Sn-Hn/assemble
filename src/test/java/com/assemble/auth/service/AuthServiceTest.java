@@ -45,16 +45,14 @@ class AuthServiceTest {
         LoginRequest loginRequest = UserFixture.로그인_시도_회원();
         given(userRepository.findByEmail(any()))
                 .willReturn(Optional.of(UserFixture.회원()));
-        given(jwtService.issueAccessToken(any())).willReturn(null);
-        given(jwtService.issueRefreshToken(any())).willReturn(null);
 
         // when
-        LoginResponse response = authService.login(loginRequest);
+        User response = authService.login(loginRequest);
 
         // then
         assertAll(
                 () -> assertThat(response).isNotNull(),
-                () -> assertThat(response.getEmail()).isEqualTo(loginRequest.getEmail())
+                () -> assertThat(response.getEmail().getValue()).isEqualTo(loginRequest.getEmail())
         );
     }
 

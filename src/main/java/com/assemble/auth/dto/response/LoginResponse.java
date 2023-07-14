@@ -1,5 +1,6 @@
 package com.assemble.auth.dto.response;
 
+import com.assemble.auth.domain.Token;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.user.entity.User;
 import io.swagger.annotations.ApiModel;
