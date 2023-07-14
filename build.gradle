@@ -78,6 +78,6 @@ task copyPrivate(type: Copy) {
     copy {
         from "./auth/${profile}/*.yml"
         include "*.yml"
-        into 'src/main/resources'
+        into "src/main/environment/${profile}"
     }
 }
