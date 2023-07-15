@@ -49,8 +49,8 @@ querydsl {
     jpa = true
     querydslSourcesDir = querydslDir
 }
-ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
 
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
 // 리소스 디렉토리 추가
 sourceSets {
     main.java.srcDir querydslDir
@@ -60,6 +60,15 @@ sourceSets {
         }
     }
 }
+
+task copyPrivate(type: Copy) {
+    copy {
+        from "./auth/${profile}"
+        include "*.yml"
+        into "src/main/environment/${profile}"
+    }
+}
+
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
 }
@@ -77,13 +86,5 @@ tasks.named('test') {
 tasks{
     processResources{
         duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-    }
-}
-
-task copyPrivate(type: Copy) {
-    copy {
-        from "./auth/${profile}/*.yml"
-        include "*.yml"
-        into "src/main/environment/${profile}"
     }
 }
