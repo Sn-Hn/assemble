@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "게시판 좋아요 Apis")
+@Api(tags = "게시판 좋아요 APIs")
 @RequiredArgsConstructor
 @RestController
 public class PostLikeController {

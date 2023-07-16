@@ -18,7 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 
-@Api(tags = "인증 Apis")
+@Api(tags = "인증 APIs")
 @RequiredArgsConstructor
 @RestController
 public class AuthController {

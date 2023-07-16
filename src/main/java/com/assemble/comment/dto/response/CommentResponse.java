@@ -1,6 +1,7 @@
 package com.assemble.comment.dto.response;
 
 import com.assemble.comment.entity.Comment;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,15 +11,32 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentResponse {
 
+    @ApiModelProperty(value = "게시글 ID")
+    private Long postId;
+
+    @ApiModelProperty(value = "회원 ID")
+    private Long userId;
+
+    @ApiModelProperty(value = "댓글 ID")
     private Long commentId;
 
-    private String comment;
+    @ApiModelProperty(value = "댓글 내용")
+    private String contents;
 
-    private Long wrtierId;
+    @ApiModelProperty(value = "작성자 닉네임")
+    private String writerNickname;
 
-    private LocalDateTime writedDate;
+    @ApiModelProperty(value = "작성일")
+    private LocalDateTime writeDate;
 
     public CommentResponse(Comment comment) {
-        this (comment.getId(), comment.getComment(), comment.getCreator(), comment.getCreatedDate());
+        this(
+                comment.getPost().getPostId(),
+                comment.getUser().getUserId(),
+                comment.getCommentId(),
+                comment.getContents(),
+                comment.getUser().getNickName(),
+                comment.getCreatedDate()
+        );
     }
 }

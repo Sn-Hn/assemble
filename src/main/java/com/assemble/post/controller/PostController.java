@@ -17,7 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(tags = "게시글 Apis")
+@Api(tags = "게시글 APIs")
 @RequestMapping(path = "post")
 @RequiredArgsConstructor
 @RestController

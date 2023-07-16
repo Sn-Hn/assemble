@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(tags = "회원 Apis")
+@Api(tags = "회원 APIs")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
