@@ -7,6 +7,7 @@ import com.assemble.auth.service.JwtService;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.auth.dto.response.LoginResponse;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 
+@Api(tags = "인증 Apis")
 @RequiredArgsConstructor
 @RestController
 public class AuthController {

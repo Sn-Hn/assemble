@@ -3,12 +3,14 @@ package com.assemble.post.controller;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.service.PostLikeService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = "게시판 좋아요 Apis")
 @RequiredArgsConstructor
 @RestController
 public class PostLikeController {
