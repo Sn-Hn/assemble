@@ -10,15 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ModifiedCommentRequest {
 
-    private Long postId;
-
-    private Long userId;
-
     private Long commentId;
 
     private String contents;
-
-    public Comment toEntity() {
-        return new Comment(commentId, new Post(postId), new User(userId), contents, false);
-    }
 }

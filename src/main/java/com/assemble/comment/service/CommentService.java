@@ -1,10 +1,10 @@
 package com.assemble.comment.service;
 
-import com.assemble.auth.domain.JwtProvider;
 import com.assemble.comment.dto.request.CommentCreationRequest;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.entity.Comment;
 import com.assemble.comment.repository.CommentRepository;
+import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +21,17 @@ public class CommentService {
     }
 
     public Comment modifyComment(ModifiedCommentRequest modifiedCommentRequest) {
-        return modifiedCommentRequest.toEntity();
+        Comment comment = commentRepository.findById(modifiedCommentRequest.getCommentId())
+                .orElseThrow(() -> new NotFoundException(Comment.class, modifiedCommentRequest.getCommentId()));
+
+        comment.modifyComment(modifiedCommentRequest);
+        return comment;
     }
 
     public boolean deleteComment(Long commentId) {
-        Comment comment = new Comment(commentId);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(Comment.class, commentId));
+
         commentRepository.delete(comment);
 
         return true;

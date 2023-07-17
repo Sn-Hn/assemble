@@ -15,18 +15,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserFixture {
     private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private static final String email = "test@test.com";
-
+    private static final String secondEmail = "test2@test.com";
     private static final String successLoginEmail = "test00@gmail.com";
     private static final String password = "password1!";
     private static final String failedLoginPassword = "password12345!@#$%^%";
     private static final String name = "test";
     private static final String phoneNumber = "01011112222";
     private static final String nickname = "test developer";
+    private static final String secondNickname = "test developer2";
 
     private static final String duplicationNickname = "test01";
 
     public static SignupRequest 회원가입_정상_신청_회원() {
         return new SignupRequest(email, name, nickname, phoneNumber, password);
+    }
+
+    public static SignupRequest 회원가입_정상_신청_두번째_회원() {
+        return new SignupRequest(secondEmail, name, secondNickname, phoneNumber, password);
     }
 
     public static LoginRequest 로그인_시도_회원() {

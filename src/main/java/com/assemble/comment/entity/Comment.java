@@ -1,5 +1,6 @@
 package com.assemble.comment.entity;
 
+import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.commons.base.BaseDateEntity;
 import com.assemble.commons.converter.BooleanToYNConverter;
 import com.assemble.post.entity.Post;
@@ -43,5 +44,9 @@ public class Comment extends BaseDateEntity {
 
     public Comment(Long postId, Long userId, String contents) {
         this(null, new Post(postId), new User(userId), contents, false);
+    }
+
+    public void modifyComment(ModifiedCommentRequest modifiedCommentRequest) {
+        this.contents = modifiedCommentRequest.getContents();
     }
 }

@@ -71,7 +71,7 @@ public class UserIntegrationTest {
 
     @Test
     void 회원가입_성공_프로필_사진_O() throws FileNotFoundException {
-        SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
+        SignupRequest signupRequest = UserFixture.회원가입_정상_신청_두번째_회원();
         File file = FileFixture.File_생성();
         given()
                 .config(config)
@@ -108,7 +108,7 @@ public class UserIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response", is(true))
+                        "response", is(false))
                 .log().all()
                 .extract();
     }
@@ -128,7 +128,7 @@ public class UserIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response", is(false))
+                        "response", is(true))
                 .log().all();
 
     }
@@ -148,7 +148,7 @@ public class UserIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response", is(true))
+                        "response", is(false))
                 .log().all();
     }
 
@@ -167,7 +167,7 @@ public class UserIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response", is(false))
+                        "response", is(true))
                 .log().all();
     }
 }

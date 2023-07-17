@@ -1,11 +1,14 @@
 package com.assemble.comment.dto.response;
 
 import com.assemble.comment.entity.Comment;
+import com.assemble.file.dto.response.ProfileResponse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -29,6 +32,9 @@ public class CommentResponse {
     @ApiModelProperty(value = "작성일")
     private LocalDateTime writeDate;
 
+    @ApiModelProperty(value = "작성자 프로필")
+    private List<ProfileResponse> profile;
+
     public CommentResponse(Comment comment) {
         this(
                 comment.getPost().getPostId(),
@@ -36,7 +42,11 @@ public class CommentResponse {
                 comment.getCommentId(),
                 comment.getContents(),
                 comment.getUser().getNickName(),
-                comment.getCreatedDate()
+                comment.getCreatedDate(),
+                comment.getUser().getProfiles().stream()
+                        .filter(userImage -> userImage.getFile() != null)
+                        .map(userImage -> userImage.getFile().mapProfile())
+                        .collect(Collectors.toList())
         );
     }
 }

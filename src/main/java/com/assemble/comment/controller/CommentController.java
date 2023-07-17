@@ -27,7 +27,7 @@ public class CommentController {
         return ApiResult.ok(new CommentResponse(commentService.modifyComment(modifiedCommentRequest)));
     }
 
-    @DeleteMapping("{commetId}")
+    @DeleteMapping(path = "{commentId}")
     public ApiResult<Boolean> deleteComment(@PathVariable Long commentId) {
         return ApiResult.ok(commentService.deleteComment(commentId));
     }
