@@ -1,11 +1,16 @@
 package com.assemble.auth.service;
 
+import com.assemble.auth.domain.AccessToken;
 import com.assemble.auth.domain.Jwt;
 import com.assemble.auth.domain.JwtProvider;
+import com.assemble.auth.repository.AccessTokenRedisRepository;
 import com.assemble.auth.repository.JwtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.NumberUtils;
+
+import java.time.Duration;
 
 @RequiredArgsConstructor
 @Service
@@ -15,13 +20,20 @@ public class JwtService {
 
     private final JwtRepository jwtRepository;
 
-    public String issueAccessToken(String email) {
-        return jwtProvider.createAccessToken(email);
+    private final AccessTokenRedisRepository accessTokenRedisRepository;
+
+    public String issueAccessToken(Long userId, String email) {
+        String token = jwtProvider.createAccessToken(userId, email);
+        AccessToken accessToken = new AccessToken(jwtProvider.getUserId(token), token, (int) Duration.ofMinutes(30).toMillis());
+
+        AccessToken savedAccessToken = accessTokenRedisRepository.save(accessToken);
+
+        return savedAccessToken.getToken();
     }
 
     @Transactional
-    public String issueRefreshToken(String email) {
-        String refreshToken = jwtProvider.createRefreshToken(email);
+    public String issueRefreshToken(Long userId, String email) {
+        String refreshToken = jwtProvider.createRefreshToken(userId, email);
 
         Jwt jwt = new Jwt(refreshToken);
         if (jwtRepository.findByRefreshToken(jwt.getRefreshToken()).isPresent()) {
@@ -37,7 +49,10 @@ public class JwtService {
             throw new IllegalArgumentException("invalid refreshToken");
         }
 
-        return jwtProvider.createAccessToken(jwtProvider.getAccount(refreshToken));
+        return jwtProvider.createAccessToken(
+                NumberUtils.parseNumber(jwtProvider.getUserId(refreshToken), Long.class),
+                jwtProvider.getUserId(refreshToken)
+        );
     }
 
 }

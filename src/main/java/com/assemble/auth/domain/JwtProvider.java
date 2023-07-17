@@ -25,17 +25,19 @@ public class JwtProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createAccessToken(String email){
+    public String createAccessToken(Long userId, String email){
 
-        Claims claims = Jwts.claims().setSubject(email);
+        Claims claims = Jwts.claims().setSubject(userId.toString());
+        claims.put("email", email);
         claims.put("typ", "accessToken");
 
         return createToken(claims, accessTokenExpireTime);
     }
 
-    public String createRefreshToken(String email){
+    public String createRefreshToken(Long userId, String email){
 
-        Claims claims = Jwts.claims().setSubject(email);
+        Claims claims = Jwts.claims().setSubject(userId.toString());
+        claims.put("email", email);
         claims.put("typ", "refreshToken");
 
         return createToken(claims, refreshTokenExpireTime);
@@ -51,8 +53,12 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getAccount(String token) {
+    public String getUserId(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getEmail(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("email").toString();
     }
 
     public Date getTokenCreateDate(String token) {

@@ -7,6 +7,7 @@ import com.assemble.auth.service.JwtService;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.auth.dto.response.LoginResponse;
+import com.assemble.user.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,14 @@ public class AuthController {
     @ApiOperation(value = "회원 로그인")
     @PostMapping("authentication")
     public ApiResult<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        String accessToken = jwtService.issueAccessToken(loginRequest.getEmail());
-        String refreshToken = jwtService.issueRefreshToken(loginRequest.getEmail());
+        User user = authService.login(loginRequest);
+
+        String accessToken = jwtService.issueAccessToken(user.getUserId(), loginRequest.getEmail());
+        String refreshToken = jwtService.issueRefreshToken(user.getUserId(), loginRequest.getEmail());
         Cookie cookie = createCookie(JwtType.REFRESH_TOKEN, refreshToken, (int) Duration.ofDays(14).getSeconds());
         response.addCookie(cookie);
 
-        return ApiResult.ok(LoginResponse.from(authService.login(loginRequest), new TokenResponse(accessToken)));
+        return ApiResult.ok(LoginResponse.from(user, new TokenResponse(accessToken)));
     }
 
     private Cookie createCookie(JwtType jwtType, String token, int expireTime) {
