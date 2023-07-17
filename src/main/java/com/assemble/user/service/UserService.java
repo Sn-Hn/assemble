@@ -25,6 +25,9 @@ public class UserService {
 
     @Transactional(rollbackFor = AssembleException.class)
     public User signup(SignupRequest signupRequest, MultipartFile profileImage) {
+        verifyDuplicationEmail(signupRequest.getEmail());
+        verifyDuplicationNickname(signupRequest.getNickname());
+
         User user = User.createUser(signupRequest, passwordEncoder);
 
         AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());
@@ -36,15 +39,27 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public boolean validateDuplicationEmail(String emailRequest) {
+    public boolean isDuplicationEmail(String emailRequest) {
         Email email = new Email(emailRequest);
-        return !userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
                 .isPresent();
     }
 
     @Transactional(readOnly = true)
-    public boolean validateDuplicationNickname(String nickname) {
-        return !userRepository.findByNickname(nickname)
+    public boolean isDuplicationNickname(String nickname) {
+        return userRepository.findByNickname(nickname)
                 .isPresent();
+    }
+
+    private void verifyDuplicationEmail(String email) {
+        if (isDuplicationEmail(email)) {
+            throw new IllegalArgumentException("email duplication");
+        }
+    }
+
+    private void verifyDuplicationNickname(String nickname) {
+        if (isDuplicationNickname(nickname)) {
+            throw new IllegalArgumentException("nickname duplication");
+        }
     }
 }

@@ -52,7 +52,6 @@ public class PostIntegrationTest {
             .httpClient(HttpClientConfig.httpClientConfig().httpMultipartMode(HttpMultipartMode.BROWSER_COMPATIBLE));
 
     @Test
-    @Order(1)
     void 게시글_작성_프로필_사진_X() {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         given()
@@ -70,7 +69,6 @@ public class PostIntegrationTest {
     }
 
     @Test
-    @Order(2)
     void 게시글_작성_프로필_사진_O() throws FileNotFoundException {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         File file = FileFixture.File_생성();
@@ -92,7 +90,6 @@ public class PostIntegrationTest {
     }
 
     @Test
-    @Order(3)
     void 게시글_목록_조회_제목_검색() {
         Pageable pageable = PageRequest.of(0, 16);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
@@ -114,7 +111,6 @@ public class PostIntegrationTest {
     }
 
     @Test
-    @Order(4)
     void 게시글_목록_조회_내용_검색() {
         Pageable pageable = PageRequest.of(0, 16);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
@@ -136,7 +132,6 @@ public class PostIntegrationTest {
     }
 
     @Test
-    @Order(5)
     void 게시글_상세_조회() {
         Long id = 1L;
 
@@ -156,7 +151,6 @@ public class PostIntegrationTest {
     }
 
     @Test
-    @Order(6)
     void 게시글_수정() {
         ModifiedPostRequest modifiedPostRequest = PostFixture.게시글_수정();
 
@@ -177,7 +171,6 @@ public class PostIntegrationTest {
                 .log().all();
     }
     @Test
-    @Order(99)
     void 게시글_삭제() {
         Long id = 2L;
 

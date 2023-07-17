@@ -30,12 +30,12 @@ public class UserController {
     @ApiOperation(value = "이메일 검증")
     @GetMapping("email/validation")
     public ApiResult<Boolean> validateUserEmail(EmailRequest emailRequest) {
-        return ApiResult.ok(userService.validateDuplicationEmail(emailRequest.getEmail()));
+        return ApiResult.ok(userService.isDuplicationEmail(emailRequest.getEmail()));
     }
 
     @ApiOperation(value = "닉네임 검증")
     @GetMapping("nickname/validation")
     public ApiResult<Boolean> validateUserEmail(NicknameRequest nicknameRequest) {
-        return ApiResult.ok(userService.validateDuplicationNickname(nicknameRequest.getNickname()));
+        return ApiResult.ok(userService.isDuplicationNickname(nicknameRequest.getNickname()));
     }
 }
