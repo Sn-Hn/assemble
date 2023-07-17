@@ -46,3 +46,13 @@ VALUES (
         0,
         'N'
        );
+
+INSERT INTO comment(post_id, user_id, contents, is_deleted, created_date, modified_date)
+VALUES (
+        '1',
+        '1',
+        '첫번째 게시글의 첫번째 댓글',
+        'N',
+        now(),
+        now()
+       );

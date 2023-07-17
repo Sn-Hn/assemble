@@ -37,12 +37,40 @@ VALUES (
 INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period, is_deleted)
 VALUES (
            '1',
-           '게시글 제목입니다 ~',
-           '게시글 내용입니다 ~~~~~~~',
+           '첫 번째 게시글 제목입니다 ~',
+           '첫 번째 게시글 내용입니다 ~~~~~~~',
            0,
            0,
            0,
            1,
            0,
         'N'
+       ),
+       (
+           '1',
+           '두 번째 게시글 제목입니다 ~',
+           '두 번째 게시글 내용입니다 ~~~~~~~',
+           0,
+           0,
+           0,
+           1,
+           0,
+           'N'
+       );
+INSERT INTO comment(post_id, user_id, contents, is_deleted, created_date, modified_date)
+VALUES (
+           '1',
+           '1',
+           '첫 번째 게시글의 첫 번째 댓글',
+           'N',
+           now(),
+           now()
+       ),
+       (
+           '1',
+           '1',
+           '첫 번째 게시글의 두 번째 댓글',
+           'N',
+           now(),
+           now()
        );
