@@ -1,6 +1,7 @@
 package com.assemble.user.service;
 
 import com.assemble.commons.exception.AssembleException;
+import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.service.FileService;
 import com.assemble.user.domain.Email;
@@ -61,5 +62,12 @@ public class UserService {
         if (isDuplicationNickname(nickname)) {
             throw new IllegalArgumentException("nickname duplication");
         }
+    }
+
+    public User findUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(User.class, userId));
+
+        return user;
     }
 }

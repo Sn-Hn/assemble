@@ -5,10 +5,12 @@ import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.dto.response.SignupResponse;
+import com.assemble.user.dto.response.UserInfoResponse;
 import com.assemble.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +26,7 @@ public class UserController {
     public ApiResult<SignupResponse> signup(
             SignupRequest signupRequest,
             @RequestPart(required = false)MultipartFile profileImage) {
-        return ApiResult.ok(SignupResponse.from(userService.signup(signupRequest, profileImage)));
+        return ApiResult.ok(SignupResponse.from(userService.signup(signupRequest, profileImage)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "이메일 검증")
@@ -38,4 +40,11 @@ public class UserController {
     public ApiResult<Boolean> validateUserEmail(NicknameRequest nicknameRequest) {
         return ApiResult.ok(userService.isDuplicationNickname(nicknameRequest.getNickname()));
     }
+
+    @ApiOperation(value = "회원 정보 조회")
+    @GetMapping("{userId}")
+    public ApiResult<UserInfoResponse> getUserInfo(@PathVariable Long userId) {
+        return ApiResult.ok(new UserInfoResponse(userService.findUserInfo(userId)));
+    }
+
 }

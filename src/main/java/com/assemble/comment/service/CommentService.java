@@ -6,6 +6,8 @@ import com.assemble.comment.entity.Comment;
 import com.assemble.comment.repository.CommentRepository;
 import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,5 +37,9 @@ public class CommentService {
         commentRepository.delete(comment);
 
         return true;
+    }
+
+    public Page<Comment> getCommentsByUser(Long userId, Pageable pageable) {
+        return commentRepository.findByUser(userId, pageable);
     }
 }

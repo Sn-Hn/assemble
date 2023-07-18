@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +30,7 @@ public class PostController {
     @PostMapping
     public ApiResult<PostCreationResponse> createPost(PostCreationRequest postCreationRequest,
                                                       @RequestPart(required = false) MultipartFile multipartFile) {
-        return ApiResult.ok(postService.createPost(postCreationRequest, multipartFile));
+        return ApiResult.ok(postService.createPost(postCreationRequest, multipartFile), HttpStatus.CREATED);
     }
     
     @ApiOperation(value = "모임 목록 조회")
