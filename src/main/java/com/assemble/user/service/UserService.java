@@ -64,6 +64,7 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
     public User findUserInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, userId));

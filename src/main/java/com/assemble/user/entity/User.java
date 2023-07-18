@@ -1,6 +1,7 @@
 package com.assemble.user.entity;
 
 import com.assemble.commons.base.BaseDateEntity;
+import com.assemble.commons.exception.UnauthenticationException;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
 import com.assemble.auth.dto.request.LoginRequest;
@@ -72,7 +73,7 @@ public class User extends BaseDateEntity {
 
     public void login(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
         if (!this.password.isComparePassword(loginRequest.getPassword(), passwordEncoder)) {
-            throw new IllegalArgumentException("invalid password");
+            throw new UnauthenticationException();
         }
     }
 
