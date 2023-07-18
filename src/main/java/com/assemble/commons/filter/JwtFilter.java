@@ -1,6 +1,7 @@
 package com.assemble.commons.filter;
 
 import com.assemble.auth.domain.JwtProvider;
+import com.assemble.commons.exception.UnauthorizedException;
 import com.assemble.commons.exclusion.ExclusionApis;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,9 @@ public class JwtFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
 
-//        if (!excludeValidationApi(exclusionApis.getExclusionApis(), api, method) && !jwtProvider.validateToken(JwtUtils.getAccessToken(request))) {
-//            throw new IllegalArgumentException("expired access token");
-//        }
+        if (!excludeValidationApi(exclusionApis.getExclusionApis(), api, method) && !jwtProvider.validateToken(JwtUtils.getAccessTokenFromHeader(request))) {
+            throw new UnauthorizedException();
+        }
 
         filterChain.doFilter(wrappingRequest, wrappingResponse);
         wrappingResponse.copyBodyToResponse();
