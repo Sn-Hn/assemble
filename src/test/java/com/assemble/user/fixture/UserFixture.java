@@ -1,9 +1,6 @@
 package com.assemble.user.fixture;
 
-import com.assemble.user.domain.Email;
-import com.assemble.user.domain.Name;
-import com.assemble.user.domain.Password;
-import com.assemble.user.domain.PhoneNumber;
+import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.NicknameRequest;
@@ -12,8 +9,11 @@ import com.assemble.user.entity.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+
 public class UserFixture {
     private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private static final Long userId = 1L;
     private static final String email = "test@test.com";
     private static final String secondEmail = "test2@test.com";
     private static final String successLoginEmail = "test00@gmail.com";
@@ -48,11 +48,14 @@ public class UserFixture {
 
     public static User 회원() {
         return new User(
+                userId,
                 new Email(email),
                 new Name(name),
                 nickname,
                 new Password(password, passwordEncoder),
-                new PhoneNumber(phoneNumber)
+                new PhoneNumber(phoneNumber),
+                UserRole.USER,
+                new ArrayList<>()
         );
     }
 

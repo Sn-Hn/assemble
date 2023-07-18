@@ -1,7 +1,9 @@
 package com.assemble.post;
 
 import com.assemble.annotation.CustomIntegrationTest;
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.file.fixture.FileFixture;
+import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
@@ -41,6 +43,9 @@ public class PostIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
@@ -55,6 +60,7 @@ public class PostIntegrationTest {
     void 게시글_작성_프로필_사진_X() {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postCreationRequest, Map.class))
@@ -73,6 +79,7 @@ public class PostIntegrationTest {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         File file = FileFixture.File_생성();
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -95,6 +102,7 @@ public class PostIntegrationTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
 
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postSearchRequest, Map.class))
@@ -116,6 +124,7 @@ public class PostIntegrationTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
 
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postSearchRequest, Map.class))
@@ -136,6 +145,7 @@ public class PostIntegrationTest {
         Long id = 1L;
 
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("postId", id)
@@ -155,6 +165,7 @@ public class PostIntegrationTest {
         ModifiedPostRequest modifiedPostRequest = PostFixture.게시글_수정();
 
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(modifiedPostRequest, Map.class))
@@ -175,6 +186,7 @@ public class PostIntegrationTest {
         Long id = 2L;
 
         given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("postId", id)

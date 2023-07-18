@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원 정보 조회")
-    @GetMapping("{userId}")
+    @GetMapping("user/{userId}")
     public ApiResult<UserInfoResponse> getUserInfo(@PathVariable Long userId) {
         return ApiResult.ok(new UserInfoResponse(userService.findUserInfo(userId)));
     }

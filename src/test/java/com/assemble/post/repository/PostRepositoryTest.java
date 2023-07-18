@@ -23,7 +23,7 @@ class PostRepositoryTest {
     private PostRepository postRepository;
 
     @Test
-    void 게시글_목록_제목_조회() {
+    void 게시글_목록_제목_검색() {
         // given
         Pageable pageable = PageRequest.of(0, 12);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
@@ -42,7 +42,7 @@ class PostRepositoryTest {
     }
 
     @Test
-    void 게시글_목록_내용_조회() {
+    void 게시글_목록_내용_검색() {
         // given
         Pageable pageable = PageRequest.of(0, 12);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
@@ -57,6 +57,25 @@ class PostRepositoryTest {
                 () -> assertThat(allPostBySearch).isNotEmpty(),
                 () -> assertThat(searchPost).isNotNull(),
                 () -> assertThat(searchPost.getContents().getValue()).contains(postSearchRequest.getSearchQuery())
+        );
+    }
+
+    @Test
+    void 게시글_목록_작성자_조회() {
+        // given
+        Pageable pageable = PageRequest.of(0, 12);
+        PostSearchRequest postSearchRequest = PostFixture.게시글_목록_작성자_검색();
+
+        // when
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable);
+        Post searchPost = allPostBySearch.get().filter(post -> post.getUser().getUserId().equals(Long.valueOf(postSearchRequest.getSearchQuery())))
+                .findFirst().orElseThrow();
+
+        // then
+        assertAll(
+                () -> assertThat(allPostBySearch).isNotEmpty(),
+                () -> assertThat(searchPost).isNotNull(),
+                () -> assertThat(searchPost.getUser().getUserId()).isEqualTo(Long.valueOf(postSearchRequest.getSearchQuery()))
         );
     }
 

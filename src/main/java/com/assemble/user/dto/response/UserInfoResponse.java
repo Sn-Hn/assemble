@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserInfoResponse {
 
+    private Long userId;
+
     private String email;
 
     private String phoneNumber;
@@ -27,6 +29,7 @@ public class UserInfoResponse {
 
     public UserInfoResponse(User user) {
         this (
+                user.getUserId(),
                 user.getEmail().getValue(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),

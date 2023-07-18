@@ -1,7 +1,7 @@
 package com.assemble.auth.service;
 
 import com.assemble.auth.dto.request.LoginRequest;
-import com.assemble.auth.dto.response.LoginResponse;
+import com.assemble.commons.exception.UnauthenticationException;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.repository.UserRepository;
@@ -65,7 +65,7 @@ class AuthServiceTest {
 
         // when
         // then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(UnauthenticationException.class)
                 .isThrownBy(() -> authService.login(loginRequest));
     }
 }

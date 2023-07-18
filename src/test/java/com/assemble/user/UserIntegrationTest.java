@@ -1,17 +1,19 @@
 package com.assemble.user;
 
 import com.assemble.annotation.CustomIntegrationTest;
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.file.fixture.FileFixture;
+import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.SignupRequest;
+import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
-import io.restassured.config.EncoderConfig;
-import io.restassured.config.HttpClientConfig;
-import io.restassured.config.MultiPartConfig;
-import io.restassured.config.RestAssuredConfig;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.*;
+import io.restassured.specification.RequestSpecification;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +41,9 @@ public class UserIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @BeforeEach
     void setUp() {
@@ -168,6 +173,25 @@ public class UserIntegrationTest {
                 .body("success", is(true),
                         "error", equalTo(null),
                         "response", is(true))
+                .log().all();
+    }
+
+    @Test
+    void 특정_회원_조회() {
+        Long userId = 1L;
+        given()
+                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("userId", userId)
+                .log().all()
+        .when()
+                .get("user/{userId}")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response.userId", equalTo(userId.intValue()))
                 .log().all();
     }
 }

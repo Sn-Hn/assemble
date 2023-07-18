@@ -31,6 +31,8 @@ public class PostFixture {
     private static final String searchQueryTitle = "제목";
     private static final String searchByContents = "contents";
     private static final String searchQueryContents = "내용";
+    private static final Long searchQueryUserId = 1L;
+    private static final String searchByWriter = "writer";
 
     public static PostCreationRequest 게시글_작성_사진_X() {
         return new PostCreationRequest(
@@ -81,6 +83,10 @@ public class PostFixture {
 
     public static PostSearchRequest 게시글_목록_내용_검색() {
         return new PostSearchRequest(searchQueryContents, searchByContents);
+    }
+
+    public static PostSearchRequest 게시글_목록_작성자_검색() {
+        return new PostSearchRequest(searchQueryUserId.toString(), searchByWriter);
     }
 
     public static ModifiedPostRequest 게시글_수정() {
