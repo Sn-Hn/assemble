@@ -4,6 +4,7 @@ import com.assemble.category.entity.Category;
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.comment.domain.Comments;
 import com.assemble.commons.converter.BooleanToYNConverter;
+import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.Title;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -95,5 +97,12 @@ public class Post extends BaseUserEntity {
 
     public void decreaseLikes() {
         this.likes --;
+    }
+
+    public List<ProfileResponse> toPostProfileResponse() {
+        return profiles.stream()
+                .filter(postImage -> postImage.getFile() != null)
+                .map(postImage -> postImage.getFile().mapProfile())
+                .collect(Collectors.toList());
     }
 }

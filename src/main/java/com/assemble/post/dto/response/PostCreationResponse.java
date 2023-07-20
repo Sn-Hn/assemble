@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApiModel(value = "PostCreationResponse : 게시글 작성 응답 값")
 @AllArgsConstructor
@@ -50,10 +49,7 @@ public class PostCreationResponse {
                 post.getUser().getUserId(),
                 post.getHits(),
                 0L,
-                post.getProfiles().stream()
-                        .filter(postImage -> postImage.getFile() != null)
-                        .map(profile -> profile.getFile().mapProfile())
-                        .collect(Collectors.toList())
+                post.toPostProfileResponse()
         );
     }
 }

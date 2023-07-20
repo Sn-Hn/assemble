@@ -43,10 +43,7 @@ public class CommentResponse {
                 comment.getContents(),
                 comment.getUser().getNickName(),
                 comment.getCreatedDate(),
-                comment.getUser().getProfiles().stream()
-                        .filter(userImage -> userImage.getFile() != null)
-                        .map(userImage -> userImage.getFile().mapProfile())
-                        .collect(Collectors.toList())
+                comment.getUser().toUserProfileResponse()
         );
     }
 }

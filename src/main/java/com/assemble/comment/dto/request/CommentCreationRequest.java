@@ -9,10 +9,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CommentCreationRequest {
 
-    @ApiModelProperty(value = "게시글(모임) ID")
+    @ApiModelProperty(value = "게시글(모임) ID", example = "0")
     private Long postId;
 
-    @ApiModelProperty(value = "회원 ID")
+    @ApiModelProperty(value = "회원 ID", example = "0")
     private Long userId;
 
     @ApiModelProperty(value = "댓글 내용")

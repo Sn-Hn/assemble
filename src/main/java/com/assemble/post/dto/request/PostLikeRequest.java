@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostLikeRequest {
 
-    @ApiModelProperty(value = "회원 ID", required = true)
+    @ApiModelProperty(value = "회원 ID", required = true, example = "1")
     private Long userId;
 
-    @ApiModelProperty(value = "게시글 ID", required = true)
+    @ApiModelProperty(value = "게시글 ID", required = true, example = "1")
     private Long postId;
 
     public Likes toEntity() {

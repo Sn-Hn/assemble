@@ -48,10 +48,7 @@ public class LoginResponse {
                 user.getRole().toString(),
                 user.getNickName(),
                 user.getName().getValue(),
-                user.getProfiles().stream()
-                        .filter(userImage -> userImage.getFile() != null)
-                        .map(userImage -> userImage.getFile().mapProfile())
-                        .collect(Collectors.toList()),
+                user.toUserProfileResponse(),
                 token
         );
     }
@@ -64,10 +61,7 @@ public class LoginResponse {
                 user.getRole().toString(),
                 user.getNickName(),
                 user.getName().getValue(),
-                user.getProfiles().stream()
-                        .filter(userImage -> userImage.getFile() != null)
-                        .map(userImage -> userImage.getFile().mapProfile())
-                        .collect(Collectors.toList()),
+                user.toUserProfileResponse(),
                 null
         );
     }

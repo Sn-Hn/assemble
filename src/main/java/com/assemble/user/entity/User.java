@@ -2,6 +2,7 @@ package com.assemble.user.entity;
 
 import com.assemble.commons.base.BaseDateEntity;
 import com.assemble.commons.exception.UnauthenticationException;
+import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
 import com.assemble.auth.dto.request.LoginRequest;
@@ -84,6 +85,13 @@ public class User extends BaseDateEntity {
     public List<String> getUserImages() {
         return getProfiles().stream()
                 .map(userImage -> userImage.getFile().getFullPath())
+                .collect(Collectors.toList());
+    }
+
+    public List<ProfileResponse> toUserProfileResponse() {
+        return profiles.stream()
+                .filter(userImage -> userImage.getFile() != null)
+                .map(userImage -> userImage.getFile().mapProfile())
                 .collect(Collectors.toList());
     }
 }

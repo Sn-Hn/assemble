@@ -8,9 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApiModel(value = "SignupResponse : 회원가입 응답 값")
 @Getter
@@ -46,10 +44,7 @@ public class SignupResponse {
                 user.getNickName(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.getProfiles().stream()
-                        .filter(userImage -> userImage.getFile() != null)
-                        .map(userImage -> userImage.getFile().mapProfile())
-                        .collect(Collectors.toList())
+                user.toUserProfileResponse()
         );
     }
 }

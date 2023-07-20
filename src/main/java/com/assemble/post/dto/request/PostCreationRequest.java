@@ -23,16 +23,16 @@ public class PostCreationRequest {
     @ApiModelProperty(value = "게시글 내용", required = true)
     private String contents;
 
-    @ApiModelProperty(value = "게시글 카테고리", required = true)
+    @ApiModelProperty(value = "게시글 카테고리", required = true, example = "1")
     private Long categoryId;
 
-    @ApiModelProperty(value = "작성자", required = true)
+    @ApiModelProperty(value = "작성자", required = true, example = "1")
     private Long writer;
 
-    @ApiModelProperty(value = "모집 인원")
+    @ApiModelProperty(value = "모집 인원", example = "0")
     private int personnelNumber;
 
-    @ApiModelProperty(value = "예상 기간")
+    @ApiModelProperty(value = "예상 기간", example = "0")
     private int expectedPeriod;
 
     private PostCreationRequest() {
