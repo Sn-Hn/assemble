@@ -14,4 +14,6 @@ public class PostSearchRequest {
     @ApiModelProperty(value = "검색할 주제", example = "title")
     private String searchBy;
 
+    @ApiModelProperty(value = "카테고리 ID", example = "1")
+    private Long categoryId;
 }

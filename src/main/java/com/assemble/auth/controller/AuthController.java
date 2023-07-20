@@ -41,6 +41,8 @@ public class AuthController {
         return ApiResult.ok(LoginResponse.from(user, new TokenResponse(accessToken)));
     }
 
+    // TODO: 2023-07-20 Access Token 재발급, 로그아웃 -신한
+
     private Cookie createCookie(JwtType jwtType, String token, int expireTime) {
         Cookie cookie = new Cookie(jwtType.getCode(), token);
 

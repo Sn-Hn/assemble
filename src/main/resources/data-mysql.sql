@@ -39,12 +39,23 @@ VALUES (
         '1',
         '게시글 제목입니다 ~',
         '게시글 내용입니다 ~~~~~~~',
-        0,
-        0,
+        5,
+        6,
         0,
         1,
         0,
         'N'
+       ),
+        (
+           '1',
+           '두 번째 게시글 제목입니다 ~',
+           '두 번째 게시글 내용입니다 ~~~~~~~',
+           1,
+           10,
+           0,
+           1,
+           0,
+           'N'
        );
 
 INSERT INTO comment(post_id, user_id, contents, is_deleted, created_date, modified_date)

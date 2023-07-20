@@ -47,4 +47,5 @@ public class UserController {
         return ApiResult.ok(new UserInfoResponse(userService.findUserInfo(userId)));
     }
 
+    // TODO: 2023-07-20 회원 탈퇴 -신한
 }

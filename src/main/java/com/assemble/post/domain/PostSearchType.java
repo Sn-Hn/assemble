@@ -12,32 +12,32 @@ public enum PostSearchType {
     CONTENTS("contents", (search) -> QPost.post.contents.value.like("%" + search + "%")),
     WRITER("writer", (search) -> QPost.post.user.userId.eq(Long.valueOf(search)));
 
-    private String code;
+    private String type;
 
-    public Function<String, BooleanExpression> findSearchType;
+    public Function<String, BooleanExpression> searchQuery;
 
-    PostSearchType(String code, Function<String, BooleanExpression> findSearchType) {
-        this.code = code;
-        this.findSearchType = findSearchType;
+    PostSearchType(String type, Function<String, BooleanExpression> searchQuery) {
+        this.type = type;
+        this.searchQuery = searchQuery;
     }
 
     public static BooleanExpression findPostSearchType(String type, String searchQuery) {
         searchQuery = searchQuery == null ? "" : searchQuery;
-        return type != null ? findType(type).getFindSearchType().apply(searchQuery) : null;
+        return type != null ? findType(type).getSearchQuery().apply(searchQuery) : null;
     }
 
     private static PostSearchType findType(String type) {
         return Arrays.stream(values())
-                .filter(enumType -> enumType.getCode().equals(type))
+                .filter(enumType -> enumType.getType().equals(type))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(PostSearchType.class, type));
     }
 
-    public String getCode() {
-        return code;
+    public String getType() {
+        return type;
     }
 
-    public Function<String, BooleanExpression> getFindSearchType() {
-        return findSearchType;
+    public Function<String, BooleanExpression> getSearchQuery() {
+        return searchQuery;
     }
 }
