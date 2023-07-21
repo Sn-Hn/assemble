@@ -18,6 +18,9 @@ public class CommentCreationRequest {
     @ApiModelProperty(value = "댓글 내용")
     private String contents;
 
+    private CommentCreationRequest() {
+    }
+
     public Comment toEntity() {
         return new Comment(postId, userId, contents);
     }

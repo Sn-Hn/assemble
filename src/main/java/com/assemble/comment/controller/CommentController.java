@@ -26,7 +26,7 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 작성")
     @PostMapping
-    public ApiResult<CommentResponse> createCommnet(CommentCreationRequest commentCreationRequest) {
+    public ApiResult<CommentResponse> createCommnet(@RequestBody CommentCreationRequest commentCreationRequest) {
         return ApiResult.ok(new CommentResponse(commentService.createComment(commentCreationRequest)), HttpStatus.CREATED);
     }
 
