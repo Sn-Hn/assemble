@@ -78,15 +78,15 @@ public class PostFixture {
     }
 
     public static PostSearchRequest 게시글_목록_제목_검색() {
-        return new PostSearchRequest(searchQueryTitle, searchByTitle);
+        return new PostSearchRequest(searchQueryTitle, searchByTitle, null);
     }
 
     public static PostSearchRequest 게시글_목록_내용_검색() {
-        return new PostSearchRequest(searchQueryContents, searchByContents);
+        return new PostSearchRequest(searchQueryContents, searchByContents, null);
     }
 
     public static PostSearchRequest 게시글_목록_작성자_검색() {
-        return new PostSearchRequest(searchQueryUserId.toString(), searchByWriter);
+        return new PostSearchRequest(searchQueryUserId.toString(), searchByWriter, null);
     }
 
     public static ModifiedPostRequest 게시글_수정() {

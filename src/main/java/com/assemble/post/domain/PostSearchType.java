@@ -22,8 +22,7 @@ public enum PostSearchType {
     }
 
     public static BooleanExpression findPostSearchType(String type, String searchQuery) {
-        searchQuery = searchQuery == null ? "" : searchQuery;
-        return type != null ? findType(type).getSearchQuery().apply(searchQuery) : null;
+        return findType(type).getSearchQuery().apply(searchQuery);
     }
 
     private static PostSearchType findType(String type) {

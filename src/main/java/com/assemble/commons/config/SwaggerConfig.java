@@ -28,6 +28,7 @@ public class SwaggerConfig {
                 .apiInfo(swaggerInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.assemble"))
                 .paths(PathSelectors.any())
                 .build();
     }

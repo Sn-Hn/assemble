@@ -3,6 +3,8 @@ package com.assemble.util;
 
 import com.assemble.auth.domain.JwtType;
 import com.assemble.commons.exception.NotFoundException;
+import com.assemble.commons.exception.UnauthorizedException;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -26,6 +28,9 @@ public class JwtUtils {
 
     public static String getAccessTokenFromHeader(HttpServletRequest request) {
         String header = request.getHeader(AUTH);
+        if (!StringUtils.hasText(header)) {
+            throw new UnauthorizedException();
+        }
         return header.replace(BEARER, BLANK).trim();
     }
 

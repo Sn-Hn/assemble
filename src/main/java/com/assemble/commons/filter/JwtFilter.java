@@ -42,6 +42,10 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private boolean excludeValidationApi(Map<String, String> exclusionApis, String api, String method) {
+        if (api.contains("/assemble/swagger") || api.contains("api-docs")) {
+            return true;
+        }
+
         if (exclusionApis.containsKey(api) && exclusionApis.get(api).contains(method)) {
             return true;
         }

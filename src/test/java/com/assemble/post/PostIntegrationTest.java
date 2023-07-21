@@ -2,7 +2,9 @@ package com.assemble.post;
 
 import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.domain.JwtProvider;
+import com.assemble.commons.converter.PageableConverter;
 import com.assemble.file.fixture.FileFixture;
+import com.assemble.fixture.PageableFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -18,7 +20,6 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -98,7 +99,7 @@ public class PostIntegrationTest {
 
     @Test
     void 게시글_목록_조회_제목_검색() {
-        Pageable pageable = PageRequest.of(0, 16);
+        PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
 
         given()
@@ -106,7 +107,7 @@ public class PostIntegrationTest {
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postSearchRequest, Map.class))
-                .queryParams(objectMapper.convertValue(pageable, Map.class))
+                .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
                 .log().all()
         .when()
                 .config(config)
@@ -120,7 +121,7 @@ public class PostIntegrationTest {
 
     @Test
     void 게시글_목록_조회_내용_검색() {
-        Pageable pageable = PageRequest.of(0, 16);
+        PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
 
         given()
@@ -128,7 +129,7 @@ public class PostIntegrationTest {
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postSearchRequest, Map.class))
-                .queryParams(objectMapper.convertValue(pageable, Map.class))
+                .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
                 .log().all()
         .when()
                 .config(config)
