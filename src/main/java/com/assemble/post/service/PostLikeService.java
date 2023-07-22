@@ -19,7 +19,7 @@ public class PostLikeService {
     private final PostRepository postRepository;
 
     @Transactional(rollbackFor = AssembleException.class)
-    public boolean createPostLike(PostLikeRequest postLikeRequest) {
+    public boolean likePost(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity();
         if (isAleadyLikeByUser(postLikeRequest)) {
             return false;
@@ -36,7 +36,7 @@ public class PostLikeService {
     }
 
     @Transactional(rollbackFor = AssembleException.class)
-    public boolean deletePostLike(PostLikeRequest postLikeRequest) {
+    public boolean cancelLikePost(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity();
         if (!isAleadyLikeByUser(postLikeRequest)) {
             return false;

@@ -8,9 +8,7 @@ import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
 import com.assemble.post.dto.response.PostResponse;
 import com.assemble.post.dto.response.PostsResponse;
-import com.assemble.post.entity.Post;
 import com.assemble.post.service.PostService;
-import com.assemble.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PostController {
 
     private final PostService postService;
-    private final HttpServletRequest request;
-    private final JwtProvider jwtProvider;
 
     @ApiOperation(value = "모임 등록")
     @PostMapping
@@ -50,11 +45,7 @@ public class PostController {
     @ApiOperation(value = "모임 상세 조회")
     @GetMapping(path = "{postId}")
     public ApiResult<PostResponse> getPost(@PathVariable Long postId) {
-        String accessToken = JwtUtils.getAccessTokenFromHeader(request);
-        Long userId = Long.valueOf(jwtProvider.getUserId(accessToken));
-        Post post = postService.getPost(postId, userId);
-        PostResponse response = new PostResponse(post);
-        return ApiResult.ok(response);
+        return ApiResult.ok(new PostResponse(postService.getPost(postId)));
     }
 
     @ApiOperation(value = "모임 수정")

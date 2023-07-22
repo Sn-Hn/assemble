@@ -5,6 +5,7 @@ import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.service.PostLikeService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +20,11 @@ public class PostLikeController {
 
     @PostMapping("post/like")
     public ApiResult<Boolean> like(@RequestBody PostLikeRequest postLikeRequest) {
-        return ApiResult.ok(postLikeService.createPostLike(postLikeRequest));
+        return ApiResult.ok(postLikeService.likePost(postLikeRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("post/like")
     public ApiResult<Boolean> cancelLike(@RequestBody PostLikeRequest postLikeRequest) {
-        return ApiResult.ok(postLikeService.deletePostLike(postLikeRequest));
+        return ApiResult.ok(postLikeService.cancelLikePost(postLikeRequest));
     }
 }

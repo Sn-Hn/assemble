@@ -37,8 +37,9 @@ public class LoggingCustomInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        final ContentCachingResponseWrapper responseWrapper = (ContentCachingResponseWrapper) response;
         log.info("======================= [Response] =======================");
+        log.info("response contenttype={}", response.getContentType());
+        final ContentCachingResponseWrapper responseWrapper = (ContentCachingResponseWrapper) response;
         log.info("Response={}", objectMapper.readTree(responseWrapper.getContentAsByteArray()));
         log.info("==========================================================");
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);

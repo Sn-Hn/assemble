@@ -1,5 +1,6 @@
 package com.assemble.post.service;
 
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.post.dto.request.ModifiedPostRequest;
@@ -40,11 +41,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Post getPost(Long postId, Long userId) {
+    public Post getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
-        PostLikeRequest postLikeRequest = new PostLikeRequest(postId, userId);
+        PostLikeRequest postLikeRequest = new PostLikeRequest(postId, BaseRequest.getUserId());
         post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));
 
         // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한

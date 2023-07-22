@@ -1,6 +1,7 @@
 package com.assemble.commons.filter;
 
 import com.assemble.auth.domain.JwtProvider;
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.exception.UnauthorizedException;
 import com.assemble.commons.exclusion.ExclusionApis;
 import com.assemble.util.JwtUtils;
@@ -33,9 +34,18 @@ public class JwtFilter extends OncePerRequestFilter {
         ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
         ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
 
-        if (!excludeValidationApi(exclusionApis.getExclusionApis(), api, method) && !jwtProvider.validateToken(JwtUtils.getAccessTokenFromHeader(request))) {
+        if (excludeValidationApi(exclusionApis.getExclusionApis(), api, method)) {
+            filterChain.doFilter(wrappingRequest, wrappingResponse);
+            wrappingResponse.copyBodyToResponse();
+            return;
+        }
+
+        if (!jwtProvider.validateToken(JwtUtils.getAccessTokenFromHeader(request))) {
             throw new UnauthorizedException();
         }
+
+        BaseRequest.setUserId(Long.valueOf(jwtProvider.getUserId(JwtUtils.getAccessTokenFromHeader(request))));
+        BaseRequest.setEmail(jwtProvider.getEmail(JwtUtils.getAccessTokenFromHeader(request)));
 
         filterChain.doFilter(wrappingRequest, wrappingResponse);
         wrappingResponse.copyBodyToResponse();
