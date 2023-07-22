@@ -58,6 +58,7 @@ public class CommentIntegrationTest {
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
+                        "status", equalTo(201),
                         "response.contents", equalTo(commentCreationRequest.getContents()))
                 .log().all();
     }

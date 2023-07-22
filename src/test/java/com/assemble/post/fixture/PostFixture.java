@@ -20,11 +20,10 @@ public class PostFixture {
     private static final String contents = "스터디 모집합니다.";
     private static final String modifiedContents = "스터디 2명 모집합니다. (수정)";
     private static final Long categoryId = 1L;
-    private static final String categoryName = "개발/프로그래밍";
     private static final String writerNickname = "개발자";
     private static final Long writer = 1L;
-    private static final Long hits = 0L;
-    private static final Long likeCount = 0L;
+    private static final Long hits = 2L;
+    private static final Long likeCount = 2L;
     private static final int personnelNumber = 0;
     private static final int expectedPeriod = 0;
     private static final String searchByTitle = "title";
@@ -73,6 +72,7 @@ public class PostFixture {
                 expectedPeriod,
                 new Category(categoryId),
                 new ArrayList<>(),
+                false,
                 false
         );
     }

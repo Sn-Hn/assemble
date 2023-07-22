@@ -1,6 +1,6 @@
 package com.assemble.post.service;
 
-import com.assemble.file.service.FileService;
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-@DisplayName("Post")
+@DisplayName("PostService")
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
 
@@ -38,7 +37,7 @@ class PostServiceTest {
     private PostRepository postRepository;
 
     @Mock
-    private FileService fileService;
+    private PostLikeService postLikeService;
 
     @Test
     void 게시글_작성() {
@@ -83,15 +82,17 @@ class PostServiceTest {
     void 게시글_상세_조회() {
         // given
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        given(postLikeService.isAleadyLikeByUser(any())).willReturn(false);
+        BaseRequest.setUserId(1L);
 
         // when
-        Post post = postService.getPost(1L, 1L);
+        Post post = postService.getPost(1L);
 
         // then
         assertAll(
                 () -> assertThat(post).isNotNull(),
                 () -> assertThat(post.getPostId()).isEqualTo(1L),
-                () -> assertThat(post.getHits()).isEqualTo(1)
+                () -> assertThat(post.getHits()).isEqualTo(3L)
         );
     }
 

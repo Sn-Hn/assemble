@@ -1,5 +1,6 @@
 package com.assemble.post.repository.impl;
 
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.PostOrderType;
 import com.assemble.post.domain.PostSearchType;
 import com.assemble.post.dto.request.PostSearchRequest;
@@ -30,13 +31,12 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    // TODO: 2023-07-22 게시글 목록에서 좋아요 판별 -신한
     @Override
     public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable) {
         List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(QLikes.likes.user.userId.eq(postSearchRequest.getUserId()),
+                .on(QLikes.likes.user.userId.eq(BaseRequest.getUserId()),
                         QLikes.likes.post.postId.eq(QPost.post.postId))
                 .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
                         searchByCategory(postSearchRequest.getCategoryId()))

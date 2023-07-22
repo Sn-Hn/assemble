@@ -29,7 +29,6 @@ import static org.hamcrest.Matchers.*;
 
 @DisplayName("Post Integration Test")
 @CustomIntegrationTest
-@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 public class PostIntegrationTest {
 
     private final String basePath = "/assemble/";
@@ -68,6 +67,7 @@ public class PostIntegrationTest {
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
+                        "status", equalTo(201),
                         "response.title", equalTo(postCreationRequest.getTitle()))
                 .log().all();
     }

@@ -1,0 +1,90 @@
+package com.assemble.post.service;
+
+import com.assemble.post.dto.request.PostLikeRequest;
+import com.assemble.post.entity.Likes;
+import com.assemble.post.fixture.PostFixture;
+import com.assemble.post.fixture.PostLikeFixture;
+import com.assemble.post.repository.PostLikeRepository;
+import com.assemble.post.repository.PostRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
+
+
+@DisplayName("PostLikeService")
+@ExtendWith(MockitoExtension.class)
+class PostLikeServiceTest {
+
+    @InjectMocks
+    private PostLikeService postLikeService;
+
+    @Mock
+    private PostLikeRepository postLikeRepository;
+
+    @Mock
+    private PostRepository postRepository;
+
+    @Test
+    void 게시글_좋아요() {
+        // given
+        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.empty());
+        given(postLikeRepository.save(any())).willReturn(PostLikeFixture.좋아요_객체());
+        given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
+
+        // when
+        boolean isLike = postLikeService.likePost(postLikeRequest);
+
+        // then
+        assertThat(isLike).isTrue();
+    }
+
+    @Test
+    void 게시글_좋아요_취소() {
+        // given
+        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
+        given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_취소_요청();
+
+        // when
+        boolean isLike = postLikeService.cancelLikePost(postLikeRequest);
+
+        // then
+        assertThat(isLike).isTrue();
+    }
+
+    @Test
+    void 이미_좋아요_한_게시글() {
+        // given
+        PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
+        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
+
+        // when
+        boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
+
+        // then
+        assertThat(aleadyLikeByUser).isTrue();
+    }
+
+    @Test
+    void 좋아요_하지_않은_게시글() {
+        // given
+        PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
+        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.empty());
+
+        // when
+        boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
+
+        // then
+        assertThat(aleadyLikeByUser).isFalse();
+    }
+}

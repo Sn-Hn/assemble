@@ -7,13 +7,10 @@ import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.SignupRequest;
-import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.*;
-import io.restassured.specification.RequestSpecification;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -68,6 +65,7 @@ public class UserIntegrationTest {
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
+                        "status", equalTo(201),
                         "error", equalTo(null),
                         "response.email", equalTo(signupRequest.getEmail()),
                         "response.profile.size()", equalTo(0))
