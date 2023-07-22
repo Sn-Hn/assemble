@@ -2,10 +2,9 @@ package com.assemble.post.service;
 
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
-import com.assemble.file.entity.AttachedFile;
-import com.assemble.file.service.FileService;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
+import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
 import com.assemble.post.entity.Post;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
@@ -23,15 +21,12 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    private final FileService fileService;
+    private final PostLikeService postLikeService;
 
     @Transactional(rollbackFor = AssembleException.class)
-    public PostCreationResponse createPost(PostCreationRequest postCreationRequest, MultipartFile file) {
+    public PostCreationResponse createPost(PostCreationRequest postCreationRequest) {
         Post post = postCreationRequest.toEntity();
         post.create(post.getUser().getUserId());
-
-        AttachedFile attachedFile = fileService.uploadFile(file, post.getUser().getUserId());
-        post.setProfile(attachedFile);
 
         Post savedPost = postRepository.save(post);
         return new PostCreationResponse(savedPost);
@@ -45,12 +40,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Post getPost(Long postId) {
+    public Post getPost(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
-        // 리팩터링 대상
-        // 게시글 클릭 시 조회수 계속 올라감
+        PostLikeRequest postLikeRequest = new PostLikeRequest(postId, userId);
+        post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));
+
+        // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한
         post.increaseHits();
 
         return post;

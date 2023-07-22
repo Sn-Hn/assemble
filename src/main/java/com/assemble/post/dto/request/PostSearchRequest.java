@@ -16,4 +16,6 @@ public class PostSearchRequest {
 
     @ApiModelProperty(value = "카테고리 ID", example = "1")
     private Long categoryId;
+
+    private Long userId;
 }

@@ -1,5 +1,6 @@
 package com.assemble.post.controller;
 
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -7,7 +8,9 @@ import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.dto.response.PostCreationResponse;
 import com.assemble.post.dto.response.PostResponse;
 import com.assemble.post.dto.response.PostsResponse;
+import com.assemble.post.entity.Post;
 import com.assemble.post.service.PostService;
+import com.assemble.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Api(tags = "게시글 APIs")
 @RequestMapping(path = "post")
 @RequiredArgsConstructor
@@ -25,12 +30,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostController {
 
     private final PostService postService;
+    private final HttpServletRequest request;
+    private final JwtProvider jwtProvider;
 
     @ApiOperation(value = "모임 등록")
     @PostMapping
-    public ApiResult<PostCreationResponse> createPost(PostCreationRequest postCreationRequest,
-                                                      @RequestPart(required = false) MultipartFile multipartFile) {
-        return ApiResult.ok(postService.createPost(postCreationRequest, multipartFile), HttpStatus.CREATED);
+    public ApiResult<PostCreationResponse> createPost(@RequestBody PostCreationRequest postCreationRequest) {
+        return ApiResult.ok(postService.createPost(postCreationRequest), HttpStatus.CREATED);
     }
     
     @ApiOperation(value = "모임 목록 조회")
@@ -44,7 +50,11 @@ public class PostController {
     @ApiOperation(value = "모임 상세 조회")
     @GetMapping(path = "{postId}")
     public ApiResult<PostResponse> getPost(@PathVariable Long postId) {
-        return ApiResult.ok(new PostResponse(postService.getPost(postId)));
+        String accessToken = JwtUtils.getAccessTokenFromHeader(request);
+        Long userId = Long.valueOf(jwtProvider.getUserId(accessToken));
+        Post post = postService.getPost(postId, userId);
+        PostResponse response = new PostResponse(post);
+        return ApiResult.ok(response);
     }
 
     @ApiOperation(value = "모임 수정")

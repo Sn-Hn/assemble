@@ -3,7 +3,6 @@ package com.assemble.post;
 import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.converter.PageableConverter;
-import com.assemble.file.fixture.FileFixture;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.post.dto.request.ModifiedPostRequest;
@@ -20,12 +19,9 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
@@ -64,7 +60,8 @@ public class PostIntegrationTest {
                 .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .queryParams(objectMapper.convertValue(postCreationRequest, Map.class))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(postCreationRequest)
                 .log().all()
         .when()
                 .post("post")
@@ -75,27 +72,27 @@ public class PostIntegrationTest {
                 .log().all();
     }
 
-    @Test
-    void 게시글_작성_프로필_사진_O() throws FileNotFoundException {
-        PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
-        File file = FileFixture.File_생성();
-        given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
-                .basePath(basePath)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .queryParams(objectMapper.convertValue(postCreationRequest, Map.class))
-                .multiPart("multipartFile", file, MediaType.APPLICATION_OCTET_STREAM_VALUE)
-                .log().all()
-        .when()
-                .config(config)
-                .post("post")
-        .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("success", is(true),
-                        "response.title", equalTo(postCreationRequest.getTitle()))
-                .log().all();
-    }
+//    @Test
+//    void 게시글_작성_프로필_사진_O() throws FileNotFoundException {
+//        PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
+//        File file = FileFixture.File_생성();
+//        given()
+//                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+//                .basePath(basePath)
+//                .accept(MediaType.APPLICATION_JSON_VALUE)
+//                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+//                .queryParams(objectMapper.convertValue(postCreationRequest, Map.class))
+//                .multiPart("multipartFile", file, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//                .log().all()
+//        .when()
+//                .config(config)
+//                .post("post")
+//        .then()
+//                .statusCode(HttpStatus.OK.value())
+//                .body("success", is(true),
+//                        "response.title", equalTo(postCreationRequest.getTitle()))
+//                .log().all();
+//    }
 
     @Test
     void 게시글_목록_조회_제목_검색() {

@@ -18,14 +18,12 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @PostMapping("post/like")
-    public ApiResult<Void> like(@RequestBody PostLikeRequest postLikeRequest) {
-        postLikeService.createPostLike(postLikeRequest);
-        return ApiResult.ok();
+    public ApiResult<Boolean> like(@RequestBody PostLikeRequest postLikeRequest) {
+        return ApiResult.ok(postLikeService.createPostLike(postLikeRequest));
     }
 
     @DeleteMapping("post/like")
-    public ApiResult<Void> cancelLike(@RequestBody PostLikeRequest postLikeRequest) {
-        postLikeService.deletePostLike(postLikeRequest);
-        return ApiResult.ok();
+    public ApiResult<Boolean> cancelLike(@RequestBody PostLikeRequest postLikeRequest) {
+        return ApiResult.ok(postLikeService.deletePostLike(postLikeRequest));
     }
 }

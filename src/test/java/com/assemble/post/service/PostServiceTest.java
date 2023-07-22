@@ -44,14 +44,11 @@ class PostServiceTest {
     void 게시글_작성() {
         // given
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
-        MultipartFile file = null;
         given(postRepository.save(any()))
                 .willReturn(PostFixture.게시글());
-        given(fileService.uploadFile(any(), any()))
-                .willReturn(null);
 
         // when
-        PostCreationResponse response = postService.createPost(postCreationRequest, file);
+        PostCreationResponse response = postService.createPost(postCreationRequest);
 
         // then
         assertAll(
@@ -88,7 +85,7 @@ class PostServiceTest {
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
 
         // when
-        Post post = postService.getPost(1L);
+        Post post = postService.getPost(1L, 1L);
 
         // then
         assertAll(

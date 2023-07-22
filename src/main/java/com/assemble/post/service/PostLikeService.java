@@ -19,24 +19,45 @@ public class PostLikeService {
     private final PostRepository postRepository;
 
     @Transactional(rollbackFor = AssembleException.class)
-    public void createPostLike(PostLikeRequest postLikeRequest) {
+    public boolean createPostLike(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity();
+        if (isAleadyLikeByUser(postLikeRequest)) {
+            return false;
+        }
+
         postLikeRepository.save(postLike);
 
         Post post = postRepository.findById(postLikeRequest.getPostId())
                 .orElseThrow(() -> new NotFoundException(Post.class, postLikeRequest.getPostId()));
 
         post.increaseLikes();
+
+        return true;
     }
 
     @Transactional(rollbackFor = AssembleException.class)
-    public void deletePostLike(PostLikeRequest postLikeRequest) {
+    public boolean deletePostLike(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity();
+        if (!isAleadyLikeByUser(postLikeRequest)) {
+            return false;
+        }
+
         postLikeRepository.delete(postLike);
 
         Post post = postRepository.findById(postLikeRequest.getPostId())
                 .orElseThrow(() -> new NotFoundException(Post.class, postLikeRequest.getPostId()));
 
         post.decreaseLikes();
+
+        return true;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isAleadyLikeByUser(PostLikeRequest postLikeRequest) {
+        if (postLikeRepository.findPostByUser(postLikeRequest).isPresent()) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -48,6 +48,9 @@ public class PostsResponse {
     @ApiModelProperty(value = "게시글 이미지")
     private List<ProfileResponse> postProfileImages;
 
+    @ApiModelProperty(value = "좋아요 여부")
+    private boolean isLikeStatus;
+
     public PostsResponse(Post post) {
         this(
                 post.getPostId(),
@@ -61,7 +64,8 @@ public class PostsResponse {
                 post.getExpectedPeriod(),
                 post.getComments().getComments().size(),
                 post.getCategory().getName().getValue(),
-                post.toPostProfileResponse()
+                post.toPostProfileResponse(),
+                post.isLike()
         );
     }
 }

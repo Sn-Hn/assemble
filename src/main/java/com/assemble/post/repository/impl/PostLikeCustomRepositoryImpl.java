@@ -1,9 +1,15 @@
 package com.assemble.post.repository.impl;
 
+import com.assemble.post.dto.request.PostLikeRequest;
+import com.assemble.post.entity.Likes;
+import com.assemble.post.entity.QLikes;
+import com.assemble.post.entity.QPost;
 import com.assemble.post.repository.PostLikeCustomRepository;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
 
@@ -14,4 +20,28 @@ public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
     }
 
 
+    @Override
+    public Optional<Likes> findPostByUser(PostLikeRequest postLikeRequest) {
+        return jpaQueryFactory.selectFrom(QLikes.likes)
+                .where(searchByUserId(postLikeRequest.getUserId()),
+                        searchByPostId(postLikeRequest.getPostId()))
+                .fetch()
+                .stream().findFirst();
+    }
+
+    private BooleanExpression searchByUserId(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return QPost.post.user.userId.eq(userId);
+    }
+
+    private BooleanExpression searchByPostId(Long postId) {
+        if (postId == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return QPost.post.postId.eq(postId);
+    }
 }

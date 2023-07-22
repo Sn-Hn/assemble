@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,12 @@ public class PostResponse {
     @ApiModelProperty(value = "게시글 프로필 이미지")
     private List<ProfileResponse> postProfileImages;
 
+    @ApiModelProperty(value = "작성일")
+    private LocalDateTime createdTime;
+
+    @ApiModelProperty(value = "좋아요 여부")
+    private boolean isLikeStatus;
+
     public PostResponse(Post post) {
         this(
                 post.getPostId(),
@@ -73,7 +80,9 @@ public class PostResponse {
                 post.getComments().getComments().stream()
                         .map(CommentResponse::new)
                         .collect(Collectors.toList()),
-                post.toPostProfileResponse()
+                post.toPostProfileResponse(),
+                post.getCreatedDate(),
+                post.isLike()
         );
     }
 }
