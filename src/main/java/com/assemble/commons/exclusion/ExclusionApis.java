@@ -11,14 +11,15 @@ public class ExclusionApis {
 
     private ExclusionApis() {
         Map<String, String> apis = new HashMap<>();
+        apis.put("/swagger/*", "GET,POST,UPDATE,DELETE,OPTIONS");
+        apis.put("/api-docs/*", "GET,POST,UPDATE,DELETE,OPTIONS");
         apis.put("/authentication", "POST");
         apis.put("/signup", "POST");
         apis.put("/email/validation", "GET");
         apis.put("/nickname/validation", "GET");
         apis.put("/post", "GET");
         apis.put("/post/*", "GET");
-        apis.put("/swagger/*", "GET,POST,UPDATE,DELETE,OPTIONS");
-        apis.put("/api-docs/*", "GET,POST,UPDATE,DELETE,OPTIONS");
+        apis.put("/category", "GET");
 
         this.exclusionApis = apis;
     }
