@@ -1,7 +1,7 @@
 package com.assemble.user;
 
 import com.assemble.annotation.CustomIntegrationTest;
-import com.assemble.auth.domain.JwtProvider;
+import com.assemble.auth.service.JwtService;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.user.dto.request.EmailRequest;
@@ -40,7 +40,7 @@ public class UserIntegrationTest {
     private int port;
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtService jwtService;
 
     @BeforeEach
     void setUp() {
@@ -178,7 +178,7 @@ public class UserIntegrationTest {
     void 특정_회원_조회() {
         Long userId = 1L;
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("userId", userId)

@@ -1,8 +1,8 @@
 package com.assemble.auth.domain;
 
 public enum JwtType {
-    ACCESS_TOKEN("accessToken"),
-    REFRESH_TOKEN("refreshToken");
+    ACCESS_TOKEN("AccessToken"),
+    REFRESH_TOKEN("RefreshToken");
 
     private String code;
 

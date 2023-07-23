@@ -1,19 +1,19 @@
 package com.assemble.mock;
 
 import com.assemble.auth.domain.JwtProvider;
+import com.assemble.auth.service.JwtService;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class RestAssuredSpecificationSpy {
 
-    private static AccessTokenSpy accessTokenSpy;
+    private static TokenSpy tokenSpy;
 
-    public static RequestSpecification getRestAssuredSpec(JwtProvider jwtProvider) {
-        accessTokenSpy = new AccessTokenSpy(jwtProvider);
+    public static RequestSpecification setTokenRestAssuredSpec(JwtService jwtService) {
+        tokenSpy = new TokenSpy(jwtService);
         return new RequestSpecBuilder()
-                .addHeader("Authorization", "Bearer " + accessTokenSpy.generateAccessToken())
+                .addHeader("Authorization", "Bearer " + tokenSpy.generateAccessToken())
+                .addCookie("RefreshToken", tokenSpy.generateRefreshToken())
                 .build();
     }
 }

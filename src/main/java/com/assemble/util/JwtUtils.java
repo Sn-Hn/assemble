@@ -14,11 +14,11 @@ public class JwtUtils {
     private static final String BEARER = "Bearer";
     private static final String BLANK = "";
 
-    public static String getUserIdByRefreshToken(HttpServletRequest request) {
-        return getUserIdByTokenFromCookie(request, JwtType.REFRESH_TOKEN);
+    public static String getRefreshToken(HttpServletRequest request) {
+        return getRefreshTokenFromCookie(request, JwtType.REFRESH_TOKEN);
     }
 
-    private static String getUserIdByTokenFromCookie(HttpServletRequest request, JwtType jwtType) {
+    private static String getRefreshTokenFromCookie(HttpServletRequest request, JwtType jwtType) {
         return Arrays.stream(request.getCookies())
                 .filter(cookies -> cookies.getName().equals(jwtType.getCode()))
                 .findAny()

@@ -1,7 +1,7 @@
 package com.assemble.post;
 
 import com.assemble.annotation.CustomIntegrationTest;
-import com.assemble.auth.domain.JwtProvider;
+import com.assemble.auth.service.JwtService;
 import com.assemble.commons.converter.PageableConverter;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
@@ -40,7 +40,7 @@ public class PostIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtService jwtService;
 
     @BeforeEach
     void setUp() {
@@ -56,7 +56,7 @@ public class PostIntegrationTest {
     void 게시글_작성_프로필_사진_X() {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -160,7 +160,7 @@ public class PostIntegrationTest {
         ModifiedPostRequest modifiedPostRequest = PostFixture.게시글_수정();
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(modifiedPostRequest, Map.class))
@@ -181,7 +181,7 @@ public class PostIntegrationTest {
         Long id = 2L;
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("postId", id)

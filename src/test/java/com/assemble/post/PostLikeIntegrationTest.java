@@ -1,7 +1,7 @@
 package com.assemble.post;
 
 import com.assemble.annotation.CustomIntegrationTest;
-import com.assemble.auth.domain.JwtProvider;
+import com.assemble.auth.service.JwtService;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.fixture.PostLikeFixture;
@@ -33,7 +33,7 @@ public class PostLikeIntegrationTest {
     private int port;
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtService jwtService;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,7 @@ public class PostLikeIntegrationTest {
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +71,7 @@ public class PostLikeIntegrationTest {
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_취소_요청();
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

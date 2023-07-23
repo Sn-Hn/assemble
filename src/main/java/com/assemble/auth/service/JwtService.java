@@ -22,6 +22,7 @@ public class JwtService {
 
     private final AccessTokenRedisRepository accessTokenRedisRepository;
 
+    @Transactional
     public String issueAccessToken(Long userId, String email) {
         String token = jwtProvider.createAccessToken(userId, email);
         AccessToken accessToken = new AccessToken(jwtProvider.getUserId(token), token, (int) Duration.ofMinutes(30).toMillis());
@@ -44,14 +45,15 @@ public class JwtService {
         return savedJwt.getRefreshToken();
     }
 
+    @Transactional(readOnly = true)
     public String reissueAccessToken(String refreshToken) {
-        if (!jwtRepository.findByRefreshToken(refreshToken).isPresent()) {
+        if (!jwtRepository.findByRefreshToken(refreshToken).isPresent() || !jwtProvider.isValidToken(refreshToken)) {
             throw new IllegalArgumentException("invalid refreshToken");
         }
 
         return jwtProvider.createAccessToken(
                 NumberUtils.parseNumber(jwtProvider.getUserId(refreshToken), Long.class),
-                jwtProvider.getUserId(refreshToken)
+                jwtProvider.getEmail(refreshToken)
         );
     }
 
