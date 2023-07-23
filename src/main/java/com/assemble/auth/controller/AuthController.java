@@ -8,6 +8,7 @@ import com.assemble.commons.response.ApiResult;
 import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.auth.dto.response.LoginResponse;
 import com.assemble.user.entity.User;
+import com.assemble.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 
@@ -41,7 +43,22 @@ public class AuthController {
         return ApiResult.ok(LoginResponse.from(user, new TokenResponse(accessToken)));
     }
 
-    // TODO: 2023-07-20 Access Token 재발급, 로그아웃 -신한
+    @ApiOperation(value = "Access Token 재발급")
+    @PostMapping("auth/token")
+    public ApiResult<TokenResponse> reissueAccessToken(HttpServletRequest request) {
+        String refreshToken = JwtUtils.getRefreshToken(request);
+
+        return ApiResult.ok(new TokenResponse(jwtService.reissueAccessToken(refreshToken)));
+    }
+
+    @ApiOperation(value = "로그아웃")
+    @PostMapping
+    public ApiResult logout(HttpServletResponse response) {
+        Cookie cookie = createCookie(JwtType.REFRESH_TOKEN, null, 0);
+        response.addCookie(cookie);
+
+        return ApiResult.ok();
+    }
 
     private Cookie createCookie(JwtType jwtType, String token, int expireTime) {
         Cookie cookie = new Cookie(jwtType.getCode(), token);

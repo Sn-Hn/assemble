@@ -2,6 +2,8 @@ package com.assemble.auth;
 
 import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.dto.request.LoginRequest;
+import com.assemble.auth.service.JwtService;
+import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -13,11 +15,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.io.IOException;
-
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 @DisplayName("Auth Integration Test")
 @CustomIntegrationTest
@@ -27,6 +26,9 @@ public class AuthIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private JwtService jwtService;
 
     @LocalServerPort
     private int port;
@@ -71,6 +73,22 @@ public class AuthIntegrationTest {
                         "response", equalTo(null),
                         "error.status", equalTo(404),
                         "status", equalTo(404))
+                .log().all();
+    }
+
+    @Test
+    void access_token_재발급() {
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .basePath(basePath)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .log().all()
+        .when()
+                .post("auth/token")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "response", notNullValue())
                 .log().all();
     }
 }
