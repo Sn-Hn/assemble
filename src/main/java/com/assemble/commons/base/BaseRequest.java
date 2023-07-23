@@ -1,7 +1,8 @@
 package com.assemble.commons.base;
 
 public abstract class BaseRequest {
-    private static Long userId;
+    // default -> 로그인하지 않은 회원
+    private static Long userId = -1L;
 
     private static String email;
 

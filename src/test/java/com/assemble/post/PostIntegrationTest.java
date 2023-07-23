@@ -100,7 +100,6 @@ public class PostIntegrationTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postSearchRequest, Map.class))
@@ -122,7 +121,6 @@ public class PostIntegrationTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(postSearchRequest, Map.class))
@@ -143,7 +141,6 @@ public class PostIntegrationTest {
         Long id = 1L;
 
         given()
-                .spec(RestAssuredSpecificationSpy.getRestAssuredSpec(jwtProvider))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("postId", id)

@@ -36,8 +36,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(QLikes.likes.user.userId.eq(BaseRequest.getUserId()),
-                        QLikes.likes.post.postId.eq(QPost.post.postId))
+                .on(eqUserId(), eqPostId())
                 .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
                         searchByCategory(postSearchRequest.getCategoryId()))
                 .orderBy(findOrder(pageable))
@@ -58,6 +57,14 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .collect(Collectors.toUnmodifiableList());
 
         return new PageImpl<>(posts, pageable, posts.size());
+    }
+
+    private static BooleanExpression eqPostId() {
+        return QLikes.likes.post.postId.eq(QPost.post.postId);
+    }
+
+    private static BooleanExpression eqUserId() {
+        return QLikes.likes.user.userId.eq(BaseRequest.getUserId());
     }
 
     private BooleanExpression searchByLike(String searchBy, String searchQuery) {
