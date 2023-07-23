@@ -24,12 +24,12 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-        filterChain.doFilter(request, response);
-    } catch (UnauthorizedException e) {
-        log.error("UnauthorizedException={}", e.getMessage(), e);
-        setErrorResponse(response, e);
+            filterChain.doFilter(request, response);
+        } catch (UnauthorizedException e) {
+            log.error("UnauthorizedException={}", e.getMessage(), e);
+            setErrorResponse(response, e);
+        }
     }
-}
 
     private void setErrorResponse(HttpServletResponse response, UnauthorizedException e) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();

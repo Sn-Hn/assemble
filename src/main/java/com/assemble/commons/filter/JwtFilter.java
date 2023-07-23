@@ -6,10 +6,10 @@ import com.assemble.commons.exception.UnauthorizedException;
 import com.assemble.commons.exclusion.ExclusionApis;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
-import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,6 +20,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
+@Order(0)
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
@@ -28,38 +29,26 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String api = request.getRequestURI();
-        String method = request.getMethod();
-
-        ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
-        ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
-
-        if (excludeValidationApi(exclusionApis.getExclusionApis(), api, method)) {
-            filterChain.doFilter(wrappingRequest, wrappingResponse);
-            wrappingResponse.copyBodyToResponse();
-            return;
-        }
-
-        if (!jwtProvider.validateToken(JwtUtils.getAccessTokenFromHeader(request))) {
+        if (!jwtProvider.isValidToken(JwtUtils.getAccessTokenFromHeader(request))) {
             throw new UnauthorizedException();
         }
 
         BaseRequest.setUserId(Long.valueOf(jwtProvider.getUserId(JwtUtils.getAccessTokenFromHeader(request))));
         BaseRequest.setEmail(jwtProvider.getEmail(JwtUtils.getAccessTokenFromHeader(request)));
 
-        filterChain.doFilter(wrappingRequest, wrappingResponse);
-        wrappingResponse.copyBodyToResponse();
+        filterChain.doFilter(request, response);
     }
 
-    private boolean excludeValidationApi(Map<String, String> exclusionApis, String api, String method) {
-        if (api.contains("/assemble/swagger") || api.contains("api-docs")) {
-            return true;
-        }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String servletPath = request.getServletPath();
+        String method = request.getMethod();
 
-        if (exclusionApis.containsKey(api) && exclusionApis.get(api).contains(method)) {
-            return true;
-        }
+        AntPathMatcher matcher = new AntPathMatcher();
+        Map<String, String> exclusionApi = this.exclusionApis.getExclusionApis();
 
-        return false;
+        return exclusionApi.keySet().stream()
+                .anyMatch(key -> matcher.match(key, servletPath)
+                        && exclusionApi.get(key).contains(method.toUpperCase()));
     }
 }

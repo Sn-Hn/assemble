@@ -18,7 +18,7 @@ public class JwtUtils {
         return getUserIdByTokenFromCookie(request, JwtType.REFRESH_TOKEN);
     }
 
-    public static String getUserIdByTokenFromCookie(HttpServletRequest request, JwtType jwtType) {
+    private static String getUserIdByTokenFromCookie(HttpServletRequest request, JwtType jwtType) {
         return Arrays.stream(request.getCookies())
                 .filter(cookies -> cookies.getName().equals(jwtType.getCode()))
                 .findAny()
