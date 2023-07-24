@@ -20,16 +20,9 @@ public class JwtService {
 
     private final JwtRepository jwtRepository;
 
-    private final AccessTokenRedisRepository accessTokenRedisRepository;
-
     @Transactional
     public String issueAccessToken(Long userId, String email) {
-        String token = jwtProvider.createAccessToken(userId, email);
-        AccessToken accessToken = new AccessToken(jwtProvider.getUserId(token), token, (int) Duration.ofMinutes(30).toMillis());
-
-        AccessToken savedAccessToken = accessTokenRedisRepository.save(accessToken);
-
-        return savedAccessToken.getToken();
+        return jwtProvider.createAccessToken(userId, email);
     }
 
     @Transactional

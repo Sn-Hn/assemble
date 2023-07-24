@@ -44,11 +44,16 @@ public class JwtFilter extends OncePerRequestFilter {
         String servletPath = request.getServletPath();
         String method = request.getMethod();
 
+        if (servletPath.contains("swagger") || servletPath.contains("api-docs")) {
+            return true;
+        }
+
         AntPathMatcher matcher = new AntPathMatcher();
         Map<String, String> exclusionApi = this.exclusionApis.getExclusionApis();
 
-        return exclusionApi.keySet().stream()
+        boolean check = exclusionApi.keySet().stream()
                 .anyMatch(key -> matcher.match(key, servletPath)
                         && exclusionApi.get(key).contains(method.toUpperCase()));
+        return check;
     }
 }
