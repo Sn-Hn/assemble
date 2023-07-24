@@ -1,6 +1,5 @@
 package com.assemble.post.controller;
 
-import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -17,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "게시글 APIs")
 @RequestMapping(path = "post")

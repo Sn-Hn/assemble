@@ -21,7 +21,7 @@ public class FileService {
         }
 
         AttachedFile attachedFile = uploadFile.upload(file);
-        attachedFile.create(creatorId);
+        attachedFile.createUser(creatorId);
         return fileRepository.save(attachedFile);
     }
 

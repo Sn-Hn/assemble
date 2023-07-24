@@ -1,6 +1,8 @@
 package com.assemble.category.entity;
 
 import com.assemble.category.domain.CategoryName;
+import com.assemble.category.dto.request.ModifiedCategoryRequest;
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.base.BaseUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,8 +34,13 @@ public class Category extends BaseUserEntity {
 
     public static Category createCategory(String name, Long creator) {
         Category category = new Category(new CategoryName(name));
-        category.create(creator);
+        category.createUser(creator);
 
         return category;
+    }
+
+    public void modify(ModifiedCategoryRequest modifiedCategoryRequest) {
+        this.name = new CategoryName(modifiedCategoryRequest.getCategoryName());
+        modifyUser(BaseRequest.getUserId());
     }
 }

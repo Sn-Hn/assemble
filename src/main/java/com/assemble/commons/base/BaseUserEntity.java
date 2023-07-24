@@ -33,12 +33,12 @@ public abstract class BaseUserEntity extends BaseDateEntity {
         this.modifier = modifier;
     }
 
-    public void create(Long creator) {
+    public void createUser(Long creator) {
         this.creator = creator;
         this.modifier = creator;
     }
 
-    public void modify(Long modifier) {
+    public void modifyUser(Long modifier) {
         this.modifier = modifier;
     }
 }

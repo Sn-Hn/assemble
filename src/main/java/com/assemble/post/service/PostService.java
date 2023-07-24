@@ -27,7 +27,7 @@ public class PostService {
     @Transactional(rollbackFor = AssembleException.class)
     public PostCreationResponse createPost(PostCreationRequest postCreationRequest) {
         Post post = postCreationRequest.toEntity();
-        post.create(post.getUser().getUserId());
+        post.createUser(post.getUser().getUserId());
 
         Post savedPost = postRepository.save(post);
         return new PostCreationResponse(savedPost);

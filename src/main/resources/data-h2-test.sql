@@ -32,7 +32,10 @@ VALUES ('tester02',
 INSERT INTO category(category_name)
 VALUES (
            '개발/프로그래밍'
-       );
+       ),
+        (
+            '프로젝트'
+        );
 
 INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period, is_deleted)
 VALUES (
