@@ -29,7 +29,8 @@ class PostRepositoryTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
 
         // when
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable);
+        long count = postRepository.count();
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable, count);
         Post searchPost = allPostBySearch.get().filter(post -> post.getTitle().getValue().contains(postSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
@@ -48,7 +49,8 @@ class PostRepositoryTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
 
         // when
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable);
+        long count = postRepository.count();
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable, count);
         Post searchPost = allPostBySearch.get().filter(post -> post.getContents().getValue().contains(postSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
@@ -67,7 +69,8 @@ class PostRepositoryTest {
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_작성자_검색();
 
         // when
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable);
+        long count = postRepository.count();
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable, count);
         Post searchPost = allPostBySearch.get().filter(post -> post.getUser().getUserId().equals(Long.valueOf(postSearchRequest.getSearchQuery())))
                 .findFirst().orElseThrow();
 

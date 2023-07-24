@@ -32,7 +32,13 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     @Override
-    public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable) {
+    public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable, long count) {
+        List<Post> posts = getPosts(postSearchRequest, pageable);
+
+        return new PageImpl<>(posts, pageable, count);
+    }
+
+    private List<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
         List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
@@ -55,8 +61,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                     return post;
                 })
                 .collect(Collectors.toUnmodifiableList());
-
-        return new PageImpl<>(posts, pageable, posts.size());
+        return posts;
     }
 
     private static BooleanExpression eqPostId() {

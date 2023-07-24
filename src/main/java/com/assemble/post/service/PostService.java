@@ -35,7 +35,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
-        Page<Post> posts = postRepository.findAllBySearch(postSearchRequest, pageable);
+        long count = postRepository.count();
+        Page<Post> posts = postRepository.findAllBySearch(postSearchRequest, pageable, count);
 
         return posts;
     }

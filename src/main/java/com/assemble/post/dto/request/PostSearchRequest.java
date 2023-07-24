@@ -8,10 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostSearchRequest {
 
-    @ApiModelProperty(value = "검색어", example = "제목")
+    @ApiModelProperty(value = "검색어 ex) title,writer,contents")
     private String searchQuery;
 
-    @ApiModelProperty(value = "검색할 주제", example = "title")
+    @ApiModelProperty(value = "검색할 주제 ex) 제목")
     private String searchBy;
 
     @ApiModelProperty(value = "카테고리 ID", example = "1")

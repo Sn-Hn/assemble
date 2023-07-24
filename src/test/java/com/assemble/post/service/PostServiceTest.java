@@ -65,7 +65,7 @@ class PostServiceTest {
         Pageable pageable = PageRequest.of(0, 12);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
         List<Post> postList = List.of(PostFixture.게시글());
-        given(postRepository.findAllBySearch(any(), any())).willReturn(new PageImpl<>(postList, pageable, pageable.getPageSize()));
+        given(postRepository.findAllBySearch(any(), any(), anyLong())).willReturn(new PageImpl<>(postList, pageable, pageable.getPageSize()));
 
 
         // when
