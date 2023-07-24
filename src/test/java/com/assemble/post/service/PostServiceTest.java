@@ -125,4 +125,26 @@ class PostServiceTest {
         // then
         assertThat(isDeletedPost).isTrue();
     }
+
+    @Test
+    void 특정_회원이_작성한_게시글_조회() {
+        // given
+        Long userId = 1L;
+        Pageable pageable = PageRequest.of(0, 12);
+        List<Post> posts = List.of(PostFixture.게시글());
+        given(postRepository.countByUserId(any())).willReturn(1L);
+        given(postRepository.findAllByUserId(anyLong(), any(), anyLong())).willReturn(new PageImpl<>(posts, pageable, pageable.getPageSize()));
+
+        // when
+        Page<Post> postsByUser = postService.getPostsByUser(userId, pageable);
+
+        // then
+        assertAll(
+                () -> assertThat(postsByUser).isNotEmpty(),
+                () -> assertThat(postsByUser.get().count()).isEqualTo(posts.size()),
+                () -> assertThat(postsByUser.get().findFirst().get()
+                        .getUser()
+                        .getUserId()).isEqualTo(userId)
+        );
+    }
 }

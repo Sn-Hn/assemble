@@ -21,6 +21,9 @@ public class PostsResponse {
     @ApiModelProperty(value = "게시글 내용")
     private String contents;
 
+    @ApiModelProperty(value = "작성자 ID")
+    private Long writerId;
+
     @ApiModelProperty(value = "작성자 닉네임")
     private String writerNickname;
 
@@ -56,6 +59,7 @@ public class PostsResponse {
                 post.getPostId(),
                 post.getTitle().getValue(),
                 post.getContents().getValue(),
+                post.getUser().getUserId(),
                 post.getUser().getNickName(),
                 post.getUser().toUserProfileResponse(),
                 post.getHits(),

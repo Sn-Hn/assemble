@@ -9,4 +9,7 @@ public interface PostCustomRepository {
 
     Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable, long count);
 
+    Page<Post> findAllByUserId(Long userId, Pageable pageable, long count);
+
+    long countByUserId(Long userId);
 }

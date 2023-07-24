@@ -56,4 +56,12 @@ public class PostController {
     public ApiResult<Boolean> deletePost(@PathVariable Long postId) {
         return ApiResult.ok(postService.deletePost(postId));
     }
+
+    @ApiOperation(value = "특정 회원이 쓴 글 조회")
+    @GetMapping(path = "user/{userId}")
+    public ApiResult<Page<PostsResponse>> getPostsByUser(@PathVariable Long userId,
+                                                         @PageableDefault(size = 12) Pageable pageable) {
+        return ApiResult.ok(postService.getPostsByUser(userId, pageable)
+                .map(PostsResponse::new));
+    }
 }

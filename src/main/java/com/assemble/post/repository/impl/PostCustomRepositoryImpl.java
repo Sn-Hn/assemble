@@ -38,11 +38,27 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return new PageImpl<>(posts, pageable, count);
     }
 
+    @Override
+    public Page<Post> findAllByUserId(Long userId, Pageable pageable, long count) {
+        List<Post> postsByUserId = getPostsByUserId(userId, pageable);
+
+        return new PageImpl<>(postsByUserId, pageable, count);
+    }
+
+    @Override
+    public long countByUserId(Long userId) {
+        Long count = queryFactory.select(QPost.post.count())
+                .from(QPost.post)
+                .where(eqUserId(userId))
+                .fetchOne();
+        return count;
+    }
+
     private List<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
         List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(eqUserId(), eqPostId())
+                .on(eqLikeUserId(BaseRequest.getUserId()), eqPostId())
                 .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
                         searchByCategory(postSearchRequest.getCategoryId()))
                 .orderBy(findOrder(pageable))
@@ -64,12 +80,41 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return posts;
     }
 
+    private List<Post> getPostsByUserId(Long userId, Pageable pageable) {
+        List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
+                .from(QPost.post)
+                .leftJoin(QLikes.likes)
+                .on(eqLikeUserId(BaseRequest.getUserId()), eqPostId())
+                .where(eqUserId(userId))
+                .orderBy(QPost.post.postId.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch()
+                .stream()
+                .map(tuple -> {
+                    Post post = tuple.get(QPost.post);
+
+                    Likes likes = tuple.get(QLikes.likes);
+                    if (post != null && likes != null) {
+                        post.setIsLike(true);
+                    }
+
+                    return post;
+                })
+                .collect(Collectors.toUnmodifiableList());
+        return posts;
+    }
+
+    private BooleanExpression eqUserId(Long userId) {
+        return QPost.post.user.userId.eq(userId);
+    }
+
     private static BooleanExpression eqPostId() {
         return QLikes.likes.post.postId.eq(QPost.post.postId);
     }
 
-    private static BooleanExpression eqUserId() {
-        return QLikes.likes.user.userId.eq(BaseRequest.getUserId());
+    private static BooleanExpression eqLikeUserId(Long userId) {
+        return QLikes.likes.user.userId.eq(userId);
     }
 
     private BooleanExpression searchByLike(String searchBy, String searchQuery) {

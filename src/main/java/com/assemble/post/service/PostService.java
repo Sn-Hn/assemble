@@ -73,4 +73,11 @@ public class PostService {
 
         return true;
     }
+
+    public Page<Post> getPostsByUser(Long userId, Pageable pageable) {
+        long count = postRepository.countByUserId(userId);
+        Page<Post> posts = postRepository.findAllByUserId(userId, pageable, count);
+
+        return posts;
+    }
 }

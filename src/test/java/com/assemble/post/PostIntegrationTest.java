@@ -195,4 +195,26 @@ public class PostIntegrationTest {
                         "response", is(true))
                 .log().all();
     }
+
+    @Test
+    void 특정_회원이_작성한_게시글_목록_조회() {
+        PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
+        Long userId = 1L;
+
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .pathParams("userId", userId)
+                .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
+                .log().all()
+        .when()
+                .config(config)
+                .get("post/user/{userId}")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "response.content[0].writerId", equalTo(userId.intValue()))
+                .log().all();
+    }
 }
