@@ -1,7 +1,5 @@
 package com.assemble.commons.exception;
 
-import com.assemble.commons.exception.NotFoundException;
-import com.assemble.commons.exception.UnauthenticationException;
 import com.assemble.commons.response.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -29,10 +27,16 @@ public class AssembleExceptionHandler {
         return newResponse(e, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<?> handleExpiredRefreshTokenException(Exception e) {
+        return newResponse(e, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     private ResponseEntity<ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
         log.error("error={}", throwable.getMessage(), throwable);

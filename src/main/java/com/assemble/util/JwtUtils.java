@@ -22,7 +22,7 @@ public class JwtUtils {
         return Arrays.stream(request.getCookies())
                 .filter(cookies -> cookies.getName().equals(jwtType.getCode()))
                 .findAny()
-                .orElseThrow(() -> new NotFoundException(JwtType.class, jwtType))
+                .orElseThrow(() -> new NotFoundException(JwtType.REFRESH_TOKEN.getCode(), jwtType))
                 .getValue();
     }
 
