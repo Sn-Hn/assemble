@@ -35,6 +35,7 @@ public class AssembleExceptionHandler {
     }
 
     private ResponseEntity<ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
+        log.error("error={}", throwable.getMessage(), throwable);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<>(ApiResult.error(throwable, status), headers, status);

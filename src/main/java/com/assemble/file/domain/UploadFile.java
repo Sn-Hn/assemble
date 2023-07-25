@@ -1,6 +1,7 @@
 package com.assemble.file.domain;
 
 import com.assemble.file.entity.AttachedFile;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+@Slf4j
 @Component
 public class UploadFile {
 
@@ -22,12 +24,14 @@ public class UploadFile {
     public AttachedFile upload(MultipartFile multipartFile) {
         verifyEmptyFile(multipartFile);
         createDirectory();
+        log.info("file path={}", basePath);
         try {
             String originalFilename = multipartFile.getOriginalFilename();
             String defaultExtension = multipartFile.getContentType();
             String fileName = createFileName(defaultExtension, originalFilename);
             String fileFullpath = basePath + "/" + fileName;
             long size = multipartFile.getSize();
+            log.info("file full path={}", fileFullpath);
             multipartFile.transferTo(new File(fileFullpath));
             return new AttachedFile(basePath, fileFullpath, originalFilename, size, fileName);
         } catch (IOException e) {
@@ -61,9 +65,7 @@ public class UploadFile {
         File file = new File(basePath);
 
         if (!file.exists()) {
-            boolean mkdirs = file.mkdirs();
-
-            System.out.println(mkdirs);
+            file.mkdirs();
         }
     }
 
