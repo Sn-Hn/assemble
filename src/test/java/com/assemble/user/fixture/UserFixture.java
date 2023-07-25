@@ -23,15 +23,15 @@ public class UserFixture {
     private static final String phoneNumber = "01011112222";
     private static final String nickname = "test developer";
     private static final String secondNickname = "test developer2";
-
+    private static final String birthDate = "20000101";
     private static final String duplicationNickname = "test01";
 
     public static SignupRequest 회원가입_정상_신청_회원() {
-        return new SignupRequest(email, name, nickname, phoneNumber, password);
+        return new SignupRequest(email, name, nickname, phoneNumber, password, birthDate);
     }
 
     public static SignupRequest 회원가입_정상_신청_두번째_회원() {
-        return new SignupRequest(secondEmail, name, secondNickname, phoneNumber, password);
+        return new SignupRequest(secondEmail, name, secondNickname, phoneNumber, password, birthDate);
     }
 
     public static LoginRequest 로그인_시도_회원() {
@@ -54,6 +54,7 @@ public class UserFixture {
                 nickname,
                 new Password(password, passwordEncoder),
                 new PhoneNumber(phoneNumber),
+                new BirthDate(birthDate),
                 UserRole.USER,
                 UserStatus.NORMAL,
                 new ArrayList<>()

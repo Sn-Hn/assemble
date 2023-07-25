@@ -46,6 +46,9 @@ public class User extends BaseDateEntity {
     @Embedded
     private PhoneNumber phoneNumber;
 
+    @Embedded
+    private BirthDate birthDate;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -62,12 +65,12 @@ public class User extends BaseDateEntity {
         this.userId = userId;
     }
 
-    public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber) {
-        this(null, email, name, nickName, password, phoneNumber, UserRole.USER, UserStatus.NORMAL, new ArrayList<>());
+    public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber, BirthDate birthDate) {
+        this(null, email, name, nickName, password, phoneNumber, birthDate, UserRole.USER, UserStatus.NORMAL, new ArrayList<>());
     }
 
     public User(Email email, Password password) {
-        this(email, null, null, password, null);
+        this(email, null, null, password, null, null);
     }
 
     public static User createUser(SignupRequest signupRequest, PasswordEncoder passwordEncoder) {
@@ -76,7 +79,8 @@ public class User extends BaseDateEntity {
                 new Name(signupRequest.getName()),
                 signupRequest.getNickname(),
                 new Password(signupRequest.getPassword(), passwordEncoder),
-                new PhoneNumber(signupRequest.getPhoneNumber())
+                new PhoneNumber(signupRequest.getPhoneNumber()),
+                new BirthDate(signupRequest.getBirthDate())
         );
     }
 

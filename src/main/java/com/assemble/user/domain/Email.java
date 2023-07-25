@@ -19,7 +19,7 @@ public class Email {
 
     public Email(String value) {
         verifyEmptyEmail(value);
-        verifyEmailFormat(value);
+        verifyEmailForm(value);
         this.value = value;
     }
 
@@ -33,9 +33,9 @@ public class Email {
         }
     }
 
-    private void verifyEmailFormat(String email) {
+    private void verifyEmailForm(String email) {
         if (!pattern.matcher(email).matches()) {
-            throw new IllegalArgumentException("invalid format email");
+            throw new IllegalArgumentException("invalid form email");
         }
     }
 }

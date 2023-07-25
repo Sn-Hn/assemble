@@ -18,7 +18,7 @@ public class Password {
 
     public Password(String value, PasswordEncoder passwordEncoder) {
         verifyEmptyPassword(value);
-        verifyPasswordFormat(value);
+        verifyPasswordForm(value);
         this.value = passwordEncoder.encode(value);
     }
 
@@ -31,9 +31,9 @@ public class Password {
         }
     }
 
-    private void verifyPasswordFormat(String password) {
+    private void verifyPasswordForm(String password) {
         if (!pattern.matcher(password).matches()) {
-            throw new IllegalArgumentException("invalid format password");
+            throw new IllegalArgumentException("invalid form password");
         }
     }
 

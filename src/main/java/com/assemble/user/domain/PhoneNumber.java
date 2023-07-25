@@ -16,7 +16,7 @@ public class PhoneNumber {
     private String value;
 
     public PhoneNumber(String value) {
-        verifyPhoneNumberFormat(value);
+        verifyPhoneNumberForm(value);
         this.value = value;
     }
 
@@ -33,9 +33,9 @@ public class PhoneNumber {
         }
     }
 
-    private void verifyPhoneNumberFormat(String phoneNumber) {
+    private void verifyPhoneNumberForm(String phoneNumber) {
         if (!pattern.matcher(phoneNumber).matches()) {
-            throw new IllegalArgumentException("invalid format phoneNumber");
+            throw new IllegalArgumentException("invalid form phoneNumber");
         }
     }
 }

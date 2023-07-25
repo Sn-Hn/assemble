@@ -29,6 +29,9 @@ public class SignupRequest {
     @ApiModelProperty(value = "비밀번호", required = true)
     private String password;
 
+    @ApiModelProperty(value = "생년월일", required = true)
+    private String birthDate;
+
     public SignupRequest() {
     }
 
