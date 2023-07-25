@@ -9,6 +9,9 @@ import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "USERS")
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE users SET status = 'WITHDRAWAL' WHERE user_Id = ?")
+@Where(clause = "status != 'WITHDRAWAL'")
 public class User extends BaseDateEntity {
 
     @Id
@@ -44,6 +49,9 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @OneToMany(mappedBy = "user")
     private List<UserImage> profiles = new ArrayList<>();
 
@@ -55,7 +63,7 @@ public class User extends BaseDateEntity {
     }
 
     public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber) {
-        this(null, email, name, nickName, password, phoneNumber, UserRole.USER, new ArrayList<>());
+        this(null, email, name, nickName, password, phoneNumber, UserRole.USER, UserStatus.NORMAL, new ArrayList<>());
     }
 
     public User(Email email, Password password) {

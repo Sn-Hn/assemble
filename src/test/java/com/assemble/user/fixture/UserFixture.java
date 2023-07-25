@@ -55,6 +55,7 @@ public class UserFixture {
                 new Password(password, passwordEncoder),
                 new PhoneNumber(phoneNumber),
                 UserRole.USER,
+                UserStatus.NORMAL,
                 new ArrayList<>()
         );
     }

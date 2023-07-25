@@ -71,4 +71,12 @@ public class UserService {
 
         return user;
     }
+
+    @Transactional(rollbackFor = AssembleException.class)
+    public boolean withdrawUser(Long userId) {
+        User user = new User(userId);
+        userRepository.delete(user);
+
+        return true;
+    }
 }
