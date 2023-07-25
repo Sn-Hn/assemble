@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class BirthDate {
 
     @Transient
-    private final Pattern pattern = Pattern.compile("/^(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])$/;");
+    private final Pattern pattern = Pattern.compile("^(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])$");
 
     @Column(name = "birthDate")
     private String value;
