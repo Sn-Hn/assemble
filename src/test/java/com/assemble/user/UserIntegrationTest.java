@@ -192,4 +192,21 @@ public class UserIntegrationTest {
                         "response.userId", equalTo(userId.intValue()))
                 .log().all();
     }
+
+    @Test
+    void 회원_탈퇴() {
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecFromWithdrawUser(jwtService))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .log().all()
+        .when()
+                .delete("user/withdrawal")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response", equalTo(true))
+                .log().all();
+    }
 }
