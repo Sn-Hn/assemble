@@ -19,7 +19,6 @@ public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
         this.jpaQueryFactory = new JPAQueryFactory(em);
     }
 
-
     @Override
     public Optional<Likes> findPostByUser(PostLikeRequest postLikeRequest) {
         return jpaQueryFactory.selectFrom(QLikes.likes)

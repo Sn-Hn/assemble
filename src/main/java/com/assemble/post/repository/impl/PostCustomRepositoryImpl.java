@@ -9,6 +9,8 @@ import com.assemble.post.entity.Post;
 import com.assemble.post.entity.QLikes;
 import com.assemble.post.entity.QPost;
 import com.assemble.post.repository.PostCustomRepository;
+import com.assemble.user.entity.QUser;
+import com.assemble.user.entity.User;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -68,8 +70,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .stream()
                 .map(tuple -> {
                     Post post = tuple.get(QPost.post);
-
                     Likes likes = tuple.get(QLikes.likes);
+
                     if (post != null && likes != null) {
                         post.setIsLike(true);
                     }
@@ -93,8 +95,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .stream()
                 .map(tuple -> {
                     Post post = tuple.get(QPost.post);
-
                     Likes likes = tuple.get(QLikes.likes);
+
                     if (post != null && likes != null) {
                         post.setIsLike(true);
                     }
@@ -110,7 +112,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     private static BooleanExpression eqPostId() {
-        return QLikes.likes.post.postId.eq(QPost.post.postId);
+        return QPost.post.postId.eq(QLikes.likes.post.postId);
     }
 
     private static BooleanExpression eqLikeUserId(Long userId) {

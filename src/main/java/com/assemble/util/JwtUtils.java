@@ -29,7 +29,7 @@ public class JwtUtils {
     public static String getAccessTokenFromHeader(HttpServletRequest request) {
         String header = request.getHeader(AUTH);
         if (!StringUtils.hasText(header)) {
-            throw new UnauthorizedException();
+            return null;
         }
         return header.replace(BEARER, BLANK).trim();
     }

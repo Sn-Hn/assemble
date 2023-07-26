@@ -4,6 +4,7 @@ import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.exception.UnauthorizedException;
 import com.assemble.commons.exclusion.ExclusionApis;
+import com.assemble.user.domain.UserRole;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -43,6 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String servletPath = request.getServletPath();
         String method = request.getMethod();
+        BaseRequest.setRole(UserRole.GUEST);
+
+        if (JwtUtils.getAccessTokenFromHeader(request) != null) {
+            BaseRequest.setRole(UserRole.USER);
+            return false;
+        }
 
         if (servletPath.contains("swagger") || servletPath.contains("api-docs")) {
             return true;
@@ -51,9 +58,8 @@ public class JwtFilter extends OncePerRequestFilter {
         AntPathMatcher matcher = new AntPathMatcher();
         Map<String, String> exclusionApi = this.exclusionApis.getExclusionApis();
 
-        boolean check = exclusionApi.keySet().stream()
+        return exclusionApi.keySet().stream()
                 .anyMatch(key -> matcher.match(key, servletPath)
                         && exclusionApi.get(key).contains(method.toUpperCase()));
-        return check;
     }
 }

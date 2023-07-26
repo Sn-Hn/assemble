@@ -22,7 +22,7 @@ public class PostLikeService {
     public boolean likePost(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity();
         if (isAleadyLikeByUser(postLikeRequest)) {
-            return false;
+            throw new IllegalArgumentException("this post is already like");
         }
 
         postLikeRepository.save(postLike);
@@ -37,12 +37,10 @@ public class PostLikeService {
 
     @Transactional(rollbackFor = AssembleException.class)
     public boolean cancelLikePost(PostLikeRequest postLikeRequest) {
-        Likes postLike = postLikeRequest.toEntity();
-        if (!isAleadyLikeByUser(postLikeRequest)) {
-            return false;
-        }
+        Likes likes = postLikeRepository.findPostByUser(postLikeRequest)
+                .orElseThrow(() -> new IllegalArgumentException("this post didn't like it"));
 
-        postLikeRepository.delete(postLike);
+        postLikeRepository.delete(likes);
 
         Post post = postRepository.findById(postLikeRequest.getPostId())
                 .orElseThrow(() -> new NotFoundException(Post.class, postLikeRequest.getPostId()));

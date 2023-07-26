@@ -22,6 +22,11 @@ public class AssembleExceptionHandler {
         return newResponse(e, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<?> handleUnauthorizedExceptionException(Exception e) {
+        return newResponse(e, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgumentException(Exception e) {
         return newResponse(e, HttpStatus.BAD_REQUEST);
