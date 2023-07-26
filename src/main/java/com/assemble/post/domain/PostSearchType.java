@@ -10,7 +10,7 @@ import java.util.function.Function;
 public enum PostSearchType {
     TITLE("title", (search) -> QPost.post.title.value.like("%" + search + "%")),
     CONTENTS("contents", (search) -> QPost.post.contents.value.like("%" + search + "%")),
-    WRITER("writer", (search) -> QPost.post.user.userId.eq(Long.valueOf(search)));
+    WRITER("writer", (search) -> QPost.post.user.nickname.like("%" + search + "%"));
 
     private String type;
 
