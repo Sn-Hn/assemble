@@ -9,7 +9,6 @@ import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +37,7 @@ public class User extends BaseDateEntity {
     private Name name;
 
     @Column(name="NICKNAME")
-    private String nickName;
+    private String nickname;
 
     @Embedded
     private Password password;
@@ -65,8 +64,8 @@ public class User extends BaseDateEntity {
         this.userId = userId;
     }
 
-    public User(Email email, Name name, String nickName, Password password, PhoneNumber phoneNumber, BirthDate birthDate) {
-        this(null, email, name, nickName, password, phoneNumber, birthDate, UserRole.USER, UserStatus.NORMAL, new ArrayList<>());
+    public User(Email email, Name name, String nickname, Password password, PhoneNumber phoneNumber, BirthDate birthDate) {
+        this(null, email, name, nickname, password, phoneNumber, birthDate, UserRole.USER, UserStatus.NORMAL, new ArrayList<>());
     }
 
     public User(Email email, Password password) {

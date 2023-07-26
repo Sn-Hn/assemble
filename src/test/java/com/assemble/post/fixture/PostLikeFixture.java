@@ -1,5 +1,6 @@
 package com.assemble.post.fixture;
 
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.entity.Likes;
 import com.assemble.post.entity.Post;
@@ -11,11 +12,13 @@ public class PostLikeFixture {
     private static final Long aleadyLikeUserId = 1L;
 
     public static PostLikeRequest 게시글_좋아요_요청() {
-        return new PostLikeRequest(postId, userId);
+        BaseRequest.setUserId(userId);
+        return new PostLikeRequest(postId);
     }
 
     public static PostLikeRequest 게시글_좋아요_취소_요청() {
-        return new PostLikeRequest(postId, aleadyLikeUserId);
+        BaseRequest.setUserId(aleadyLikeUserId);
+        return new PostLikeRequest(postId);
     }
 
     public static Likes 좋아요_객체() {

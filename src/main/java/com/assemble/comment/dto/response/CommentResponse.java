@@ -8,7 +8,6 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -41,7 +40,7 @@ public class CommentResponse {
                 comment.getUser().getUserId(),
                 comment.getCommentId(),
                 comment.getContents(),
-                comment.getUser().getNickName(),
+                comment.getUser().getNickname(),
                 comment.getCreatedDate(),
                 comment.getUser().toUserProfileResponse()
         );

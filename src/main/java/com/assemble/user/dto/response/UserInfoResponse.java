@@ -2,7 +2,6 @@ package com.assemble.user.dto.response;
 
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.user.entity.User;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -33,7 +32,7 @@ public class UserInfoResponse {
                 user.getEmail().getValue(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.getNickName(),
+                user.getNickname(),
                 user.getName().getValue(),
                 user.getProfiles().stream()
                         .filter(postImage -> postImage.getFile() != null)

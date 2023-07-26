@@ -54,7 +54,7 @@ class PostServiceTest {
                 () -> assertThat(response.getTitle()).isEqualTo(postCreationRequest.getTitle()),
                 () -> assertThat(response.getContents()).isEqualTo(postCreationRequest.getContents()),
                 () -> assertThat(response.getCategoryId()).isEqualTo(postCreationRequest.getCategoryId()),
-                () -> assertThat(response.getWriterId()).isEqualTo(postCreationRequest.getWriter())
+                () -> assertThat(response.getWriterId()).isEqualTo(BaseRequest.getUserId())
 
         );
     }

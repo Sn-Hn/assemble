@@ -1,6 +1,5 @@
 package com.assemble.auth.dto.response;
 
-import com.assemble.auth.domain.Token;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.user.entity.User;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApiModel(value = "LoginResponse : 로그인 응답 값")
 @Getter
@@ -46,7 +44,7 @@ public class LoginResponse {
                 user.getEmail().getValue(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.getNickName(),
+                user.getNickname(),
                 user.getName().getValue(),
                 user.toUserProfileResponse(),
                 token
@@ -59,7 +57,7 @@ public class LoginResponse {
                 user.getEmail().getValue(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.getNickName(),
+                user.getNickname(),
                 user.getName().getValue(),
                 user.toUserProfileResponse(),
                 null

@@ -48,8 +48,8 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원 탈퇴")
-    @DeleteMapping("user/withdrawal/{userId}")
-    public ApiResult<Boolean> withdrawUser(@PathVariable Long userId) {
-        return ApiResult.ok(userService.withdrawUser(userId));
+    @DeleteMapping("user/withdrawal")
+    public ApiResult<Boolean> withdrawUser() {
+        return ApiResult.ok(userService.withdrawUser());
     }
 }

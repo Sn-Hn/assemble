@@ -60,7 +60,7 @@ public class PostsResponse {
                 post.getTitle().getValue(),
                 post.getContents().getValue(),
                 post.getUser().getUserId(),
-                post.getUser().getNickName(),
+                post.getUser().getNickname(),
                 post.getUser().toUserProfileResponse(),
                 post.getHits(),
                 post.getLikes(),

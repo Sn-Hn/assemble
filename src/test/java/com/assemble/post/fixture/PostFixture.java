@@ -1,6 +1,7 @@
 package com.assemble.post.fixture;
 
 import com.assemble.category.entity.Category;
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.Title;
 import com.assemble.post.dto.request.ModifiedPostRequest;
@@ -34,22 +35,22 @@ public class PostFixture {
     private static final String searchByWriter = "writer";
 
     public static PostCreationRequest 게시글_작성_사진_X() {
+        BaseRequest.setUserId(writer);
         return new PostCreationRequest(
                 title,
                 contents,
                 categoryId,
-                writer,
                 personnelNumber,
                 expectedPeriod
         );
     }
 
     public static PostCreationRequest 게시글_작성_사진_O() throws IOException {
+        BaseRequest.setUserId(writer);
         return new PostCreationRequest(
                 title,
                 contents,
                 categoryId,
-                writer,
                 personnelNumber,
                 expectedPeriod
         );

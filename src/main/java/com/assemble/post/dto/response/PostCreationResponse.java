@@ -45,7 +45,7 @@ public class PostCreationResponse {
                 post.getTitle().getValue(),
                 post.getContents().getValue(),
                 post.getCategory().getId(),
-                post.getUser().getNickName(),
+                post.getUser().getNickname(),
                 post.getUser().getUserId(),
                 post.getHits(),
                 0L,

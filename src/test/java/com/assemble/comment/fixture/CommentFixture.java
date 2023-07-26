@@ -14,7 +14,7 @@ public class CommentFixture {
     private static final String contents = "댓글입니다!!!!";
 
     public static CommentCreationRequest 댓글_생성_요청() {
-        return new CommentCreationRequest(postId, userId, contents);
+        return new CommentCreationRequest(postId, contents);
     }
 
     public static Comment 댓글_조회() {

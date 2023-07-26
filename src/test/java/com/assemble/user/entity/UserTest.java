@@ -40,7 +40,7 @@ class UserTest {
                 () -> assertThat(user).isNotNull(),
                 () -> assertThat(user.getEmail().getValue()).isEqualTo(signupRequest.getEmail()),
                 () -> assertThat(user.getName().getValue()).isEqualTo(signupRequest.getName()),
-                () -> assertThat(user.getNickName()).isEqualTo(signupRequest.getNickname()),
+                () -> assertThat(user.getNickname()).isEqualTo(signupRequest.getNickname()),
                 () -> assertThat(user.getPhoneNumber().getValue()).isEqualTo(signupRequest.getPhoneNumber()),
                 () -> assertThatCode(() -> user.getPassword().isComparePassword(signupRequest.getPassword(), passwordEncoder)).doesNotThrowAnyException()
         );

@@ -46,7 +46,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
-        PostLikeRequest postLikeRequest = new PostLikeRequest(postId, BaseRequest.getUserId());
+        PostLikeRequest postLikeRequest = new PostLikeRequest(postId);
         post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));
 
         // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한

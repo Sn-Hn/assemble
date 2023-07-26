@@ -41,7 +41,7 @@ public class SignupResponse {
                 user.getUserId(),
                 user.getEmail().getValue(),
                 user.getName().getValue(),
-                user.getNickName(),
+                user.getNickname(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
                 user.toUserProfileResponse()

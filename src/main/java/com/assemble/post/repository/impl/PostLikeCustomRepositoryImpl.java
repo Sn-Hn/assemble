@@ -1,9 +1,9 @@
 package com.assemble.post.repository.impl;
 
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.entity.Likes;
 import com.assemble.post.entity.QLikes;
-import com.assemble.post.entity.QPost;
 import com.assemble.post.repository.PostLikeCustomRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,18 +23,18 @@ public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
     @Override
     public Optional<Likes> findPostByUser(PostLikeRequest postLikeRequest) {
         return jpaQueryFactory.selectFrom(QLikes.likes)
-                .where(searchByUserId(postLikeRequest.getUserId()),
+                .where(searchByUserId(BaseRequest.getUserId()),
                         searchByPostId(postLikeRequest.getPostId()))
                 .fetch()
                 .stream().findFirst();
     }
 
     private BooleanExpression searchByUserId(Long userId) {
-        if (userId == null) {
+        if (userId == null || userId <= 0) {
             throw new IllegalArgumentException();
         }
 
-        return QPost.post.user.userId.eq(userId);
+        return QLikes.likes.user.userId.eq(userId);
     }
 
     private BooleanExpression searchByPostId(Long postId) {
@@ -42,6 +42,6 @@ public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
             throw new IllegalArgumentException();
         }
 
-        return QPost.post.postId.eq(postId);
+        return QLikes.likes.post.postId.eq(postId);
     }
 }

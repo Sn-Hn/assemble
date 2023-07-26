@@ -1,5 +1,6 @@
 package com.assemble.user.service;
 
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
@@ -73,8 +74,8 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = AssembleException.class)
-    public boolean withdrawUser(Long userId) {
-        User user = new User(userId);
+    public boolean withdrawUser() {
+        User user = new User(BaseRequest.getUserId());
         userRepository.delete(user);
 
         return true;

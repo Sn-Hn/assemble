@@ -1,6 +1,7 @@
 package com.assemble.post.dto.request;
 
 import com.assemble.category.entity.Category;
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.Title;
 import com.assemble.post.entity.Post;
@@ -26,9 +27,6 @@ public class PostCreationRequest {
     @ApiModelProperty(value = "게시글 카테고리", required = true, example = "1")
     private Long categoryId;
 
-    @ApiModelProperty(value = "작성자", required = true, example = "1")
-    private Long writer;
-
     @ApiModelProperty(value = "모집 인원", example = "0")
     private int personnelNumber;
 
@@ -42,7 +40,7 @@ public class PostCreationRequest {
         return new Post(
                 new Title(this.title),
                 new Contents(this.contents),
-                new User(this.writer),
+                new User(BaseRequest.getUserId()),
                 this.personnelNumber,
                 this.expectedPeriod,
                 new Category(categoryId)

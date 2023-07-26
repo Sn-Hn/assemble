@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class UserFixture {
     private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private static final Long userId = 1L;
+    private static final Long withdrawUserId = 3L;
     private static final String email = "test@test.com";
     private static final String secondEmail = "test2@test.com";
     private static final String successLoginEmail = "test00@gmail.com";
@@ -49,6 +50,21 @@ public class UserFixture {
     public static User 회원() {
         return new User(
                 userId,
+                new Email(email),
+                new Name(name),
+                nickname,
+                new Password(password, passwordEncoder),
+                new PhoneNumber(phoneNumber),
+                new BirthDate(birthDate),
+                UserRole.USER,
+                UserStatus.NORMAL,
+                new ArrayList<>()
+        );
+    }
+
+    public static User 탈퇴할_회원() {
+        return new User(
+                withdrawUserId,
                 new Email(email),
                 new Name(name),
                 nickname,
