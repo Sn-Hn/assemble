@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @ApiModel(value = "LoginRequest : 회원가입 요청 값")
 @Getter
-@ToString
 @AllArgsConstructor
 public class LoginRequest {
 

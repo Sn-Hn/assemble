@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @AllArgsConstructor
-@ToString
 public class SignupRequest {
     @ApiModelProperty(value = "이메일", required = true)
     private String email;
