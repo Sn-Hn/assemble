@@ -22,8 +22,8 @@ ext {
 
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
+    from "build/docs/asciidoc"
+    into "src/main/resources/static/docs"
 }
 
 asciidoctor {
@@ -41,6 +41,10 @@ bootJar {
         from "${asciidoctor.outputDir}"
         into 'BOOT-INF/classes/static/docs'
     }
+}
+
+build {
+    dependsOn copyDocument
 }
 
 repositories {
