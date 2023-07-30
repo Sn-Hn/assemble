@@ -29,18 +29,6 @@ public class UserController {
         return ApiResult.ok(SignupResponse.from(userService.signup(signupRequest, profileImage)), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "이메일 검증")
-    @GetMapping("email/validation")
-    public ApiResult<Boolean> validateUserEmail(EmailRequest emailRequest) {
-        return ApiResult.ok(userService.isDuplicationEmail(emailRequest.getEmail()));
-    }
-
-    @ApiOperation(value = "닉네임 검증")
-    @GetMapping("nickname/validation")
-    public ApiResult<Boolean> validateUserEmail(NicknameRequest nicknameRequest) {
-        return ApiResult.ok(userService.isDuplicationNickname(nicknameRequest.getNickname()));
-    }
-
     @ApiOperation(value = "회원 정보 조회")
     @GetMapping("user/{userId}")
     public ApiResult<UserInfoResponse> getUserInfo(@PathVariable Long userId) {

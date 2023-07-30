@@ -21,4 +21,9 @@ public class FileFixture {
         File file = File_생성();
         return new MockMultipartFile(file.getName(), file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
     }
+
+    public static MockMultipartFile MockMultipartFile_생성() throws IOException {
+        File file = File_생성();
+        return new MockMultipartFile(file.getName(), file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
+    }
 }

@@ -2,13 +2,11 @@ package com.assemble.user.controller;
 
 import com.assemble.commons.AccessTokenFixture;
 import com.assemble.commons.filter.JwtFilter;
-import com.assemble.user.dto.request.EmailRequest;
-import com.assemble.user.dto.request.NicknameRequest;
+import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.service.UserService;
-import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -60,10 +58,11 @@ public class UserControllerTest {
         User user = UserFixture.회원();
         given(userService.signup(any(), any())).willReturn(user);
 
-        ResultActions perform = mockMvc.perform(post("/signup")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(signupRequest)));
+        ResultActions perform = mockMvc.perform(multipart("/signup")
+                        .file(FileFixture.MockMultipartFile_생성())
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .content(objectMapper.writeValueAsString(signupRequest)));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
@@ -95,66 +94,14 @@ public class UserControllerTest {
     }
 
     @Test
-    void 이메일_중복_아님() throws Exception {
-        EmailRequest emailRequest = UserFixture.중복_아닌_이메일();
-        given(userService.isDuplicationEmail(any())).willReturn(false);
-
-        ResultActions perform = mockMvc.perform(get("/email/validation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .params(MultiValueMapConverter.convert(objectMapper, emailRequest)));
-
-        perform.andDo(print())
-                .andExpect(jsonPath("$.success").value(true))
-                        .andExpect(jsonPath("$.response").value(false));
-
-        perform.andDo(document("/email/validation",
-                requestParameters(
-                        parameterWithName("email").description("이메일")
-                ),
-                responseFields(
-                        fieldWithPath("success").description("성공 여부"),
-                        fieldWithPath("status").description("상태값"),
-                        fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response").description("이메일 중복 여부")
-                ))
-        );
-    }
-
-    @Test
-    void 닉네임_중복_아님() throws Exception {
-        NicknameRequest nicknameRequest = UserFixture.중복_아닌_닉네임();
-        given(userService.isDuplicationNickname(any())).willReturn(false);
-
-        ResultActions perform = mockMvc.perform(get("/nickname/validation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .params(MultiValueMapConverter.convert(objectMapper, nicknameRequest)));
-
-        perform.andDo(print())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.response").value(false));
-
-        perform.andDo(document("/nickname/validation",
-                requestParameters(
-                        parameterWithName("nickname").description("닉네임")
-                ),
-                responseFields(
-                        fieldWithPath("success").description("성공 여부"),
-                        fieldWithPath("status").description("상태값"),
-                        fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response").description("닉네임 중복 여부")
-                ))
-        );
-    }
-
-    @Test
     void 특정_회원_조회() throws Exception {
         Long userId = 1L;
         User user = UserFixture.회원();
         given(userService.findUserInfo(any())).willReturn(user);
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/user/{userId}", userId)
-                .header("accessToken", AccessTokenFixture.AccessToken_생성())
-                .contentType(MediaType.APPLICATION_JSON));
+                        .header("accessToken", AccessTokenFixture.AccessToken_생성())
+                        .contentType(MediaType.APPLICATION_JSON));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
@@ -187,9 +134,9 @@ public class UserControllerTest {
         given(userService.withdrawUser()).willReturn(true);
 
         ResultActions perform = mockMvc.perform(delete("/user/withdrawal")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .header("accessToken", AccessTokenFixture.AccessToken_생성())
-                .contentType(MediaType.APPLICATION_JSON));
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .header("accessToken", AccessTokenFixture.AccessToken_생성())
+                        .contentType(MediaType.APPLICATION_JSON));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))

@@ -33,6 +33,9 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private VerificationService verificationService;
+
+    @Mock
     private FileService fileService;
 
     @Spy
@@ -57,62 +60,6 @@ class UserServiceTest {
                 () -> assertThat(signupUser.getEmail().getValue()).isEqualTo(signupRequest.getEmail()),
                 () -> assertThat(signupUser.getName().getValue()).isEqualTo(signupRequest.getName())
         );
-    }
-
-    @Test
-    void 이메일_중복_아님() {
-        // given
-        User user = UserFixture.회원();
-        String email = user.getEmail().getValue();
-        given(userRepository.findByEmail(any())).willReturn(Optional.of(user));
-
-        // when
-        boolean isDuplicationEmail = userService.isDuplicationEmail(email);
-
-        // then
-        assertThat(isDuplicationEmail).isTrue();
-    }
-
-    @Test
-    void 이메일_중복() {
-        // given
-        User user = UserFixture.회원();
-        String email = user.getEmail().getValue();
-        given(userRepository.findByEmail(any())).willReturn(Optional.empty());
-
-        // when
-        boolean isDuplicationEmail = userService.isDuplicationEmail(email);
-
-        // then
-        assertThat(isDuplicationEmail).isFalse();
-    }
-
-    @Test
-    void 닉네임_중복_아님() {
-        // given
-        User user = UserFixture.회원();
-        String nickname = user.getNickname();
-        given(userRepository.findByNickname(any())).willReturn(Optional.of(user));
-
-        // when
-        boolean isDuplicationNickname = userService.isDuplicationNickname(nickname);
-
-        // then
-        assertThat(isDuplicationNickname).isTrue();
-    }
-
-    @Test
-    void 닉네임_중복() {
-        // given
-        User user = UserFixture.회원();
-        String nickname = user.getNickname();
-        given(userRepository.findByNickname(any())).willReturn(Optional.empty());
-
-        // when
-        boolean isDuplicationNickname = userService.isDuplicationNickname(nickname);
-
-        // then
-        assertThat(isDuplicationNickname).isFalse();
     }
 
     @Test
