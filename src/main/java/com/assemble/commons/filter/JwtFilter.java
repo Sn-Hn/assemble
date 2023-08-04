@@ -56,6 +56,9 @@ public class JwtFilter extends OncePerRequestFilter {
             BaseRequest.setRole(UserRole.USER);
             return false;
         }
+        
+        BaseRequest.setUserId(-1L);
+        BaseRequest.setEmail(null);
 
         if (servletPath.contains("swagger") ||servletPath.contains("docs")) {
             return true;
