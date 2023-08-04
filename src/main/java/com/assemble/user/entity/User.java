@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Table(name = "USERS")
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE users SET status = 'WITHDRAWAL' WHERE user_Id = ?")
-@Where(clause = "status != 'WITHDRAWAL'")
+//@Where(clause = "status != 'WITHDRAWAL'")
 public class User extends BaseDateEntity {
 
     @Id
@@ -54,7 +54,7 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<UserImage> profiles = new ArrayList<>();
 
     public User() {

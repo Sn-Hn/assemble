@@ -1,10 +1,10 @@
 package com.assemble.auth.service;
 
-import com.assemble.auth.dto.response.LoginResponse;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.user.domain.Email;
 import com.assemble.auth.dto.request.LoginRequest;
+import com.assemble.user.domain.UserStatus;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,10 @@ public class AuthService {
         Email email = new Email(loginRequest.getEmail());
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(User.class, email));
+
+        if (user.getStatus().equals(UserStatus.WITHDRAWAL)) {
+            throw new NotFoundException("withdrawal user", user.getUserId(), user.getNickname());
+        }
 
         user.login(loginRequest, passwordEncoder);
 
