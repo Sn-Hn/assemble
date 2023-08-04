@@ -15,7 +15,8 @@ public class UserFixture {
     private static final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private static final Long userId = 1L;
     private static final Long withdrawUserId = 3L;
-    private static final String email = "test@test.com";
+    private static final String email = "test1@test.com";
+    private static final String notDuplicationEmail = "test10012@test.com";
     private static final String secondEmail = "test2@test.com";
     private static final String successLoginEmail = "test00@gmail.com";
     private static final String password = "password1!";
@@ -23,6 +24,7 @@ public class UserFixture {
     private static final String name = "test";
     private static final String phoneNumber = "01011112222";
     private static final String nickname = "test developer";
+    private static final String notDuplicationNickname = "닉네임";
     private static final String secondNickname = "test developer2";
     private static final String birthDate = "20000101";
     private static final String duplicationNickname = "test01";
@@ -78,7 +80,7 @@ public class UserFixture {
     }
 
     public static EmailRequest 중복_아닌_이메일() {
-        return new EmailRequest(email);
+        return new EmailRequest(notDuplicationEmail);
     }
 
     public static EmailRequest 중복_이메일() {
@@ -86,7 +88,7 @@ public class UserFixture {
     }
 
     public static NicknameRequest 중복_아닌_닉네임() {
-        return new NicknameRequest(nickname);
+        return new NicknameRequest(notDuplicationNickname);
     }
 
     public static NicknameRequest 중복_닉네임() {

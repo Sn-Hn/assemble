@@ -1,11 +1,9 @@
 package com.assemble.user;
 
 import com.assemble.annotation.CustomIntegrationTest;
-import com.assemble.auth.service.JwtService;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.fixture.UserFixture;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.HttpClientConfig;
@@ -15,7 +13,6 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +21,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-@DisplayName("User Integration Test")
+@DisplayName("Verification Integration Test")
 @CustomIntegrationTest
 public class VerificationIntegrationTest {
 

@@ -4,7 +4,6 @@ import com.assemble.commons.filter.JwtFilter;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.fixture.UserFixture;
-import com.assemble.user.service.UserService;
 import com.assemble.user.service.VerificationService;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,7 +69,7 @@ public class VerificationControllerTest {
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response").description("이메일 중복 여부")
+                        fieldWithPath("response").description("이메일 중복 여부 (true: 중복, false: 중복 아님)")
                 ))
         );
     }
@@ -96,7 +95,7 @@ public class VerificationControllerTest {
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response").description("닉네임 중복 여부")
+                        fieldWithPath("response").description("닉네임 중복 여부 (true: 중복, false: 중복 아님)")
                 ))
         );
     }
