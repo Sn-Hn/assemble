@@ -1,0 +1,67 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 회원 (User)
+회원에 관련된 기능을 제공합니다.
+
+회원가입, 회원 조회, 회원 탈퇴
+
+=== 회원가입
+/signup +
+회원가입을 진행합니다.
+
+==== REQUEST
+include::{snippets}/signup/curl-request.adoc[]
+include::{snippets}/signup/http-request.adoc[]
+include::{snippets}/signup/httpie-request.adoc[]
+include::{snippets}/signup/request-fields.adoc[]
+
+===== example
+include::{snippets}/signup/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/signup/http-response.adoc[]
+include::{snippets}/signup/response-fields.adoc[]
+
+===== example
+include::{snippets}/signup/response-body.adoc[]
+
+=== 특정 회원 조회
+/user/{userId} +
+특정 회원(userId)을 조회합니다.
+
+==== REQUEST
+include::{snippets}/user/{userId}/curl-request.adoc[]
+include::{snippets}/user/{userId}/http-request.adoc[]
+include::{snippets}/user/{userId}/httpie-request.adoc[]
+include::{snippets}/user/{userId}/path-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/user/{userId}/http-response.adoc[]
+include::{snippets}/user/{userId}/response-fields.adoc[]
+
+===== example
+include::{snippets}/user/{userId}/response-body.adoc[]
+
+=== 회원 탈퇴
+/user/withdrawal +
+회원 탈퇴합니다.
+
+[WARNING]
+====
+회원이 정상(`NORMAL`) 혹은 잠김(`LOCK`) 상태여야 합니다.
+====
+
+==== REQUEST
+include::{snippets}/user/withdrawal/curl-request.adoc[]
+include::{snippets}/user/withdrawal/http-request.adoc[]
+include::{snippets}/user/withdrawal/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/user/withdrawal/http-response.adoc[]
+include::{snippets}/user/withdrawal/response-fields.adoc[]
+
+===== example
+include::{snippets}/user/withdrawal/response-body.adoc[]
+
