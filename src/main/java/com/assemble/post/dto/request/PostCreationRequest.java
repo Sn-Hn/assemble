@@ -3,6 +3,7 @@ package com.assemble.post.dto.request;
 import com.assemble.category.entity.Category;
 import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.Contents;
+import com.assemble.post.domain.PostStatus;
 import com.assemble.post.domain.Title;
 import com.assemble.post.entity.Post;
 import com.assemble.user.entity.User;

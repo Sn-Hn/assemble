@@ -2,6 +2,7 @@ package com.assemble.post.dto.response;
 
 import com.assemble.comment.dto.response.CommentResponse;
 import com.assemble.file.dto.response.ProfileResponse;
+import com.assemble.post.domain.PostStatus;
 import com.assemble.post.entity.Post;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,9 @@ public class PostResponse {
     @ApiModelProperty(value = "좋아요 여부")
     private boolean isLikeStatus;
 
+    @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
+    private String postStatus;
+
     public PostResponse(Post post) {
         this(
                 post.getPostId(),
@@ -82,7 +86,8 @@ public class PostResponse {
                         .collect(Collectors.toList()),
                 post.toPostProfileResponse(),
                 post.getCreatedDate(),
-                post.isLike()
+                post.isLike(),
+                post.getPostStatus().toString()
         );
     }
 }

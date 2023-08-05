@@ -40,6 +40,9 @@ public class PostCreationResponse {
     @ApiModelProperty(value = "게시글 프로필 사진 목록")
     private List<ProfileResponse> postProfile;
 
+    @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
+    private String postStatus;
+
     public PostCreationResponse(Post post) {
         this(
                 post.getTitle().getValue(),
@@ -49,7 +52,8 @@ public class PostCreationResponse {
                 post.getUser().getUserId(),
                 post.getHits(),
                 0L,
-                post.toPostProfileResponse()
+                post.toPostProfileResponse(),
+                post.getPostStatus().toString()
         );
     }
 }

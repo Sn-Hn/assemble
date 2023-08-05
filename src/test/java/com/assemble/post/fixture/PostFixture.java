@@ -3,6 +3,7 @@ package com.assemble.post.fixture;
 import com.assemble.category.entity.Category;
 import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.Contents;
+import com.assemble.post.domain.PostStatus;
 import com.assemble.post.domain.Title;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -57,7 +58,7 @@ public class PostFixture {
     }
 
     public static PostCreationResponse 게시글_작성_응답() {
-        return new PostCreationResponse(title, contents, categoryId, writerNickname, writer, hits, likeCount, new ArrayList<>());
+        return new PostCreationResponse(title, contents, categoryId, writerNickname, writer, hits, likeCount, new ArrayList<>(), PostStatus.PROGRESS.toString());
     }
 
     public static Post 게시글() {
@@ -74,7 +75,8 @@ public class PostFixture {
                 new Category(categoryId),
                 new ArrayList<>(),
                 false,
-                false
+                false,
+                PostStatus.PROGRESS
         );
     }
 
@@ -97,7 +99,8 @@ public class PostFixture {
                 modifiedContents,
                 categoryId,
                 personnelNumber,
-                expectedPeriod
+                expectedPeriod,
+                PostStatus.COMPLETED.toString()
         );
     }
 }

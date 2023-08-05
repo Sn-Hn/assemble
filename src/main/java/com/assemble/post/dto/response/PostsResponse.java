@@ -54,6 +54,9 @@ public class PostsResponse {
     @ApiModelProperty(value = "좋아요 여부")
     private boolean isLikeStatus;
 
+    @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
+    private String postStatus;
+
     public PostsResponse(Post post) {
         this(
                 post.getPostId(),
@@ -69,7 +72,8 @@ public class PostsResponse {
                 post.getComments().getComments().size(),
                 post.getCategory().getName().getValue(),
                 post.toPostProfileResponse(),
-                post.isLike()
+                post.isLike(),
+                post.getPostStatus().toString()
         );
     }
 }

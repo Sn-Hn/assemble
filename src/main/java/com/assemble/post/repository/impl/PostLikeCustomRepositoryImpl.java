@@ -29,7 +29,7 @@ public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
     }
 
     private BooleanExpression searchByUserId(Long userId) {
-        if (userId == null || userId <= 0) {
+        if (userId == null) {
             throw new IllegalArgumentException();
         }
 

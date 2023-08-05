@@ -26,5 +26,7 @@ public class ModifiedPostRequest {
     @ApiModelProperty(value = "예상 기간", example = "0")
     private int expectedPeriod;
 
+    @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
+    private String postStatus;
 
 }

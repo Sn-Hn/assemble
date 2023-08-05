@@ -7,6 +7,7 @@ import com.assemble.commons.converter.BooleanToYNConverter;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.post.domain.Contents;
+import com.assemble.post.domain.PostStatus;
 import com.assemble.post.domain.Title;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.user.entity.User;
@@ -69,6 +70,9 @@ public class Post extends BaseUserEntity {
     @Transient
     private boolean isLike;
 
+    @Enumerated(EnumType.STRING)
+    private PostStatus postStatus;
+
     protected Post() {}
 
     public Post(Long postId) {
@@ -76,7 +80,7 @@ public class Post extends BaseUserEntity {
     }
 
     public Post(Title title, Contents contents, User user, int personnelNumber, int expectedPeriod, Category category) {
-        this (null, title, contents, user, 0L, 0L, personnelNumber, null, expectedPeriod, category, new ArrayList<>(), false, false);
+        this (null, title, contents, user, 0L, 0L, personnelNumber, null, expectedPeriod, category, new ArrayList<>(), false, false, PostStatus.PROGRESS);
     }
 
     public void setProfile(AttachedFile file) {
@@ -88,6 +92,7 @@ public class Post extends BaseUserEntity {
         this.contents = new Contents(modifiedPostRequest.getContents());
         this.personnelNumber = modifiedPostRequest.getPersonnelNumber();
         this.expectedPeriod = modifiedPostRequest.getExpectedPeriod();
+        this.postStatus = PostStatus.valueOf(modifiedPostRequest.getPostStatus());
     }
 
     public void increaseHits() {
