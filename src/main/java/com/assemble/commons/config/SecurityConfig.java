@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .and()
+                .logout()
+                .disable()
                 .build();
     }
 

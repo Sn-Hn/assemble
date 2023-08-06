@@ -12,6 +12,7 @@ import com.assemble.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,8 +38,9 @@ public class AuthController {
 
         String accessToken = jwtService.issueAccessToken(user.getUserId(), loginRequest.getEmail());
         String refreshToken = jwtService.issueRefreshToken(user.getUserId(), loginRequest.getEmail());
-        Cookie cookie = createCookie(JwtType.REFRESH_TOKEN, refreshToken, (int) Duration.ofDays(14).getSeconds());
-        response.addCookie(cookie);
+        ResponseCookie cookie = createCookie(JwtType.REFRESH_TOKEN, refreshToken, (int) Duration.ofDays(14).getSeconds());
+
+        response.addHeader("Set-Cookie", cookie.toString());
 
         return ApiResult.ok(LoginResponse.from(user, new TokenResponse(accessToken)));
     }
@@ -52,22 +54,21 @@ public class AuthController {
     }
 
     @ApiOperation(value = "로그아웃")
-    @PostMapping
+    @PostMapping("logout")
     public ApiResult logout(HttpServletResponse response) {
-        Cookie cookie = createCookie(JwtType.REFRESH_TOKEN, null, 0);
-        response.addCookie(cookie);
+        ResponseCookie cookie = createCookie(JwtType.REFRESH_TOKEN, null, 0);
+        response.addHeader("Set-Cookie", cookie.toString());
 
         return ApiResult.ok();
     }
 
-    private Cookie createCookie(JwtType jwtType, String token, int expireTime) {
-        Cookie cookie = new Cookie(jwtType.getCode(), token);
-
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setMaxAge(expireTime);
-        cookie.setPath("/");
-
-        return cookie;
+    private ResponseCookie createCookie(JwtType jwtType, String token, int expireTime) {
+        return ResponseCookie.from(jwtType.getCode(), token)
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(expireTime)
+                .path("/assemble/")
+                .sameSite("None")
+                .build();
     }
 }

@@ -37,7 +37,7 @@ VALUES (
         '개발/프로그래밍'
        );
 
-INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period, is_deleted)
+INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period, is_deleted, post_status)
 VALUES (
         '1',
         '게시글 제목입니다 ~',
@@ -47,7 +47,8 @@ VALUES (
         0,
         1,
         0,
-        'N'
+        'N',
+        'PROGRESS'
        ),
         (
            '1',
@@ -58,7 +59,8 @@ VALUES (
            0,
            1,
            0,
-           'N'
+           'N',
+           'PROGRESS'
        );
 
 INSERT INTO comment(post_id, user_id, contents, is_deleted, created_date, modified_date)

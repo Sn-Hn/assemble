@@ -1,9 +1,7 @@
 package com.assemble.util;
 
-
 import com.assemble.auth.domain.JwtType;
 import com.assemble.commons.exception.NotFoundException;
-import com.assemble.commons.exception.UnauthorizedException;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

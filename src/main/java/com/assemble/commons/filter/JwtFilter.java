@@ -42,6 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         BaseRequest.setUserId(Long.valueOf(jwtProvider.getUserId(JwtUtils.getAccessTokenFromHeader(request))));
         BaseRequest.setEmail(jwtProvider.getEmail(JwtUtils.getAccessTokenFromHeader(request)));
+        BaseRequest.setRole(UserRole.USER);
 
         filterChain.doFilter(request, response);
     }
@@ -53,10 +54,9 @@ public class JwtFilter extends OncePerRequestFilter {
         BaseRequest.setRole(UserRole.GUEST);
 
         if (StringUtils.hasText(JwtUtils.getAccessTokenFromHeader(request))) {
-            BaseRequest.setRole(UserRole.USER);
             return false;
         }
-        
+
         BaseRequest.setUserId(-1L);
         BaseRequest.setEmail(null);
 

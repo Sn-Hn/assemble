@@ -25,7 +25,7 @@ public class LoggingCustomInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("======================= [Request] =======================");
         log.info("Request URI={} {}", request.getMethod(), request.getRequestURI());
-        log.info("Cookies=[}", Arrays.toString(request.getCookies()));
+        log.info("Cookies={}", Arrays.toString(request.getCookies()));
         if (MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType())) {
             final ContentCachingRequestWrapper requestWrapper = (ContentCachingRequestWrapper) request;
             byte[] contentAsByteArray = requestWrapper.getContentAsByteArray();
