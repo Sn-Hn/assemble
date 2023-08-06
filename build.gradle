@@ -29,6 +29,8 @@ task copyDocument(type: Copy) {
 asciidoctor {
     dependsOn test
     inputs.dir snippetsDir
+
+    baseDirFollowsSourceFile()
 }
 
 asciidoctor.doFirst {
