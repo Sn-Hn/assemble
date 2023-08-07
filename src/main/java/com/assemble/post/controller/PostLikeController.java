@@ -6,10 +6,7 @@ import com.assemble.post.service.PostLikeService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "게시판 좋아요 APIs")
 @RequiredArgsConstructor
@@ -23,8 +20,8 @@ public class PostLikeController {
         return ApiResult.ok(postLikeService.likePost(postLikeRequest), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("post/like")
-    public ApiResult<Boolean> cancelLike(@RequestBody PostLikeRequest postLikeRequest) {
-        return ApiResult.ok(postLikeService.cancelLikePost(postLikeRequest));
+    @DeleteMapping("post/like/{postId}")
+    public ApiResult<Boolean> cancelLike(@PathVariable Long postId) {
+        return ApiResult.ok(postLikeService.cancelLikePost(postId));
     }
 }

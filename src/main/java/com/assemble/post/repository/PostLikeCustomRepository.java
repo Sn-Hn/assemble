@@ -6,5 +6,5 @@ import com.assemble.post.entity.Likes;
 import java.util.Optional;
 
 public interface PostLikeCustomRepository {
-    Optional<Likes> findPostByUser(PostLikeRequest postLikeRequest);
+    Optional<Likes> findPostByUser(Long postId);
 }

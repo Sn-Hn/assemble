@@ -20,10 +20,10 @@ public class PostLikeCustomRepositoryImpl implements PostLikeCustomRepository {
     }
 
     @Override
-    public Optional<Likes> findPostByUser(PostLikeRequest postLikeRequest) {
+    public Optional<Likes> findPostByUser(Long postId) {
         return jpaQueryFactory.selectFrom(QLikes.likes)
                 .where(searchByUserId(BaseRequest.getUserId()),
-                        searchByPostId(postLikeRequest.getPostId()))
+                        searchByPostId(postId))
                 .fetch()
                 .stream().findFirst();
     }

@@ -56,7 +56,7 @@ class PostLikeServiceTest {
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_취소_요청();
 
         // when
-        boolean isLike = postLikeService.cancelLikePost(postLikeRequest);
+        boolean isLike = postLikeService.cancelLikePost(postLikeRequest.getPostId());
 
         // then
         assertThat(isLike).isTrue();

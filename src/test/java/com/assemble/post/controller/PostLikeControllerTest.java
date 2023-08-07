@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +26,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -80,7 +83,7 @@ class PostLikeControllerTest {
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_취소_요청();
         given(postLikeService.cancelLikePost(any())).willReturn(true);
 
-        ResultActions perform = mockMvc.perform(delete("/post/like")
+        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.delete("/post/like/{postId}", postLikeRequest.getPostId())
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -90,12 +93,12 @@ class PostLikeControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/post/like",
+        perform.andDo(document("/post/like/{postId}",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
-                requestFields(
-                        fieldWithPath("postId").description("모임 ID")
+                pathParameters(
+                        parameterWithName("postId").description("모임 ID")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),

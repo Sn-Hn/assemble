@@ -75,10 +75,10 @@ public class PostLikeIntegrationTest {
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(postLikeRequest)
+                .pathParam("postId", postLikeRequest.getPostId())
                 .log().all()
         .when()
-                .delete("post/like")
+                .delete("post/like/{postId}")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

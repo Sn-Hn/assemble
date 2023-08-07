@@ -36,14 +36,14 @@ public class PostLikeService {
     }
 
     @Transactional(rollbackFor = AssembleException.class)
-    public boolean cancelLikePost(PostLikeRequest postLikeRequest) {
-        Likes likes = postLikeRepository.findPostByUser(postLikeRequest)
+    public boolean cancelLikePost(Long postId) {
+        Likes likes = postLikeRepository.findPostByUser(postId)
                 .orElseThrow(() -> new IllegalArgumentException("this post didn't like it"));
 
         postLikeRepository.delete(likes);
 
-        Post post = postRepository.findById(postLikeRequest.getPostId())
-                .orElseThrow(() -> new NotFoundException(Post.class, postLikeRequest.getPostId()));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
         post.decreaseLikes();
 
@@ -52,7 +52,7 @@ public class PostLikeService {
 
     @Transactional(readOnly = true)
     public boolean isAleadyLikeByUser(PostLikeRequest postLikeRequest) {
-        if (postLikeRepository.findPostByUser(postLikeRequest).isPresent()) {
+        if (postLikeRepository.findPostByUser(postLikeRequest.getPostId()).isPresent()) {
             return true;
         }
 
