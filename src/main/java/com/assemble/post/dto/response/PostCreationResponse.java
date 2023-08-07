@@ -37,6 +37,12 @@ public class PostCreationResponse {
     @ApiModelProperty(value = "게시글 좋아요 수")
     private Long likeCount;
 
+    @ApiModelProperty(value = "게시글 모집 인원")
+    private int personnelNumber;
+
+    @ApiModelProperty(value = "게시글 예상 기간")
+    private int expectedPeriod;
+
     @ApiModelProperty(value = "게시글 프로필 사진 목록")
     private List<ProfileResponse> postProfile;
 
@@ -52,6 +58,8 @@ public class PostCreationResponse {
                 post.getUser().getUserId(),
                 post.getHits(),
                 0L,
+                post.getPersonnelNumber(),
+                post.getExpectedPeriod(),
                 post.toPostProfileResponse(),
                 post.getPostStatus().toString()
         );

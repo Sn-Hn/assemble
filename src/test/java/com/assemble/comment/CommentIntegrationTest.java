@@ -69,7 +69,7 @@ public class CommentIntegrationTest {
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParams(objectMapper.convertValue(modifiedCommentRequest, Map.class))
+                .body(modifiedCommentRequest)
                 .log().all()
         .when()
                 .patch("comment")

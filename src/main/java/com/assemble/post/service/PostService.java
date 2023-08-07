@@ -25,12 +25,11 @@ public class PostService {
     private final PostLikeService postLikeService;
 
     @Transactional(rollbackFor = AssembleException.class)
-    public PostCreationResponse createPost(PostCreationRequest postCreationRequest) {
+    public Post createPost(PostCreationRequest postCreationRequest) {
         Post post = postCreationRequest.toEntity();
         post.createUser(post.getUser().getUserId());
 
-        Post savedPost = postRepository.save(post);
-        return new PostCreationResponse(savedPost);
+        return postRepository.save(post);
     }
 
     @Transactional(readOnly = true)

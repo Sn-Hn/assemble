@@ -28,7 +28,7 @@ public class PostController {
     @ApiOperation(value = "모임 등록")
     @PostMapping
     public ApiResult<PostCreationResponse> createPost(@RequestBody PostCreationRequest postCreationRequest) {
-        return ApiResult.ok(postService.createPost(postCreationRequest), HttpStatus.CREATED);
+        return ApiResult.ok(new PostCreationResponse(postService.createPost(postCreationRequest)), HttpStatus.CREATED);
     }
     
     @ApiOperation(value = "모임 목록 조회")
@@ -47,7 +47,7 @@ public class PostController {
 
     @ApiOperation(value = "모임 수정")
     @PatchMapping
-    public ApiResult<PostResponse> modifyPost(ModifiedPostRequest modifiedPostRequest) {
+    public ApiResult<PostResponse> modifyPost(@RequestBody ModifiedPostRequest modifiedPostRequest) {
         return ApiResult.ok(new PostResponse(postService.modifyPost(modifiedPostRequest)));
     }
 

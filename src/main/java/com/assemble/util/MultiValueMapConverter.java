@@ -17,7 +17,7 @@ public abstract class MultiValueMapConverter {
     public static MultiValueMap<String, String> convert(ObjectMapper objectMapper, Object object) {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            Map<String, String> map = objectMapper.convertValue(object, new TypeReference<Map<String, String>>() {
+            Map<String, String> map = objectMapper.convertValue(object, new TypeReference<>() {
             });
             params.setAll(map);
 

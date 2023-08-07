@@ -47,14 +47,14 @@ class PostServiceTest {
                 .willReturn(PostFixture.게시글());
 
         // when
-        PostCreationResponse response = postService.createPost(postCreationRequest);
+        Post response = postService.createPost(postCreationRequest);
 
         // then
         assertAll(
-                () -> assertThat(response.getTitle()).isEqualTo(postCreationRequest.getTitle()),
-                () -> assertThat(response.getContents()).isEqualTo(postCreationRequest.getContents()),
-                () -> assertThat(response.getCategoryId()).isEqualTo(postCreationRequest.getCategoryId()),
-                () -> assertThat(response.getWriterId()).isEqualTo(BaseRequest.getUserId())
+                () -> assertThat(response.getTitle().getValue()).isEqualTo(postCreationRequest.getTitle()),
+                () -> assertThat(response.getContents().getValue()).isEqualTo(postCreationRequest.getContents()),
+                () -> assertThat(response.getCategory().getId()).isEqualTo(postCreationRequest.getCategoryId()),
+                () -> assertThat(response.getUser().getUserId()).isEqualTo(BaseRequest.getUserId())
 
         );
     }

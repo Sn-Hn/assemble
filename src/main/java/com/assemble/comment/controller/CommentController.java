@@ -29,7 +29,7 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 수정")
     @PatchMapping
-    public ApiResult<CommentResponse> modifyComment(ModifiedCommentRequest modifiedCommentRequest) {
+    public ApiResult<CommentResponse> modifyComment(@RequestBody ModifiedCommentRequest modifiedCommentRequest) {
         return ApiResult.ok(new CommentResponse(commentService.modifyComment(modifiedCommentRequest)));
     }
 

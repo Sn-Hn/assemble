@@ -1,6 +1,6 @@
 package com.assemble.user.controller;
 
-import com.assemble.commons.AccessTokenFixture;
+import com.assemble.commons.TokenFixture;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.SignupRequest;
@@ -100,7 +100,7 @@ public class UserControllerTest {
         given(userService.findUserInfo(any())).willReturn(user);
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/user/{userId}", userId)
-                        .header("accessToken", AccessTokenFixture.AccessToken_생성())
+                        .header("Authorization", TokenFixture.AccessToken_생성())
                         .contentType(MediaType.APPLICATION_JSON));
 
         perform.andDo(print())
@@ -109,7 +109,7 @@ public class UserControllerTest {
 
         perform.andDo(document("/user/{userId}",
                 requestHeaders(
-                        headerWithName("accessToken").description("Access Token")
+                        headerWithName("Authorization").description("Bearer AccessToken")
                 ),
                 pathParameters(
                         parameterWithName("userId").description("회원 Id")
@@ -135,7 +135,7 @@ public class UserControllerTest {
 
         ResultActions perform = mockMvc.perform(delete("/user/withdrawal")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .header("accessToken", AccessTokenFixture.AccessToken_생성())
+                        .header("Authorization", TokenFixture.AccessToken_생성())
                         .contentType(MediaType.APPLICATION_JSON));
 
         perform.andDo(print())
@@ -144,7 +144,7 @@ public class UserControllerTest {
 
         perform.andDo(document("/user/withdrawal",
                 requestHeaders(
-                        headerWithName("accessToken").description("Access Token")
+                        headerWithName("Authorization").description("Bearer AccessToken")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),

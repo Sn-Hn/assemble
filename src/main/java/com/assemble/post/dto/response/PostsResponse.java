@@ -37,7 +37,7 @@ public class PostsResponse {
     private Long likes;
 
     @ApiModelProperty(value = "게시글 모집 인원")
-    private int perssonelNumber;
+    private int personnelNumber;
 
     @ApiModelProperty(value = "게시글 예상 기간")
     private int expectedPeriod;

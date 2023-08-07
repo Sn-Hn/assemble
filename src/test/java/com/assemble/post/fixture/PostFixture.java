@@ -1,6 +1,9 @@
 package com.assemble.post.fixture;
 
+import com.assemble.category.domain.CategoryName;
 import com.assemble.category.entity.Category;
+import com.assemble.comment.domain.Comments;
+import com.assemble.comment.fixture.CommentFixture;
 import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.PostStatus;
@@ -14,6 +17,7 @@ import com.assemble.user.entity.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostFixture {
     private static final Long postId = 1L;
@@ -34,6 +38,7 @@ public class PostFixture {
     private static final String searchQueryContents = "내용";
     private static final Long searchQueryUserId = 1L;
     private static final String searchByWriter = "writer";
+    private static final String categoryName = "카테고리 이름";
 
     public static PostCreationRequest 게시글_작성_사진_X() {
         BaseRequest.setUserId(writer);
@@ -58,7 +63,7 @@ public class PostFixture {
     }
 
     public static PostCreationResponse 게시글_작성_응답() {
-        return new PostCreationResponse(title, contents, categoryId, writerNickname, writer, hits, likeCount, new ArrayList<>(), PostStatus.PROGRESS.toString());
+        return new PostCreationResponse(title, contents, categoryId, writerNickname, writer, hits, likeCount, personnelNumber, expectedPeriod, new ArrayList<>(), PostStatus.PROGRESS.toString());
     }
 
     public static Post 게시글() {
@@ -70,9 +75,9 @@ public class PostFixture {
                 hits,
                 likeCount,
                 personnelNumber,
-                null,
+                new Comments(),
                 expectedPeriod,
-                new Category(categoryId),
+                new Category(categoryId, new CategoryName(categoryName)),
                 new ArrayList<>(),
                 false,
                 false,
