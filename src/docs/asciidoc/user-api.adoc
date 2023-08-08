@@ -2,7 +2,7 @@ ifndef::snippets[]
 :snippets: ../../../build/generated-snippets
 endif::[]
 
-== 회원 (User)
+== 회원 (Users)
 회원에 관련된 기능을 제공합니다.
 
 회원가입, 회원 조회, 회원 탈퇴
@@ -32,17 +32,17 @@ include::{snippets}/signup/response-body.adoc[]
 특정 회원(userId)을 조회합니다.
 
 ==== REQUEST
-include::{snippets}/user/{userId}/curl-request.adoc[]
-include::{snippets}/user/{userId}/http-request.adoc[]
-include::{snippets}/user/{userId}/httpie-request.adoc[]
-include::{snippets}/user/{userId}/path-parameters.adoc[]
+include::{snippets}/user/detail/curl-request.adoc[]
+include::{snippets}/user/detail/http-request.adoc[]
+include::{snippets}/user/detail/httpie-request.adoc[]
+include::{snippets}/user/detail/path-parameters.adoc[]
 
 ==== RESPONSE
-include::{snippets}/user/{userId}/http-response.adoc[]
-include::{snippets}/user/{userId}/response-fields.adoc[]
+include::{snippets}/user/detail/http-response.adoc[]
+include::{snippets}/user/detail/response-fields.adoc[]
 
 ===== example
-include::{snippets}/user/{userId}/response-body.adoc[]
+include::{snippets}/user/detail/response-body.adoc[]
 
 === 회원 탈퇴
 /user/withdrawal +

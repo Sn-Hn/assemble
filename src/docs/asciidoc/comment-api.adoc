@@ -1,0 +1,82 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 댓글 (Comment)
+댓글에 관련된 기능을 제공합니다.
+
+댓글 등록, 수정, 삭제, 특정 유저 댓글 조회
+
+=== 댓글 등록
+POST /comment +
+댓글을 등록합니다.
+
+==== REQUEST
+include::{snippets}/comment/creation/curl-request.adoc[]
+include::{snippets}/comment/creation/http-request.adoc[]
+include::{snippets}/comment/creation/httpie-request.adoc[]
+include::{snippets}/comment/creation/request-fields.adoc[]
+
+===== example
+include::{snippets}/comment/creation/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/comment/creation/http-response.adoc[]
+include::{snippets}/comment/creation/response-fields.adoc[]
+
+===== example
+include::{snippets}/comment/creation/response-body.adoc[]
+
+=== 댓글 수정
+PATCH /comment +
+댓글을 수정합니다.
+
+==== REQUEST
+include::{snippets}/comment/modification/curl-request.adoc[]
+include::{snippets}/comment/modification/http-request.adoc[]
+include::{snippets}/comment/modification/httpie-request.adoc[]
+include::{snippets}/comment/modification/request-fields.adoc[]
+
+===== example
+include::{snippets}/comment/modification/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/comment/modification/http-response.adoc[]
+include::{snippets}/comment/modification/response-fields.adoc[]
+
+===== example
+include::{snippets}/comment/modification/response-body.adoc[]
+
+=== 댓글 삭제
+DELETE /comment/{commentId} +
+댓글을 삭제합니다.
+
+==== REQUEST
+include::{snippets}/comment/delete/curl-request.adoc[]
+include::{snippets}/comment/delete/http-request.adoc[]
+include::{snippets}/comment/delete/httpie-request.adoc[]
+include::{snippets}/comment/delete/path-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/comment/delete/http-response.adoc[]
+include::{snippets}/comment/delete/response-fields.adoc[]
+
+===== example
+include::{snippets}/comment/delete/response-body.adoc[]
+
+=== 특정 회원이 작성한 댓글 조회
+GET /comment/user/{userId} +
+특정 회원(userId)이 작성한 댓글을 조회합니다.
+
+==== REQUEST
+include::{snippets}/comment/user/curl-request.adoc[]
+include::{snippets}/comment/user/http-request.adoc[]
+include::{snippets}/comment/user/httpie-request.adoc[]
+include::{snippets}/comment/user/path-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/comment/user/http-response.adoc[]
+include::{snippets}/comment/user/response-fields.adoc[]
+
+===== example
+include::{snippets}/comment/user/response-body.adoc[]

@@ -66,7 +66,7 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
-        perform.andDo(document("/category",
+        perform.andDo(document("/category/list",
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
@@ -93,7 +93,7 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.categoryName").value(categoryCreationRequest.getCategoryName()));
 
-        perform.andDo(document("/category",
+        perform.andDo(document("/category/creation",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -129,7 +129,7 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.categoryName").value(modifiedCategoryRequest.getCategoryName()));
 
-        perform.andDo(document("/category",
+        perform.andDo(document("/category/modification",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -161,7 +161,7 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/category",
+        perform.andDo(document("/category/delete",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),

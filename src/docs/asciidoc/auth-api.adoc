@@ -1,0 +1,69 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 인증/인가 (Auth)
+인증/인가에 관련된 기능을 제공합니다.
+
+로그인, Access Token 재발급, 로그아웃
+
+=== 로그인
+POST /authentication +
+로그인을 진행합니다.
+
+==== REQUEST
+include::{snippets}/authentication/curl-request.adoc[]
+include::{snippets}/authentication/http-request.adoc[]
+include::{snippets}/authentication/httpie-request.adoc[]
+include::{snippets}/authentication/request-fields.adoc[]
+
+==== RESPONSE
+include::{snippets}/authentication/http-response.adoc[]
+include::{snippets}/authentication/response-fields.adoc[]
+
+===== example
+include::{snippets}/authentication/response-body.adoc[]
+
+
+=== Access Token 재발급
+POST /auth/token +
+Access Token을 재발급 합니다.
+
+[WARNING]
+====
+``Cookie``에 ``RefreshToken``이 존재해야 합니다.
+====
+
+==== REQUEST
+include::{snippets}/auth/token/curl-request.adoc[]
+include::{snippets}/auth/token/http-request.adoc[]
+include::{snippets}/auth/token/httpie-request.adoc[]
+
+===== example
+include::{snippets}/auth/token/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/auth/token/http-response.adoc[]
+include::{snippets}/auth/token/response-fields.adoc[]
+
+===== example
+include::{snippets}/auth/token/response-body.adoc[]
+
+=== 로그아웃
+POST /logout +
+로그아웃을 진행합니다.
+
+==== REQUEST
+include::{snippets}/logout/curl-request.adoc[]
+include::{snippets}/logout/http-request.adoc[]
+include::{snippets}/logout/httpie-request.adoc[]
+
+===== example
+include::{snippets}/logout/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/logout/http-response.adoc[]
+include::{snippets}/logout/response-fields.adoc[]
+
+===== example
+include::{snippets}/category/modification/response-body.adoc[]

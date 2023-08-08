@@ -93,7 +93,7 @@ class PostLikeControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/post/like/{postId}",
+        perform.andDo(document("/post/like/cancel",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),

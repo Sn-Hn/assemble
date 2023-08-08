@@ -63,5 +63,9 @@ a|[source,json]
 
 == API
 
+include::auth-api.adoc[]
 include::user-api.adoc[]
 include::verification-api.adoc[]
+include::post-api.adoc[]
+include::comment-api.adoc[]
+include::category-api.adoc[]

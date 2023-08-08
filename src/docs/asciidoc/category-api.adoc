@@ -1,0 +1,82 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 카테고리 (Category)
+카테고리에 관련된 기능을 제공합니다.
+
+카테고리 목록 조회, 등록, 수정, 삭제
+
+=== 카테고리 목록 조회
+GET /category +
+카테고리 목록을 조회합니다.
+
+==== REQUEST
+include::{snippets}/category/list/curl-request.adoc[]
+include::{snippets}/category/list/http-request.adoc[]
+include::{snippets}/category/list/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/category/list/http-response.adoc[]
+include::{snippets}/category/list/response-fields.adoc[]
+
+===== example
+include::{snippets}/category/list/response-body.adoc[]
+
+
+=== 카테고리 등록
+POST /category +
+카테고리를 등록합니다.
+
+==== REQUEST
+include::{snippets}/category/creation/curl-request.adoc[]
+include::{snippets}/category/creation/http-request.adoc[]
+include::{snippets}/category/creation/httpie-request.adoc[]
+include::{snippets}/category/creation/request-fields.adoc[]
+
+===== example
+include::{snippets}/category/creation/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/category/creation/http-response.adoc[]
+include::{snippets}/category/creation/response-fields.adoc[]
+
+===== example
+include::{snippets}/category/creation/response-body.adoc[]
+
+=== 카테고리 수정
+PATCH /category +
+카테고리를 수정합니다.
+
+==== REQUEST
+include::{snippets}/category/modification/curl-request.adoc[]
+include::{snippets}/category/modification/http-request.adoc[]
+include::{snippets}/category/modification/httpie-request.adoc[]
+include::{snippets}/category/modification/request-fields.adoc[]
+
+===== example
+include::{snippets}/category/modification/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/category/modification/http-response.adoc[]
+include::{snippets}/category/modification/response-fields.adoc[]
+
+===== example
+include::{snippets}/category/modification/response-body.adoc[]
+
+=== 카테고리 삭제
+DELETE /category/{commentId} +
+카테고리를 삭제합니다.
+
+==== REQUEST
+include::{snippets}/category/delete/curl-request.adoc[]
+include::{snippets}/category/delete/http-request.adoc[]
+include::{snippets}/category/delete/httpie-request.adoc[]
+include::{snippets}/category/delete/path-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/category/delete/http-response.adoc[]
+include::{snippets}/category/delete/response-fields.adoc[]
+
+===== example
+include::{snippets}/category/delete/response-body.adoc[]

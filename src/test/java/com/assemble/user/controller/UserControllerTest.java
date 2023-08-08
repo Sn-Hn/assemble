@@ -107,7 +107,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
-        perform.andDo(document("/user/{userId}",
+        perform.andDo(document("/user/detail",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),

@@ -74,7 +74,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.response.title").value(postCreationRequest.getTitle()))
                 .andExpect(jsonPath("$.response.contents").value(postCreationRequest.getContents()));
 
-        perform.andDo(document("/post",
+        perform.andDo(document("/post/creation",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -117,7 +117,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
-        perform.andDo(document("/post",
+        perform.andDo(document("/post/list",
                 requestParameters(
                         parameterWithName("searchQuery").description("검색어 ex) 제목"),
                         parameterWithName("searchBy").description("검색할 주제 ex) title, writer, contents"),
@@ -170,7 +170,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.postId").value(postId));
 
-        perform.andDo(document("/post/{postId}",
+        perform.andDo(document("/post/detail",
                 pathParameters(
                         parameterWithName("postId").description("모임 Id")
                 ),
@@ -218,7 +218,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.response.title").value(modifiedPostRequest.getTitle()))
                 .andExpect(jsonPath("$.response.contents").value(modifiedPostRequest.getContents()));
 
-        perform.andDo(document("/post",
+        perform.andDo(document("/post/modification",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -269,7 +269,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/post/{postId}",
+        perform.andDo(document("/post/delete",
                 pathParameters(
                         parameterWithName("postId").description("모임 Id")
                 ),
@@ -297,7 +297,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.content[0].writerId").value(userId));
 
-        perform.andDo(document("/post/user/{userId}",
+        perform.andDo(document("/post/user",
                 pathParameters(
                         parameterWithName("userId").description("특정 회원 ID")
                 ),
