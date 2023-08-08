@@ -12,6 +12,10 @@ public class UnauthorizedException extends AssembleException {
         super(MESSAGE, DETAIL_MESSAGE, null);
     }
 
+    public UnauthorizedException(String message, String messageDetail) {
+        super(message, messageDetail, null);
+    }
+
     public UnauthorizedException(Class<?> cls, Object... values) {
         this(cls.getSimpleName(), values);
     }

@@ -3,16 +3,15 @@ package com.assemble.commons.interceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import java.io.IOException;
 
 @Slf4j
 @Component
@@ -22,26 +21,38 @@ public class LoggingCustomInterceptor implements HandlerInterceptor {
     private final ObjectMapper objectMapper;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("======================= [Request] =======================");
-        log.info("Request URI={} {}", request.getMethod(), request.getRequestURI());
-        log.info("Cookies={}", Arrays.toString(request.getCookies()));
-        if (MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType())) {
-            final ContentCachingRequestWrapper requestWrapper = (ContentCachingRequestWrapper) request;
-            byte[] contentAsByteArray = requestWrapper.getContentAsByteArray();
-            log.info("Request={}", objectMapper.readTree(contentAsByteArray));
-        }
-        log.info("==========================================================");
-        return HandlerInterceptor.super.preHandle(request, response, handler);
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        printRequestLog(request);
+        printResponseLog(response);
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("======================= [Response] =======================");
-        log.info("response contenttype={}", response.getContentType());
-//        final ContentCachingResponseWrapper responseWrapper = (ContentCachingResponseWrapper) response;
-//        log.info("Response={}", objectMapper.readTree(responseWrapper.getContentAsByteArray()));
+    private void printRequestLog(HttpServletRequest request) throws IOException {
+        log.info("======================= [Request] =======================");
+        log.info("Request Method={}, URI={}", request.getMethod(), request.getRequestURI());
+        log.info("Remote Request User={}, ADDR={}, HOST={}, PORT={}", request.getRemoteUser(), request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort());
+
+        final Cookie[] cookies = request.getCookies();
+        for (int i = 0; cookies != null && i < cookies.length; i++) {
+            log.info("Cookie Name={}, Value={}", cookies[i].getName(), cookies[i].getValue());
+        }
+
+        log.info("Request Param={}", request.getParameterMap().keySet());
+
+        if (request instanceof ContentCachingRequestWrapper) {
+            final ContentCachingRequestWrapper requestWrapper = (ContentCachingRequestWrapper) request;
+            log.info("Request={}", objectMapper.readTree(requestWrapper.getContentAsByteArray()));
+        }
         log.info("==========================================================");
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    }
+
+    private void printResponseLog(HttpServletResponse response) throws Exception {
+        log.info("======================= [Response] =======================");
+        log.info("response contentType={}", response.getContentType());
+        if (response instanceof ContentCachingResponseWrapper) {
+            final ContentCachingResponseWrapper responseWrapper = (ContentCachingResponseWrapper) response;
+            log.info("Response={}", objectMapper.readTree(responseWrapper.getContentAsByteArray()));
+        }
+        log.info("==========================================================");
     }
 }
