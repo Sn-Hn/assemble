@@ -1,17 +1,14 @@
 package com.assemble.commons.filter;
 
 import com.assemble.auth.domain.JwtProvider;
-import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.exception.UnauthorizedException;
 import com.assemble.commons.exclusion.ExclusionApis;
-import com.assemble.user.domain.UserRole;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -40,9 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         log.info("Request UserId={}, Email={}", jwtProvider.getUserId(accessToken), jwtProvider.getEmail(accessToken));
 
-        BaseRequest.setUserId(Long.valueOf(jwtProvider.getUserId(JwtUtils.getAccessTokenFromHeader(request))));
-        BaseRequest.setEmail(jwtProvider.getEmail(JwtUtils.getAccessTokenFromHeader(request)));
-        BaseRequest.setRole(UserRole.USER);
+
 
         filterChain.doFilter(request, response);
     }
@@ -51,14 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String servletPath = request.getServletPath();
         String method = request.getMethod();
-        BaseRequest.setRole(UserRole.GUEST);
-
-        if (StringUtils.hasText(JwtUtils.getAccessTokenFromHeader(request))) {
-            return false;
-        }
-
-        BaseRequest.setUserId(-1L);
-        BaseRequest.setEmail(null);
 
         if (servletPath.contains("swagger") ||servletPath.contains("docs")) {
             return true;

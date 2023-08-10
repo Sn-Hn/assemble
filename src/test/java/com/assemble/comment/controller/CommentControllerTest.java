@@ -6,7 +6,9 @@ import com.assemble.comment.entity.Comment;
 import com.assemble.comment.fixture.CommentFixture;
 import com.assemble.comment.service.CommentService;
 import com.assemble.commons.TokenFixture;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,11 @@ class CommentControllerTest {
     @MockBean
     private CommentService commentService;
 
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
     @Autowired
     private ObjectMapper objectMapper;
 

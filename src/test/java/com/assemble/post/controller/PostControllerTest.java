@@ -1,8 +1,10 @@
 package com.assemble.post.controller;
 
 import com.assemble.commons.TokenFixture;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.converter.PageableConverter;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -54,6 +56,12 @@ class PostControllerTest {
 
     @MockBean
     private PostService postService;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
 
     @Autowired
     private ObjectMapper objectMapper;

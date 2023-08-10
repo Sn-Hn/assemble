@@ -1,7 +1,9 @@
 package com.assemble.post.controller;
 
 import com.assemble.commons.TokenFixture;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.fixture.PostLikeFixture;
 import com.assemble.post.service.PostLikeService;
@@ -43,6 +45,12 @@ class PostLikeControllerTest {
 
     @MockBean
     private PostLikeService postLikeService;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
 
     @Autowired
     private ObjectMapper objectMapper;

@@ -12,8 +12,7 @@ public class PageableFixture {
     private static final String ORDER_TYPE = "total";
 
     public static Pageable pageable_생성_기본_정렬() {
-        PageRequest page = PageRequest.of(PAGE, SIZE, Sort.Direction.DESC, ORDER_TYPE);
-        return page;
+        return PageRequest.of(PAGE, SIZE, Sort.Direction.DESC, ORDER_TYPE);
     }
 
     public static PageableConverter pageableConverter_생성() {

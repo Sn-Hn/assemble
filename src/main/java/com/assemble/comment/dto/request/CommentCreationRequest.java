@@ -19,7 +19,7 @@ public class CommentCreationRequest {
     private CommentCreationRequest() {
     }
 
-    public Comment toEntity() {
-        return new Comment(postId, BaseRequest.getUserId(), contents);
+    public Comment toEntity(Long writerId) {
+        return new Comment(postId, writerId, contents);
     }
 }

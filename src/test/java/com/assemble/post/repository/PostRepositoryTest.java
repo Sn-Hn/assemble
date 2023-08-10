@@ -27,10 +27,11 @@ class PostRepositoryTest {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
+        Long myUserId = 1L;
 
         // when
         long count = postRepository.count();
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable, count);
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, myUserId, pageable, count);
         Post searchPost = allPostBySearch.get().filter(post -> post.getTitle().getValue().contains(postSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
@@ -47,10 +48,11 @@ class PostRepositoryTest {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_내용_검색();
+        Long myUserId = 1L;
 
         // when
         long count = postRepository.count();
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable, count);
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, myUserId, pageable, count);
         Post searchPost = allPostBySearch.get().filter(post -> post.getContents().getValue().contains(postSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
@@ -67,10 +69,11 @@ class PostRepositoryTest {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_작성자_검색();
+        Long userId = 1L;
 
         // when
         long count = postRepository.count();
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, pageable, count);
+        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, userId, pageable, count);
         Post searchPost = allPostBySearch.get().filter(post -> post.getUser().getUserId().equals(Long.valueOf(postSearchRequest.getSearchQuery())))
                 .findFirst().orElseThrow();
 

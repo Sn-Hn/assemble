@@ -6,7 +6,9 @@ import com.assemble.category.entity.Category;
 import com.assemble.category.fixture.CategoryFixture;
 import com.assemble.category.service.CategoryService;
 import com.assemble.commons.TokenFixture;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -51,6 +53,12 @@ class CategoryControllerTest {
 
     @MockBean
     private CategoryService categoryService;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -113,9 +121,10 @@ class CategoryControllerTest {
     @Test
     void 카테고리_수정() throws Exception {
         ModifiedCategoryRequest modifiedCategoryRequest = CategoryFixture.카테고리_수정();
+        Long userId = 1L;
 
         Category category = CategoryFixture.카테고리();
-        category.modify(modifiedCategoryRequest);
+        category.modify(modifiedCategoryRequest, userId);
         given(categoryService.modifyCategory(any())).willReturn(category);
 
         ResultActions perform = mockMvc.perform(patch("/category")

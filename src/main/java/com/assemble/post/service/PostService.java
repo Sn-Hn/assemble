@@ -11,11 +11,13 @@ import com.assemble.post.dto.response.PostCreationResponse;
 import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class PostService {
@@ -24,9 +26,11 @@ public class PostService {
 
     private final PostLikeService postLikeService;
 
+    private final BaseRequest baseRequest;
+
     @Transactional(rollbackFor = AssembleException.class)
     public Post createPost(PostCreationRequest postCreationRequest) {
-        Post post = postCreationRequest.toEntity();
+        Post post = postCreationRequest.toEntity(baseRequest.getUserId());
         post.createUser(post.getUser().getUserId());
 
         return postRepository.save(post);
@@ -34,8 +38,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
-        long count = postRepository.count();
-        Page<Post> posts = postRepository.findAllBySearch(postSearchRequest, pageable, count);
+        long count = postRepository.countBySearch(postSearchRequest);
+        Page<Post> posts = postRepository.findAllBySearch(postSearchRequest, baseRequest.getUserId(), pageable, count);
 
         return posts;
     }
@@ -75,7 +79,7 @@ public class PostService {
 
     public Page<Post> getPostsByUser(Long userId, Pageable pageable) {
         long count = postRepository.countByUserId(userId);
-        Page<Post> posts = postRepository.findAllByUserId(userId, pageable, count);
+        Page<Post> posts = postRepository.findAllByUserId(userId, baseRequest.getUserId(), pageable, count);
 
         return posts;
     }

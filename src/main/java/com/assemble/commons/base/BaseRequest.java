@@ -1,36 +1,37 @@
 package com.assemble.commons.base;
 
-import com.assemble.user.domain.UserRole;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
-public abstract class BaseRequest {
+@Component
+@RequestScope
+public class BaseRequest {
     // default -> 로그인하지 않은 회원
-    private static Long userId = -1L;
+    private Long userId = -1L;
 
-    private static String email;
+    private String email;
 
-    private static UserRole role;
-
-    public static Long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public static void setUserId(Long userId) {
-        BaseRequest.userId = userId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public static void setEmail(String email) {
-        BaseRequest.email = email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public static UserRole getRole() {
-        return role;
-    }
-
-    public static void setRole(UserRole role) {
-        BaseRequest.role = role;
+    @Override
+    public String toString() {
+        return "BaseRequest{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

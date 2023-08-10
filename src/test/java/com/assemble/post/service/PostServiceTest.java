@@ -39,12 +39,16 @@ class PostServiceTest {
     @Mock
     private PostLikeService postLikeService;
 
+    @Mock
+    private BaseRequest baseRequest;
+
     @Test
     void 게시글_작성() {
         // given
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         given(postRepository.save(any()))
                 .willReturn(PostFixture.게시글());
+        given(baseRequest.getUserId()).willReturn(1L);
 
         // when
         Post response = postService.createPost(postCreationRequest);
@@ -54,7 +58,7 @@ class PostServiceTest {
                 () -> assertThat(response.getTitle().getValue()).isEqualTo(postCreationRequest.getTitle()),
                 () -> assertThat(response.getContents().getValue()).isEqualTo(postCreationRequest.getContents()),
                 () -> assertThat(response.getCategory().getId()).isEqualTo(postCreationRequest.getCategoryId()),
-                () -> assertThat(response.getUser().getUserId()).isEqualTo(BaseRequest.getUserId())
+                () -> assertThat(response.getUser().getUserId()).isEqualTo(baseRequest.getUserId())
 
         );
     }
@@ -65,7 +69,7 @@ class PostServiceTest {
         Pageable pageable = PageRequest.of(0, 12);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
         List<Post> postList = List.of(PostFixture.게시글());
-        given(postRepository.findAllBySearch(any(), any(), anyLong())).willReturn(new PageImpl<>(postList, pageable, pageable.getPageSize()));
+        given(postRepository.findAllBySearch(any(), anyLong(), any(), anyLong())).willReturn(new PageImpl<>(postList, pageable, pageable.getPageSize()));
 
 
         // when
@@ -83,7 +87,6 @@ class PostServiceTest {
         // given
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
         given(postLikeService.isAleadyLikeByUser(any())).willReturn(false);
-        BaseRequest.setUserId(1L);
 
         // when
         Post post = postService.getPost(1L);
@@ -133,7 +136,7 @@ class PostServiceTest {
         Pageable pageable = PageRequest.of(0, 12);
         List<Post> posts = List.of(PostFixture.게시글());
         given(postRepository.countByUserId(any())).willReturn(1L);
-        given(postRepository.findAllByUserId(anyLong(), any(), anyLong())).willReturn(new PageImpl<>(posts, pageable, pageable.getPageSize()));
+        given(postRepository.findAllByUserId(anyLong(), anyLong(), any(), anyLong())).willReturn(new PageImpl<>(posts, pageable, pageable.getPageSize()));
 
         // when
         Page<Post> postsByUser = postService.getPostsByUser(userId, pageable);

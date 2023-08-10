@@ -39,8 +39,8 @@ public class Category extends BaseUserEntity {
         return category;
     }
 
-    public void modify(ModifiedCategoryRequest modifiedCategoryRequest) {
+    public void modify(ModifiedCategoryRequest modifiedCategoryRequest, Long modifierId) {
         this.name = new CategoryName(modifiedCategoryRequest.getCategoryName());
-        modifyUser(BaseRequest.getUserId());
+        modifyUser(modifierId);
     }
 }

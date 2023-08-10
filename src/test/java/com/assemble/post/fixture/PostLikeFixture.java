@@ -12,12 +12,10 @@ public class PostLikeFixture {
     private static final Long aleadyLikeUserId = 1L;
 
     public static PostLikeRequest 게시글_좋아요_요청() {
-        BaseRequest.setUserId(userId);
         return new PostLikeRequest(postId);
     }
 
     public static PostLikeRequest 게시글_좋아요_취소_요청() {
-        BaseRequest.setUserId(aleadyLikeUserId);
         return new PostLikeRequest(postId);
     }
 

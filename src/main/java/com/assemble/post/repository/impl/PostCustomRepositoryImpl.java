@@ -34,33 +34,41 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     @Override
-    public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Pageable pageable, long count) {
-        List<Post> posts = getPosts(postSearchRequest, pageable);
+    public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Long myUserId, Pageable pageable, long count) {
+        List<Post> posts = getPosts(postSearchRequest, myUserId, pageable);
 
         return new PageImpl<>(posts, pageable, count);
     }
 
     @Override
-    public Page<Post> findAllByUserId(Long userId, Pageable pageable, long count) {
-        List<Post> postsByUserId = getPostsByUserId(userId, pageable);
+    public Page<Post> findAllByUserId(Long userId, Long myUserId, Pageable pageable, long count) {
+        List<Post> postsByUserId = getPostsByUserId(userId, myUserId, pageable);
 
         return new PageImpl<>(postsByUserId, pageable, count);
     }
 
     @Override
     public long countByUserId(Long userId) {
-        Long count = queryFactory.select(QPost.post.count())
+        return queryFactory.select(QPost.post.count())
                 .from(QPost.post)
                 .where(eqUserId(userId))
                 .fetchOne();
-        return count;
     }
 
-    private List<Post> getPosts(PostSearchRequest postSearchRequest, Pageable pageable) {
-        List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
+    @Override
+    public long countBySearch(PostSearchRequest postSearchRequest) {
+        return queryFactory.select(QPost.post.count())
+                .from(QPost.post)
+                .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
+                        searchByCategory(postSearchRequest.getCategoryId()))
+                .fetchOne();
+    }
+
+    private List<Post> getPosts(PostSearchRequest postSearchRequest, Long myUserId, Pageable pageable) {
+        return queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(eqLikeUserId(BaseRequest.getUserId()), eqPostId())
+                .on(eqLikeUserId(myUserId), eqPostId())
                 .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
                         searchByCategory(postSearchRequest.getCategoryId()))
                 .orderBy(findOrder(pageable))
@@ -79,14 +87,13 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                     return post;
                 })
                 .collect(Collectors.toUnmodifiableList());
-        return posts;
     }
 
-    private List<Post> getPostsByUserId(Long userId, Pageable pageable) {
-        List<Post> posts = queryFactory.select(QPost.post, QLikes.likes)
+    private List<Post> getPostsByUserId(Long userId, Long myUserId, Pageable pageable) {
+        return queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(eqLikeUserId(BaseRequest.getUserId()), eqPostId())
+                .on(eqLikeUserId(myUserId), eqPostId())
                 .where(eqUserId(userId))
                 .orderBy(QPost.post.postId.desc())
                 .offset(pageable.getOffset())
@@ -104,7 +111,6 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                     return post;
                 })
                 .collect(Collectors.toUnmodifiableList());
-        return posts;
     }
 
     private BooleanExpression eqUserId(Long userId) {

@@ -41,6 +41,9 @@ class UserServiceTest {
     @Spy
     private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
+    @Mock
+    private BaseRequest baseRequest;
+
     @Test
     void 회원가입_성공() {
         // given
@@ -81,7 +84,7 @@ class UserServiceTest {
     @Test
     void 회원_탈퇴() {
         // given
-        BaseRequest.setUserId(1L);
+        given(baseRequest.getUserId()).willReturn(1L);
 
         // when
         boolean isWithdrawal = userService.withdrawUser();

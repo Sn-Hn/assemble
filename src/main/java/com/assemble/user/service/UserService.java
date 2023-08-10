@@ -27,6 +27,8 @@ public class UserService {
 
     private final VerificationService verificationService;
 
+    private final BaseRequest baseRequest;
+
     @Transactional(rollbackFor = AssembleException.class)
     public User signup(SignupRequest signupRequest, MultipartFile profileImage) {
         verificationService.verifyDuplicationEmail(signupRequest.getEmail());
@@ -52,7 +54,7 @@ public class UserService {
 
     @Transactional(rollbackFor = AssembleException.class)
     public boolean withdrawUser() {
-        User user = new User(BaseRequest.getUserId());
+        User user = new User(baseRequest.getUserId());
         userRepository.delete(user);
 
         return true;

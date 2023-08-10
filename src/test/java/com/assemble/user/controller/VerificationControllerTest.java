@@ -1,6 +1,9 @@
 package com.assemble.user.controller;
 
+import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.fixture.UserFixture;
@@ -8,7 +11,9 @@ import com.assemble.user.service.VerificationService;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -44,6 +49,12 @@ public class VerificationControllerTest {
 
     @MockBean
     private VerificationService verificationService;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
 
     @Autowired
     private ObjectMapper objectMapper;

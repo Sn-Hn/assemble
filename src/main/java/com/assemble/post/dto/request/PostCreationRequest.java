@@ -37,11 +37,11 @@ public class PostCreationRequest {
     private PostCreationRequest() {
     }
 
-    public Post toEntity() {
+    public Post toEntity(Long userId) {
         return new Post(
                 new Title(this.title),
                 new Contents(this.contents),
-                new User(BaseRequest.getUserId()),
+                new User(userId),
                 this.personnelNumber,
                 this.expectedPeriod,
                 new Category(categoryId)

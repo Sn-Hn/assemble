@@ -1,7 +1,9 @@
 package com.assemble.user.controller;
 
 import com.assemble.commons.TokenFixture;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
@@ -48,6 +50,12 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
 
     @Autowired
     private ObjectMapper objectMapper;

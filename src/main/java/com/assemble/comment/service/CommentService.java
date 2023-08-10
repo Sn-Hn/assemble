@@ -4,6 +4,7 @@ import com.assemble.comment.dto.request.CommentCreationRequest;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.entity.Comment;
 import com.assemble.comment.repository.CommentRepository;
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final BaseRequest baseRequest;
 
     @Transactional(rollbackFor = AssembleException.class)
     public Comment createComment(CommentCreationRequest commentCreationRequest) {
-        Comment comment = commentCreationRequest.toEntity();
+        Comment comment = commentCreationRequest.toEntity(baseRequest.getUserId());
 
         return commentRepository.save(comment);
     }

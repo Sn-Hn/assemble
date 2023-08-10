@@ -18,7 +18,7 @@ public class PostLikeRequest {
     @ApiModelProperty(value = "게시글 ID", required = true, example = "1")
     private Long postId;
 
-    public Likes toEntity() {
-        return new Likes(new User(BaseRequest.getUserId()), new Post(this.postId));
+    public Likes toEntity(Long userId) {
+        return new Likes(new User(userId), new Post(this.postId));
     }
 }

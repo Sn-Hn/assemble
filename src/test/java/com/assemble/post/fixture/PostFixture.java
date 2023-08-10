@@ -41,7 +41,6 @@ public class PostFixture {
     private static final String categoryName = "카테고리 이름";
 
     public static PostCreationRequest 게시글_작성_사진_X() {
-        BaseRequest.setUserId(writer);
         return new PostCreationRequest(
                 title,
                 contents,
@@ -52,7 +51,6 @@ public class PostFixture {
     }
 
     public static PostCreationRequest 게시글_작성_사진_O() throws IOException {
-        BaseRequest.setUserId(writer);
         return new PostCreationRequest(
                 title,
                 contents,

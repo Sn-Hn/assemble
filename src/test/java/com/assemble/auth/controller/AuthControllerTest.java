@@ -6,7 +6,9 @@ import com.assemble.auth.service.AuthService;
 import com.assemble.auth.service.JwtService;
 import com.assemble.commons.TokenFixture;
 import com.assemble.commons.config.SecurityConfig;
+import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
+import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +54,12 @@ class AuthControllerTest {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
+
+    @MockBean
+    private TokenInformationInterceptor tokenInformationInterceptor;
 
     @MockBean
     private JwtService jwtService;

@@ -1,5 +1,6 @@
 package com.assemble.post.service;
 
+import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.entity.Likes;
 import com.assemble.post.fixture.PostFixture;
@@ -33,12 +34,16 @@ class PostLikeServiceTest {
     @Mock
     private PostRepository postRepository;
 
+    @Mock
+    private BaseRequest baseRequest;
+
     @Test
     void 게시글_좋아요() {
         // given
-        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.empty());
+        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
         given(postLikeRepository.save(any())).willReturn(PostLikeFixture.좋아요_객체());
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        given(baseRequest.getUserId()).willReturn(1L);
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
 
         // when
@@ -51,8 +56,9 @@ class PostLikeServiceTest {
     @Test
     void 게시글_좋아요_취소() {
         // given
-        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
+        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        given(baseRequest.getUserId()).willReturn(1L);
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_취소_요청();
 
         // when
@@ -66,7 +72,8 @@ class PostLikeServiceTest {
     void 이미_좋아요_한_게시글() {
         // given
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
-        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
+        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
+        given(baseRequest.getUserId()).willReturn(1L);
 
         // when
         boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
@@ -79,7 +86,8 @@ class PostLikeServiceTest {
     void 좋아요_하지_않은_게시글() {
         // given
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
-        given(postLikeRepository.findPostByUser(any())).willReturn(Optional.empty());
+        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
+        given(baseRequest.getUserId()).willReturn(1L);
 
         // when
         boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
