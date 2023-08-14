@@ -34,37 +34,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     }
 
     @Override
-    public Page<Post> findAllBySearch(PostSearchRequest postSearchRequest, Long myUserId, Pageable pageable, long count) {
-        List<Post> posts = getPosts(postSearchRequest, myUserId, pageable);
-
-        return new PageImpl<>(posts, pageable, count);
-    }
-
-    @Override
-    public Page<Post> findAllByUserId(Long userId, Long myUserId, Pageable pageable, long count) {
-        List<Post> postsByUserId = getPostsByUserId(userId, myUserId, pageable);
-
-        return new PageImpl<>(postsByUserId, pageable, count);
-    }
-
-    @Override
-    public long countByUserId(Long userId) {
-        return queryFactory.select(QPost.post.count())
-                .from(QPost.post)
-                .where(eqUserId(userId))
-                .fetchOne();
-    }
-
-    @Override
-    public long countBySearch(PostSearchRequest postSearchRequest) {
-        return queryFactory.select(QPost.post.count())
-                .from(QPost.post)
-                .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
-                        searchByCategory(postSearchRequest.getCategoryId()))
-                .fetchOne();
-    }
-
-    private List<Post> getPosts(PostSearchRequest postSearchRequest, Long myUserId, Pageable pageable) {
+    public List<Post> findAllBySearch(PostSearchRequest postSearchRequest, Long myUserId, Pageable pageable) {
         return queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
@@ -89,7 +59,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private List<Post> getPostsByUserId(Long userId, Long myUserId, Pageable pageable) {
+    @Override
+    public List<Post> findAllByUserId(Long userId, Long myUserId, Pageable pageable) {
         return queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
@@ -111,6 +82,23 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                     return post;
                 })
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public long countByUserId(Long userId) {
+        return queryFactory.select(QPost.post.count())
+                .from(QPost.post)
+                .where(eqUserId(userId))
+                .fetchOne();
+    }
+
+    @Override
+    public long countBySearch(PostSearchRequest postSearchRequest) {
+        return queryFactory.select(QPost.post.count())
+                .from(QPost.post)
+                .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
+                        searchByCategory(postSearchRequest.getCategoryId()))
+                .fetchOne();
     }
 
     private BooleanExpression eqUserId(Long userId) {

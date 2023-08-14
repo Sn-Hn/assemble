@@ -22,8 +22,8 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
     }
 
     @Override
-    public Page<Comment> findByUser(Long userId, Pageable pageable, long count) {
-        List<Comment> comments = queryFactory.selectFrom(QComment.comment)
+    public List<Comment> findByUser(Long userId, Pageable pageable, long count) {
+        return queryFactory.selectFrom(QComment.comment)
                 .innerJoin(QPost.post)
                 .on(QComment.comment.post.postId.eq(QPost.post.postId),
                         QPost.post.isDeleted.eq(false))
@@ -32,8 +32,6 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
-        return new PageImpl<>(comments, pageable, count);
     }
 
     @Override

@@ -9,7 +9,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,8 +34,10 @@ class PostRepositoryTest {
 
         // when
         long count = postRepository.count();
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, myUserId, pageable, count);
-        Post searchPost = allPostBySearch.get().filter(post -> post.getTitle().getValue().contains(postSearchRequest.getSearchQuery()))
+        List<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, myUserId, pageable);
+        Page<Post> posts = new PageImpl<>(allPostBySearch, pageable, count);
+
+        Post searchPost = posts.get().filter(post -> post.getTitle().getValue().contains(postSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
         // then
@@ -52,8 +57,9 @@ class PostRepositoryTest {
 
         // when
         long count = postRepository.count();
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, myUserId, pageable, count);
-        Post searchPost = allPostBySearch.get().filter(post -> post.getContents().getValue().contains(postSearchRequest.getSearchQuery()))
+        List<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, myUserId, pageable);
+        Page<Post> posts = new PageImpl<>(allPostBySearch, pageable, count);
+        Post searchPost = posts.get().filter(post -> post.getContents().getValue().contains(postSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
         // then
@@ -73,8 +79,9 @@ class PostRepositoryTest {
 
         // when
         long count = postRepository.count();
-        Page<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, userId, pageable, count);
-        Post searchPost = allPostBySearch.get().filter(post -> post.getUser().getUserId().equals(Long.valueOf(postSearchRequest.getSearchQuery())))
+        List<Post> allPostBySearch = postRepository.findAllBySearch(postSearchRequest, userId, pageable);
+        Page<Post> posts = new PageImpl<>(allPostBySearch, pageable, count);
+        Post searchPost = posts.get().filter(post -> post.getUser().getUserId().equals(Long.valueOf(postSearchRequest.getSearchQuery())))
                 .findFirst().orElseThrow();
 
         // then

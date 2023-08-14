@@ -68,9 +68,7 @@ class PostServiceTest {
         // given
         Pageable pageable = PageRequest.of(0, 12);
         PostSearchRequest postSearchRequest = PostFixture.게시글_목록_제목_검색();
-        List<Post> postList = List.of(PostFixture.게시글());
-        given(postRepository.findAllBySearch(any(), anyLong(), any(), anyLong())).willReturn(new PageImpl<>(postList, pageable, pageable.getPageSize()));
-
+        given(postRepository.findAllBySearch(any(), anyLong(), any())).willReturn(List.of(PostFixture.게시글()));
 
         // when
         Page<Post> posts = postService.getPosts(postSearchRequest, pageable);
@@ -136,7 +134,7 @@ class PostServiceTest {
         Pageable pageable = PageRequest.of(0, 12);
         List<Post> posts = List.of(PostFixture.게시글());
         given(postRepository.countByUserId(any())).willReturn(1L);
-        given(postRepository.findAllByUserId(anyLong(), anyLong(), any(), anyLong())).willReturn(new PageImpl<>(posts, pageable, pageable.getPageSize()));
+        given(postRepository.findAllByUserId(anyLong(), anyLong(), any())).willReturn(posts);
 
         // when
         Page<Post> postsByUser = postService.getPostsByUser(userId, pageable);
