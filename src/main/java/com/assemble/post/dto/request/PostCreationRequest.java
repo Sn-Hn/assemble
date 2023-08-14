@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @ApiModel(value = "PostCreationRequest : 게시글 작성 요청 값")
 @AllArgsConstructor
 @Getter
@@ -20,18 +23,23 @@ import lombok.ToString;
 public class PostCreationRequest {
 
     @ApiModelProperty(value = "게시글 제목", required = true)
+    @NotEmpty
     private String title;
 
     @ApiModelProperty(value = "게시글 내용", required = true)
+    @NotEmpty
     private String contents;
 
     @ApiModelProperty(value = "게시글 카테고리", required = true, example = "1")
+    @NotNull
     private Long categoryId;
 
     @ApiModelProperty(value = "모집 인원", example = "0")
+    @NotNull
     private int personnelNumber;
 
     @ApiModelProperty(value = "예상 기간", example = "0")
+    @NotNull
     private int expectedPeriod;
 
     private PostCreationRequest() {

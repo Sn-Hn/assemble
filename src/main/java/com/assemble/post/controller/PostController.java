@@ -17,6 +17,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "게시글 APIs")
 @RequestMapping(path = "post")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class PostController {
 
     @ApiOperation(value = "모임 등록")
     @PostMapping
-    public ApiResult<PostCreationResponse> createPost(@RequestBody PostCreationRequest postCreationRequest) {
+    public ApiResult<PostCreationResponse> createPost(@RequestBody @Valid PostCreationRequest postCreationRequest) {
         return ApiResult.ok(new PostCreationResponse(postService.createPost(postCreationRequest)), HttpStatus.CREATED);
     }
     
@@ -47,7 +49,7 @@ public class PostController {
 
     @ApiOperation(value = "모임 수정")
     @PatchMapping
-    public ApiResult<PostResponse> modifyPost(@RequestBody ModifiedPostRequest modifiedPostRequest) {
+    public ApiResult<PostResponse> modifyPost(@RequestBody @Valid ModifiedPostRequest modifiedPostRequest) {
         return ApiResult.ok(new PostResponse(postService.modifyPost(modifiedPostRequest)));
     }
 

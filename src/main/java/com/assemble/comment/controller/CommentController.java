@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "댓글 APIs")
 @RequiredArgsConstructor
 @RestController
@@ -23,13 +25,13 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 작성")
     @PostMapping
-    public ApiResult<CommentResponse> createCommnet(@RequestBody CommentCreationRequest commentCreationRequest) {
+    public ApiResult<CommentResponse> createCommnet(@RequestBody @Valid CommentCreationRequest commentCreationRequest) {
         return ApiResult.ok(new CommentResponse(commentService.createComment(commentCreationRequest)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "댓글 수정")
     @PatchMapping
-    public ApiResult<CommentResponse> modifyComment(@RequestBody ModifiedCommentRequest modifiedCommentRequest) {
+    public ApiResult<CommentResponse> modifyComment(@RequestBody @Valid ModifiedCommentRequest modifiedCommentRequest) {
         return ApiResult.ok(new CommentResponse(commentService.modifyComment(modifiedCommentRequest)));
     }
 

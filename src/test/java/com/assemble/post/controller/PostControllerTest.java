@@ -246,7 +246,7 @@ class PostControllerTest {
                         fieldWithPath("response.postId").description("모임 Id"),
                         fieldWithPath("response.title").description("제목"),
                         fieldWithPath("response.contents").description("내용"),
-                        fieldWithPath("response.categoryName").description("카테고리 ID"),
+                        fieldWithPath("response.categoryName").description("카테고리 이름"),
                         fieldWithPath("response.writerNickname").description("작성자 닉네임"),
                         fieldWithPath("response.writerId").description("작성자 ID"),
                         fieldWithPath("response.writerProfileImages").description("작성자 프로필 사진 목록"),

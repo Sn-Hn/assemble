@@ -13,6 +13,6 @@ public class CategoryResponse {
     private String categoryName;
 
     public CategoryResponse(Category category) {
-        this(category.getId(), category.getName().getValue());
+        this(category.getId(), category.getName());
     }
 }

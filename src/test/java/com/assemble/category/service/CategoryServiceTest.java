@@ -6,11 +6,9 @@ import com.assemble.category.entity.Category;
 import com.assemble.category.fixture.CategoryFixture;
 import com.assemble.category.repository.CategoryRepository;
 import com.assemble.commons.base.BaseRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -45,7 +43,7 @@ class CategoryServiceTest {
         Category savedCategory = categoryService.createCategory(categoryCreationRequest);
 
         // then
-        assertThat(savedCategory.getName().getValue()).isEqualTo(categoryCreationRequest.getCategoryName());
+        assertThat(savedCategory.getName()).isEqualTo(categoryCreationRequest.getCategoryName());
     }
 
     @Test
@@ -74,7 +72,7 @@ class CategoryServiceTest {
         Category modifiedCategory = categoryService.modifyCategory(modifiedCategoryRequest);
 
         // then
-        assertThat(modifiedCategory.getName().getValue()).isEqualTo(modifiedCategoryRequest.getCategoryName());
+        assertThat(modifiedCategory.getName()).isEqualTo(modifiedCategoryRequest.getCategoryName());
     }
 
     @Test

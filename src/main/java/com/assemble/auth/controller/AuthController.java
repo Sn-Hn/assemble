@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.time.Duration;
 
 @Api(tags = "인증 APIs")
@@ -33,7 +33,7 @@ public class AuthController {
 
     @ApiOperation(value = "회원 로그인")
     @PostMapping("authentication")
-    public ApiResult<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ApiResult<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response) {
         User user = authService.login(loginRequest);
 
         String accessToken = jwtService.issueAccessToken(user.getUserId(), loginRequest.getEmail());

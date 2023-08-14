@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +33,13 @@ public class CategoryController {
 
     @ApiOperation(value = "카테고리 등록")
     @PostMapping
-    public ApiResult<CategoryResponse> createCategory(@RequestBody CategoryCreationRequest categoryCreationRequest) {
+    public ApiResult<CategoryResponse> createCategory(@RequestBody @Valid CategoryCreationRequest categoryCreationRequest) {
         return ApiResult.ok(new CategoryResponse(categoryService.createCategory(categoryCreationRequest)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "카테고리 수정")
     @PatchMapping
-    public ApiResult<CategoryResponse> modifyCategory(@RequestBody ModifiedCategoryRequest modifiedCategoryRequest) {
+    public ApiResult<CategoryResponse> modifyCategory(@RequestBody @Valid ModifiedCategoryRequest modifiedCategoryRequest) {
         return ApiResult.ok(new CategoryResponse(categoryService.modifyCategory(modifiedCategoryRequest)));
     }
 

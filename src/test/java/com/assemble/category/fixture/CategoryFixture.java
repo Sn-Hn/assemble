@@ -19,6 +19,6 @@ public class CategoryFixture {
     }
 
     public static Category 카테고리() {
-        return new Category(id, new CategoryName(categoryName));
+        return new Category(id, categoryName);
     }
 }

@@ -20,7 +20,7 @@ public class UserFixture {
     private static final String secondEmail = "test2@test.com";
     private static final String successLoginEmail = "test00@gmail.com";
     private static final String password = "password1!";
-    private static final String failedLoginPassword = "password12345!@#$%^%";
+    private static final String failedLoginPassword = "passd12!@#$";
     private static final String name = "test";
     private static final String phoneNumber = "01011112222";
     private static final String nickname = "test developer";

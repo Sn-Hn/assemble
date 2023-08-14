@@ -5,7 +5,6 @@ import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.service.FileService;
-import com.assemble.user.domain.Email;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
@@ -34,6 +33,7 @@ public class UserService {
         verificationService.verifyDuplicationEmail(signupRequest.getEmail());
         verificationService.verifyDuplicationNickname(signupRequest.getNickname());
 
+        String password = passwordEncoder.encode(signupRequest.getPassword());
         User user = User.createUser(signupRequest, passwordEncoder);
 
         AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());

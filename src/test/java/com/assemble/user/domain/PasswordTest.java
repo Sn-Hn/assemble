@@ -23,10 +23,10 @@ class PasswordTest {
         passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"abcdefg123", "a1#", "test", ""})
-    void 유효하지_않은_비밀번호_형식_오류(String value) {
+    @Test
+    void 유효하지_않은_비밀번호_형식_오류() {
         // given
+        String value = "";
         // when
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)

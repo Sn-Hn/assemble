@@ -26,10 +26,6 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(User.class, email));
 
-        if (user.getStatus().equals(UserStatus.WITHDRAWAL)) {
-            throw new NotFoundException("withdrawal user", user.getUserId(), user.getNickname());
-        }
-
         user.login(loginRequest, passwordEncoder);
 
         return user;

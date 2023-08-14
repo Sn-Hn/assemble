@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @Api(tags = "회원 APIs")
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class UserController {
     @ApiOperation(value = "회원가입")
     @PostMapping(value = "signup")
     public ApiResult<SignupResponse> signup(
-            SignupRequest signupRequest,
+            @Valid SignupRequest signupRequest,
             @RequestPart(required = false)MultipartFile profileImage) {
         return ApiResult.ok(SignupResponse.from(userService.signup(signupRequest, profileImage)), HttpStatus.CREATED);
     }

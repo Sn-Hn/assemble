@@ -70,7 +70,7 @@ public class PostsResponse {
                 post.getPersonnelNumber(),
                 post.getExpectedPeriod(),
                 post.getComments().getComments().size(),
-                post.getCategory().getName().getValue(),
+                post.getCategory().getName(),
                 post.toPostProfileResponse(),
                 post.isLike(),
                 post.getPostStatus().toString()

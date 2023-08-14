@@ -75,7 +75,7 @@ public class PostFixture {
                 personnelNumber,
                 new Comments(),
                 expectedPeriod,
-                new Category(categoryId, new CategoryName(categoryName)),
+                new Category(categoryId, categoryName),
                 new ArrayList<>(),
                 false,
                 false,

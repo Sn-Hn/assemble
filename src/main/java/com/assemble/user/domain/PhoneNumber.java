@@ -10,13 +10,14 @@ import java.util.regex.Pattern;
 @Embeddable
 public class PhoneNumber {
     @Transient
-    private final Pattern pattern = Pattern.compile("^[0-9]+$");
+    private final Pattern pattern = Pattern.compile("^[0-9]{9,11}$");
 
     @Column(name = "PHONE_NUMBER")
     private String value;
 
     public PhoneNumber(String value) {
         verifyPhoneNumberForm(value);
+        verifyEmptyPhoneNumber(value);
         this.value = value;
     }
 

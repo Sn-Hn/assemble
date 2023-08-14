@@ -16,8 +16,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.util.Map;
-
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 

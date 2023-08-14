@@ -80,7 +80,7 @@ public class PostResponse {
                 post.getPersonnelNumber(),
                 post.getExpectedPeriod(),
                 post.getComments().getComments().size(),
-                post.getCategory().getName().getValue(),
+                post.getCategory().getName(),
                 post.getComments().getComments().stream()
                         .map(CommentResponse::new)
                         .collect(Collectors.toList()),

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @Api(tags = "검증 Apis")
 @RequiredArgsConstructor
 @RestController
@@ -19,13 +21,13 @@ public class VerificationController {
 
     @ApiOperation(value = "이메일 검증")
     @GetMapping("email/validation")
-    public ApiResult<Boolean> validateUserEmail(EmailRequest emailRequest) {
+    public ApiResult<Boolean> validateUserEmail(@Valid EmailRequest emailRequest) {
         return ApiResult.ok(verificationService.isDuplicationEmail(emailRequest.getEmail()));
     }
 
     @ApiOperation(value = "닉네임 검증")
     @GetMapping("nickname/validation")
-    public ApiResult<Boolean> validateUserEmail(NicknameRequest nicknameRequest) {
+    public ApiResult<Boolean> validateUserEmail(@Valid NicknameRequest nicknameRequest) {
         return ApiResult.ok(verificationService.isDuplicationNickname(nicknameRequest.getNickname()));
     }
 

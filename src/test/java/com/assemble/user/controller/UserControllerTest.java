@@ -9,6 +9,7 @@ import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.service.UserService;
+import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -68,9 +69,9 @@ public class UserControllerTest {
 
         ResultActions perform = mockMvc.perform(multipart("/signup")
                         .file(FileFixture.MockMultipartFile_생성())
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                        .content(objectMapper.writeValueAsString(signupRequest)));
+                        .queryParams(MultiValueMapConverter.convert(objectMapper, signupRequest)));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
@@ -78,13 +79,13 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
         perform.andDo(document("/signup",
-                requestFields(
-                        fieldWithPath("email").description("이메일"),
-                        fieldWithPath("name").description("이름"),
-                        fieldWithPath("nickname").description("닉네임"),
-                        fieldWithPath("phoneNumber").description("핸드폰 번호"),
-                        fieldWithPath("password").description("비밀번호"),
-                        fieldWithPath("birthDate").description("생년월일")
+                requestParameters(
+                        parameterWithName("email").description("이메일"),
+                        parameterWithName("name").description("이름"),
+                        parameterWithName("nickname").description("닉네임"),
+                        parameterWithName("phoneNumber").description("핸드폰 번호"),
+                        parameterWithName("password").description("비밀번호"),
+                        parameterWithName("birthDate").description("생년월일")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),

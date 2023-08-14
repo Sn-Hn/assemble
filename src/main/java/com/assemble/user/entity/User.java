@@ -1,6 +1,7 @@
 package com.assemble.user.entity;
 
 import com.assemble.commons.base.BaseDateEntity;
+import com.assemble.commons.exception.NotFoundException;
 import com.assemble.commons.exception.UnauthenticationException;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
@@ -84,6 +85,7 @@ public class User extends BaseDateEntity {
     }
 
     public void login(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+        verifyWithdrawal();
         if (!this.password.isComparePassword(loginRequest.getPassword(), passwordEncoder)) {
             throw new UnauthenticationException();
         }
@@ -104,5 +106,11 @@ public class User extends BaseDateEntity {
                 .filter(userImage -> userImage.getFile() != null)
                 .map(userImage -> userImage.getFile().mapProfile())
                 .collect(Collectors.toList());
+    }
+
+    private void verifyWithdrawal() {
+        if (this.getStatus().equals(UserStatus.WITHDRAWAL)) {
+            throw new NotFoundException("withdrawal user", this.getUserId(), this.getNickname());
+        }
     }
 }
