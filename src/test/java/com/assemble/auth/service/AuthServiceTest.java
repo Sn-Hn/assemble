@@ -39,6 +39,7 @@ class AuthServiceTest {
     @Spy
     private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
+
     @Test
     void 로그인_성공() {
         // given

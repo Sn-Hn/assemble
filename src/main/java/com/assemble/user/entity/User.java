@@ -73,23 +73,23 @@ public class User extends BaseDateEntity {
         this(email, null, null, password, null, null);
     }
 
-    public static User createUser(SignupRequest signupRequest, PasswordEncoder passwordEncoder) {
+    public static User createUser(SignupRequest signupRequest) {
         return new User(
                 new Email(signupRequest.getEmail()),
                 new Name(signupRequest.getName()),
                 signupRequest.getNickname(),
-                new Password(signupRequest.getPassword(), passwordEncoder),
+                new Password(signupRequest.getPassword()),
                 new PhoneNumber(signupRequest.getPhoneNumber()),
                 new BirthDate(signupRequest.getBirthDate())
         );
     }
 
-    public void login(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
-        verifyWithdrawal();
-        if (!this.password.isComparePassword(loginRequest.getPassword(), passwordEncoder)) {
-            throw new UnauthenticationException();
-        }
-    }
+//    public void login(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+//        verifyWithdrawal();
+//        if (!passwordEncoder.matches(loginRequest.getPassword(), this.password.getValue())) {
+//            throw new UnauthenticationException();
+//        }
+//    }
 
     public void setProfile(AttachedFile file) {
         this.profiles.add(new UserImage(this, file));
@@ -108,7 +108,7 @@ public class User extends BaseDateEntity {
                 .collect(Collectors.toList());
     }
 
-    private void verifyWithdrawal() {
+    public void verifyWithdrawal() {
         if (this.getStatus().equals(UserStatus.WITHDRAWAL)) {
             throw new NotFoundException("withdrawal user", this.getUserId(), this.getNickname());
         }

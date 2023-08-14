@@ -33,7 +33,7 @@ class UserTest {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
 
         // when
-        User user = User.createUser(signupRequest, passwordEncoder);
+        User user = User.createUser(signupRequest);
 
         // then
         assertAll(
@@ -41,20 +41,8 @@ class UserTest {
                 () -> assertThat(user.getEmail().getValue()).isEqualTo(signupRequest.getEmail()),
                 () -> assertThat(user.getName().getValue()).isEqualTo(signupRequest.getName()),
                 () -> assertThat(user.getNickname()).isEqualTo(signupRequest.getNickname()),
-                () -> assertThat(user.getPhoneNumber().getValue()).isEqualTo(signupRequest.getPhoneNumber()),
-                () -> assertThatCode(() -> user.getPassword().isComparePassword(signupRequest.getPassword(), passwordEncoder)).doesNotThrowAnyException()
+                () -> assertThat(user.getPhoneNumber().getValue()).isEqualTo(signupRequest.getPhoneNumber())
         );
-    }
-
-    @Test
-    void 로그인_성공() {
-        // given
-        LoginRequest loginRequest = UserFixture.로그인_시도_회원();
-        User user = UserFixture.회원();
-
-        // when
-        // then
-        assertThatCode(() -> user.login(loginRequest, passwordEncoder)).doesNotThrowAnyException();
     }
 
     @Test

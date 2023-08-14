@@ -33,8 +33,8 @@ public class UserService {
         verificationService.verifyDuplicationEmail(signupRequest.getEmail());
         verificationService.verifyDuplicationNickname(signupRequest.getNickname());
 
-        String password = passwordEncoder.encode(signupRequest.getPassword());
-        User user = User.createUser(signupRequest, passwordEncoder);
+        signupRequest.encodePassword(passwordEncoder);
+        User user = User.createUser(signupRequest);
 
         AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());
         user.setProfile(profile);

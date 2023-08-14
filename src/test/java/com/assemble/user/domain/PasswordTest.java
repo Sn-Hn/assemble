@@ -30,7 +30,7 @@ class PasswordTest {
         // when
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> new Password(value, passwordEncoder));
+                .isThrownBy(() -> new Password(value));
     }
 
     @Test
@@ -39,11 +39,8 @@ class PasswordTest {
         String value = "password1!";
 
         // when
-        Password password = new Password(value, passwordEncoder);
+        Password password = new Password(value);
 
-        assertAll(
-                () -> assertThat(password).isNotNull(),
-                () -> assertThatCode(() -> password.isComparePassword(value, passwordEncoder)).doesNotThrowAnyException()
-        );
+        assertThat(password).isNotNull();
     }
 }
