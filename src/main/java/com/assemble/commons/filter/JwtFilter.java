@@ -37,8 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         log.info("Request UserId={}, Email={}", jwtProvider.getUserId(accessToken), jwtProvider.getEmail(accessToken));
 
-
-
         filterChain.doFilter(request, response);
     }
 
