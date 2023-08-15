@@ -62,7 +62,7 @@ public class AuthController {
         return ApiResult.ok();
     }
 
-    private ResponseCookie createCookie(JwtType jwtType, String token, int expireTime) {
+    public static ResponseCookie createCookie(JwtType jwtType, String token, int expireTime) {
         return ResponseCookie.from(jwtType.getCode(), token)
                 .httpOnly(true)
                 .secure(true)

@@ -34,7 +34,7 @@ public class SignupResponse {
     private String role;
 
     @ApiModelProperty(value = "프로필 사진")
-    private List<ProfileResponse> profile;
+    private ProfileResponse profile;
 
     public static SignupResponse from(User user) {
         return new SignupResponse(
@@ -44,7 +44,7 @@ public class SignupResponse {
                 user.getNickname(),
                 user.getPhoneNumber().getValue(),
                 user.getRole().toString(),
-                user.toUserProfileResponse()
+                user.toProfile()
         );
     }
 }

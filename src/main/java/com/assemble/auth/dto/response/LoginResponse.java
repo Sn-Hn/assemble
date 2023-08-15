@@ -46,7 +46,7 @@ public class LoginResponse {
                 user.getRole().toString(),
                 user.getNickname(),
                 user.getName().getValue(),
-                user.toUserProfileResponse(),
+                user.toProfiles(),
                 token
         );
     }
@@ -59,7 +59,7 @@ public class LoginResponse {
                 user.getRole().toString(),
                 user.getNickname(),
                 user.getName().getValue(),
-                user.toUserProfileResponse(),
+                user.toProfiles(),
                 null
         );
     }

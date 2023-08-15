@@ -1,6 +1,12 @@
 package com.assemble.commons.exception;
 
+import com.assemble.auth.controller.AuthController;
+import com.assemble.auth.domain.JwtType;
 import com.assemble.commons.response.ApiResult;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,13 +23,9 @@ public class AssembleExceptionHandler {
         return newResponse(e, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UnauthenticationException.class)
+    @ExceptionHandler({UnauthenticationException.class, UnauthorizedException.class, ExpiredJwtException.class,
+                    MalformedJwtException.class, UnsupportedJwtException.class, SignatureException.class})
     public ResponseEntity<?> handleUnauthenticationException(Exception e) {
-        return newResponse(e, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<?> handleUnauthorizedExceptionException(Exception e) {
         return newResponse(e, HttpStatus.UNAUTHORIZED);
     }
 
@@ -34,7 +36,11 @@ public class AssembleExceptionHandler {
 
     @ExceptionHandler(RefreshTokenException.class)
     public ResponseEntity<?> handleExpiredRefreshTokenException(Exception e) {
-        return newResponse(e, HttpStatus.FORBIDDEN);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add(HttpHeaders.SET_COOKIE, AuthController.createCookie(JwtType.REFRESH_TOKEN, null, 0).toString());
+
+        return newResponse(e, HttpStatus.FORBIDDEN, headers);
     }
 
     @ExceptionHandler(Exception.class)
@@ -42,11 +48,15 @@ public class AssembleExceptionHandler {
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     private ResponseEntity<ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
         log.error("error={}", throwable.getMessage(), throwable);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
+        return newResponse(throwable, status, headers);
+    }
+
+    private ResponseEntity<ApiResult<?>> newResponse(Throwable throwable, HttpStatus status, HttpHeaders headers) {
+        log.error("error={}", throwable.getMessage(), throwable);
         return new ResponseEntity<>(ApiResult.error(throwable, status), headers, status);
     }
 }

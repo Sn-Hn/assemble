@@ -2,17 +2,13 @@ package com.assemble.user.entity;
 
 import com.assemble.commons.base.BaseDateEntity;
 import com.assemble.commons.exception.NotFoundException;
-import com.assemble.commons.exception.UnauthenticationException;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
-import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -84,13 +80,6 @@ public class User extends BaseDateEntity {
         );
     }
 
-//    public void login(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
-//        verifyWithdrawal();
-//        if (!passwordEncoder.matches(loginRequest.getPassword(), this.password.getValue())) {
-//            throw new UnauthenticationException();
-//        }
-//    }
-
     public void setProfile(AttachedFile file) {
         this.profiles.add(new UserImage(this, file));
     }
@@ -101,7 +90,15 @@ public class User extends BaseDateEntity {
                 .collect(Collectors.toList());
     }
 
-    public List<ProfileResponse> toUserProfileResponse() {
+    public ProfileResponse toProfile() {
+        return profiles.stream()
+                .filter(userImage -> userImage.getFile() != null)
+                .map(userImage -> userImage.getFile().mapProfile())
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<ProfileResponse> toProfiles() {
         return profiles.stream()
                 .filter(userImage -> userImage.getFile() != null)
                 .map(userImage -> userImage.getFile().mapProfile())

@@ -28,7 +28,7 @@ public class PostsResponse {
     private String writerNickname;
 
     @ApiModelProperty(value = "작성자 프로필 이미지")
-    private List<ProfileResponse> writerProfileImages;
+    private ProfileResponse writerProfileImages;
 
     @ApiModelProperty(value = "게시글 조회수")
     private Long hits;
@@ -64,7 +64,7 @@ public class PostsResponse {
                 post.getContents().getValue(),
                 post.getUser().getUserId(),
                 post.getUser().getNickname(),
-                post.getUser().toUserProfileResponse(),
+                post.getUser().toProfile(),
                 post.getHits(),
                 post.getLikes(),
                 post.getPersonnelNumber(),

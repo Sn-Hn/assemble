@@ -2,7 +2,6 @@ package com.assemble.post.dto.response;
 
 import com.assemble.comment.dto.response.CommentResponse;
 import com.assemble.file.dto.response.ProfileResponse;
-import com.assemble.post.domain.PostStatus;
 import com.assemble.post.entity.Post;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -32,7 +31,7 @@ public class PostResponse {
     private String writerNickname;
 
     @ApiModelProperty(value = "작성자 프로필 이미지")
-    private List<ProfileResponse> writerProfileImages;
+    private ProfileResponse writerProfileImages;
 
     @ApiModelProperty(value = "게시글 조회수")
     private Long hits;
@@ -74,7 +73,7 @@ public class PostResponse {
                 post.getContents().getValue(),
                 post.getUser().getUserId(),
                 post.getUser().getNickname(),
-                post.getUser().toUserProfileResponse(),
+                post.getUser().toProfile(),
                 post.getHits(),
                 post.getLikes(),
                 post.getPersonnelNumber(),

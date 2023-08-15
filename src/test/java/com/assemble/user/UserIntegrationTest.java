@@ -68,7 +68,7 @@ public class UserIntegrationTest {
                         "status", equalTo(201),
                         "error", equalTo(null),
                         "response.email", equalTo(signupRequest.getEmail()),
-                        "response.profile.size()", equalTo(0))
+                        "response.profile", nullValue())
                 .log().all();
     }
 
@@ -92,7 +92,7 @@ public class UserIntegrationTest {
                 .body("success", is(true),
                         "error", equalTo(null),
                         "response.email", equalTo(signupRequest.getEmail()),
-                        "response.profile.size()", equalTo(1))
+                        "response.profile", notNullValue())
                 .log().all();
     }
 

@@ -42,7 +42,7 @@ public class CommentResponse {
                 comment.getContents(),
                 comment.getUser().getNickname(),
                 comment.getCreatedDate(),
-                comment.getUser().toUserProfileResponse()
+                comment.getUser().toProfiles()
         );
     }
 }
