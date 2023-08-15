@@ -12,5 +12,5 @@ public class ProfileResponse {
     private String originalName;
 
     @ApiModelProperty(value = "파일 경로")
-    private String fileFullPath;
+    private String filePath;
 }

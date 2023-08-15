@@ -19,7 +19,7 @@ public class ExclusionApis {
         apis.put("/post/*", "GET");
         apis.put("/category", "GET");
         apis.put("/auth/token", "POST");
-        apis.put("/image/**", "GET");
+        apis.put("/images/**", "GET");
 
         this.exclusionApis = apis;
     }

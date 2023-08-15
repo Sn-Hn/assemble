@@ -58,6 +58,6 @@ public class AttachedFile extends BaseUserEntity {
     }
 
     public ProfileResponse mapProfile() {
-        return new ProfileResponse(this.name, this.fullPath);
+        return new ProfileResponse(this.name, "/images/" + this.savedName);
     }
 }

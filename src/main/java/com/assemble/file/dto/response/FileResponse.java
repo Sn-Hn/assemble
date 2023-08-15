@@ -10,12 +10,12 @@ import lombok.Getter;
 public class FileResponse {
 
     @ApiModelProperty(value = "파일 경로")
-    private String fileFullPath;
+    private String filePath;
 
     @ApiModelProperty(value = "파일 이름")
     private String originalName;
 
     public FileResponse(AttachedFile file) {
-        this(file.getFullPath(), file.getName());
+        this(file.getSavedName(), file.getName());
     }
 }
