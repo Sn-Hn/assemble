@@ -1,6 +1,5 @@
 package com.assemble.post.fixture;
 
-import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.entity.Likes;
 import com.assemble.post.entity.Post;

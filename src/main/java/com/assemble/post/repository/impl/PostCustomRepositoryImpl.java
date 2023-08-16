@@ -1,6 +1,5 @@
 package com.assemble.post.repository.impl;
 
-import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.PostOrderType;
 import com.assemble.post.domain.PostSearchType;
 import com.assemble.post.dto.request.PostSearchRequest;
@@ -9,14 +8,10 @@ import com.assemble.post.entity.Post;
 import com.assemble.post.entity.QLikes;
 import com.assemble.post.entity.QPost;
 import com.assemble.post.repository.PostCustomRepository;
-import com.assemble.user.entity.QUser;
-import com.assemble.user.entity.User;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;

@@ -5,7 +5,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 @Component
 @RequestScope
-public class BaseRequest {
+public class UserContext {
     // default -> 로그인하지 않은 회원
     private Long userId = -1L;
 

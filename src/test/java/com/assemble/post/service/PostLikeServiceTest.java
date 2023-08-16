@@ -1,13 +1,11 @@
 package com.assemble.post.service;
 
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.post.dto.request.PostLikeRequest;
-import com.assemble.post.entity.Likes;
 import com.assemble.post.fixture.PostFixture;
 import com.assemble.post.fixture.PostLikeFixture;
 import com.assemble.post.repository.PostLikeRepository;
 import com.assemble.post.repository.PostRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +33,7 @@ class PostLikeServiceTest {
     private PostRepository postRepository;
 
     @Mock
-    private BaseRequest baseRequest;
+    private UserContext userContext;
 
     @Test
     void 게시글_좋아요() {
@@ -43,7 +41,7 @@ class PostLikeServiceTest {
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
         given(postLikeRepository.save(any())).willReturn(PostLikeFixture.좋아요_객체());
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
 
         // when
@@ -58,7 +56,7 @@ class PostLikeServiceTest {
         // given
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_취소_요청();
 
         // when
@@ -73,7 +71,7 @@ class PostLikeServiceTest {
         // given
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
@@ -87,7 +85,7 @@ class PostLikeServiceTest {
         // given
         PostLikeRequest postLikeRequest = PostLikeFixture.게시글_좋아요_요청();
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);

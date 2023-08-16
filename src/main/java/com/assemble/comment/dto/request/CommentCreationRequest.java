@@ -1,7 +1,6 @@
 package com.assemble.comment.dto.request;
 
 import com.assemble.comment.entity.Comment;
-import com.assemble.commons.base.BaseRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

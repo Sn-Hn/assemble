@@ -5,7 +5,7 @@ import com.assemble.category.dto.request.ModifiedCategoryRequest;
 import com.assemble.category.entity.Category;
 import com.assemble.category.fixture.CategoryFixture;
 import com.assemble.category.repository.CategoryRepository;
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class CategoryServiceTest {
     private CategoryRepository categoryRepository;
 
     @Mock
-    private BaseRequest baseRequest;
+    private UserContext userContext;
 
     @Test
     void 카테고리_등록() {
@@ -66,7 +66,7 @@ class CategoryServiceTest {
         // given
         ModifiedCategoryRequest modifiedCategoryRequest = CategoryFixture.카테고리_수정();
         given(categoryRepository.findById(any())).willReturn(Optional.of(CategoryFixture.카테고리()));
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         Category modifiedCategory = categoryService.modifyCategory(modifiedCategoryRequest);

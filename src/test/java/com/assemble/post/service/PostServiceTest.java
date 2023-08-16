@@ -1,10 +1,9 @@
 package com.assemble.post.service;
 
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
-import com.assemble.post.dto.response.PostCreationResponse;
 import com.assemble.post.entity.Post;
 import com.assemble.post.fixture.PostFixture;
 import com.assemble.post.repository.PostRepository;
@@ -15,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -40,7 +38,7 @@ class PostServiceTest {
     private PostLikeService postLikeService;
 
     @Mock
-    private BaseRequest baseRequest;
+    private UserContext userContext;
 
     @Test
     void 게시글_작성() {
@@ -48,7 +46,7 @@ class PostServiceTest {
         PostCreationRequest postCreationRequest = PostFixture.게시글_작성_사진_X();
         given(postRepository.save(any()))
                 .willReturn(PostFixture.게시글());
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         Post response = postService.createPost(postCreationRequest);
@@ -58,7 +56,7 @@ class PostServiceTest {
                 () -> assertThat(response.getTitle().getValue()).isEqualTo(postCreationRequest.getTitle()),
                 () -> assertThat(response.getContents().getValue()).isEqualTo(postCreationRequest.getContents()),
                 () -> assertThat(response.getCategory().getId()).isEqualTo(postCreationRequest.getCategoryId()),
-                () -> assertThat(response.getUser().getUserId()).isEqualTo(baseRequest.getUserId())
+                () -> assertThat(response.getUser().getUserId()).isEqualTo(userContext.getUserId())
 
         );
     }

@@ -1,6 +1,6 @@
 package com.assemble.post.service;
 
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.post.dto.request.PostLikeRequest;
@@ -18,11 +18,11 @@ public class PostLikeService {
 
     private final PostLikeRepository postLikeRepository;
     private final PostRepository postRepository;
-    private final BaseRequest baseRequest;
+    private final UserContext userContext;
 
     @Transactional(rollbackFor = AssembleException.class)
     public boolean likePost(PostLikeRequest postLikeRequest) {
-        Likes postLike = postLikeRequest.toEntity(baseRequest.getUserId());
+        Likes postLike = postLikeRequest.toEntity(userContext.getUserId());
         if (isAleadyLikeByUser(postLikeRequest)) {
             throw new IllegalArgumentException("this post is already like");
         }
@@ -39,7 +39,7 @@ public class PostLikeService {
 
     @Transactional(rollbackFor = AssembleException.class)
     public boolean cancelLikePost(Long postId) {
-        Likes likes = postLikeRepository.findPostByUser(postId, baseRequest.getUserId())
+        Likes likes = postLikeRepository.findPostByUser(postId, userContext.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("this post didn't like it"));
 
         postLikeRepository.delete(likes);
@@ -54,7 +54,7 @@ public class PostLikeService {
 
     @Transactional(readOnly = true)
     public boolean isAleadyLikeByUser(PostLikeRequest postLikeRequest) {
-        if (postLikeRepository.findPostByUser(postLikeRequest.getPostId(), baseRequest.getUserId()).isPresent()) {
+        if (postLikeRepository.findPostByUser(postLikeRequest.getPostId(), userContext.getUserId()).isPresent()) {
             return true;
         }
 

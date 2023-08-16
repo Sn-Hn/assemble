@@ -1,6 +1,6 @@
 package com.assemble.user.service;
 
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
@@ -42,7 +42,7 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Mock
-    private BaseRequest baseRequest;
+    private UserContext userContext;
 
     @Test
     void 회원가입_성공() {
@@ -84,7 +84,7 @@ class UserServiceTest {
     @Test
     void 회원_탈퇴() {
         // given
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         boolean isWithdrawal = userService.withdrawUser();

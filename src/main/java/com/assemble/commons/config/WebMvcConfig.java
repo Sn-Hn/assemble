@@ -1,7 +1,7 @@
 package com.assemble.commons.config;
 
 import com.assemble.auth.domain.JwtProvider;
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.commons.interceptor.LoggingCustomInterceptor;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;
 
-    private final BaseRequest baseRequest;
+    private final UserContext userContext;
 
     private final JwtProvider jwtProvider;
 
@@ -29,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoggingCustomInterceptor(objectMapper))
                 .addPathPatterns("/**").order(2);
-        registry.addInterceptor(new TokenInformationInterceptor(baseRequest, jwtProvider))
+        registry.addInterceptor(new TokenInformationInterceptor(userContext, jwtProvider))
                 .addPathPatterns("/**").order(1);
     }
 

@@ -1,10 +1,7 @@
 package com.assemble.post.fixture;
 
-import com.assemble.category.domain.CategoryName;
 import com.assemble.category.entity.Category;
 import com.assemble.comment.domain.Comments;
-import com.assemble.comment.fixture.CommentFixture;
-import com.assemble.commons.base.BaseRequest;
 import com.assemble.post.domain.Contents;
 import com.assemble.post.domain.PostStatus;
 import com.assemble.post.domain.Title;
@@ -17,7 +14,6 @@ import com.assemble.user.entity.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PostFixture {
     private static final Long postId = 1L;

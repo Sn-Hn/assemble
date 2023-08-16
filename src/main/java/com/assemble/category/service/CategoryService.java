@@ -4,7 +4,7 @@ import com.assemble.category.dto.request.CategoryCreationRequest;
 import com.assemble.category.dto.request.ModifiedCategoryRequest;
 import com.assemble.category.entity.Category;
 import com.assemble.category.repository.CategoryRepository;
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final BaseRequest baseRequest;
+    private final UserContext userContext;
 
     @Transactional(readOnly = true)
     public List<Category> getCategories() {
@@ -35,7 +35,7 @@ public class CategoryService {
         Category category = categoryRepository.findById(modifiedCategoryRequest.getId())
                 .orElseThrow(() -> new NotFoundException(Category.class, modifiedCategoryRequest.getId()));
 
-        category.modify(modifiedCategoryRequest, baseRequest.getUserId());
+        category.modify(modifiedCategoryRequest, userContext.getUserId());
 
         return category;
     }

@@ -1,6 +1,6 @@
 package com.assemble.user.service;
 
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.entity.AttachedFile;
@@ -26,7 +26,7 @@ public class UserService {
 
     private final VerificationService verificationService;
 
-    private final BaseRequest baseRequest;
+    private final UserContext userContext;
 
     @Transactional(rollbackFor = AssembleException.class)
     public User signup(SignupRequest signupRequest, MultipartFile profileImage) {
@@ -36,10 +36,10 @@ public class UserService {
         signupRequest.encodePassword(passwordEncoder);
         User user = User.createUser(signupRequest);
 
-        AttachedFile profile = fileService.uploadFile(profileImage, user.getUserId());
-        user.setProfile(profile);
-
         User savedUser = userRepository.save(user);
+
+        AttachedFile profile = fileService.uploadFile(profileImage, savedUser.getUserId());
+        user.setProfile(profile);
 
         return savedUser;
     }
@@ -54,7 +54,7 @@ public class UserService {
 
     @Transactional(rollbackFor = AssembleException.class)
     public boolean withdrawUser() {
-        User user = new User(baseRequest.getUserId());
+        User user = new User(userContext.getUserId());
         userRepository.delete(user);
 
         return true;

@@ -1,11 +1,10 @@
 package com.assemble.commons.interceptor;
 
 import com.assemble.auth.domain.JwtProvider;
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class TokenInformationInterceptor implements HandlerInterceptor {
 
-    private final BaseRequest baseRequest;
+    private final UserContext userContext;
     private final JwtProvider jwtProvider;
 
     @Override
@@ -31,10 +30,10 @@ public class TokenInformationInterceptor implements HandlerInterceptor {
 
         Long userId = NumberUtils.parseNumber(jwtProvider.getUserId(accessTokenFromHeader), Long.class);
         String email = jwtProvider.getEmail(accessTokenFromHeader);
-        baseRequest.setUserId(userId);
-        baseRequest.setEmail(email);
+        userContext.setUserId(userId);
+        userContext.setEmail(email);
 
-        log.info("BaseRequest={}", baseRequest);
+        log.info("BaseRequest={}", userContext);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

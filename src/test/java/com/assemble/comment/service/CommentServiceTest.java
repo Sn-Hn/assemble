@@ -5,7 +5,7 @@ import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.entity.Comment;
 import com.assemble.comment.fixture.CommentFixture;
 import com.assemble.comment.repository.CommentRepository;
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.base.UserContext;
 import com.assemble.post.entity.Post;
 import com.assemble.post.fixture.PostFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,7 @@ class CommentServiceTest {
     private CommentRepository commentRepository;
 
     @Mock
-    private BaseRequest baseRequest;
+    private UserContext userContext;
 
     @Test
     void 댓글_생성() {
@@ -41,7 +41,7 @@ class CommentServiceTest {
         CommentCreationRequest commentCreationRequest = CommentFixture.댓글_생성_요청();
         Comment comment = CommentFixture.댓글_조회();
         given(commentRepository.save(any())).willReturn(comment);
-        given(baseRequest.getUserId()).willReturn(1L);
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         Comment savedComment = commentService.createComment(commentCreationRequest);
@@ -55,6 +55,7 @@ class CommentServiceTest {
         // given
         ModifiedCommentRequest modifiedCommentRequest = CommentFixture.댓글_수정_요청();
         given(commentRepository.findById(any())).willReturn(Optional.of(CommentFixture.댓글_조회()));
+        given(userContext.getUserId()).willReturn(1L);
 
         // when
         Comment comment = commentService.modifyComment(modifiedCommentRequest);

@@ -4,7 +4,8 @@ import com.assemble.comment.dto.request.CommentCreationRequest;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.entity.Comment;
 import com.assemble.comment.repository.CommentRepository;
-import com.assemble.commons.base.BaseRequest;
+import com.assemble.commons.annotation.UserCheck;
+import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,19 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final BaseRequest baseRequest;
+    private final UserContext userContext;
 
     @Transactional(rollbackFor = AssembleException.class)
     public Comment createComment(CommentCreationRequest commentCreationRequest) {
-        Comment comment = commentCreationRequest.toEntity(baseRequest.getUserId());
+        Comment comment = commentCreationRequest.toEntity(userContext.getUserId());
 
         return commentRepository.save(comment);
     }
 
     @Transactional(rollbackFor = AssembleException.class)
     public Comment modifyComment(ModifiedCommentRequest modifiedCommentRequest) {
-        Comment comment = commentRepository.findById(modifiedCommentRequest.getCommentId())
-                .orElseThrow(() -> new NotFoundException(Comment.class, modifiedCommentRequest.getCommentId()));
+        Comment comment = getComment(modifiedCommentRequest.getCommentId());
 
         comment.modifyComment(modifiedCommentRequest);
         return comment;
@@ -39,8 +39,7 @@ public class CommentService {
 
     @Transactional(rollbackFor = AssembleException.class)
     public boolean deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException(Comment.class, commentId));
+        Comment comment = getComment(commentId);
 
         commentRepository.delete(comment);
 
@@ -51,5 +50,15 @@ public class CommentService {
     public Page<Comment> getCommentsByUser(Long userId, Pageable pageable) {
         long commentCountByUser = commentRepository.countByUserId(userId);
         return new PageImpl<>(commentRepository.findByUser(userId, pageable, commentCountByUser));
+    }
+
+    private Comment getComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(Comment.class, commentId));
+
+        if (!userContext.getUserId().equals(comment.getUser().getUserId())) {
+            throw new IllegalStateException("not writer");
+        }
+        return comment;
     }
 }
