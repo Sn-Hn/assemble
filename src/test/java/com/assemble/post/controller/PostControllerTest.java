@@ -213,7 +213,7 @@ class PostControllerTest {
         Post post = PostFixture.게시글();
         post.modifyPost(modifiedPostRequest);
         given(postService.modifyPost(any())).willReturn(post);
-        ResultActions perform = mockMvc.perform(patch("/post")
+        ResultActions perform = mockMvc.perform(put("/post")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

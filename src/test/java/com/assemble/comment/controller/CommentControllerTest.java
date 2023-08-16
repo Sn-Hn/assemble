@@ -105,7 +105,7 @@ class CommentControllerTest {
         comment.modifyComment(modifiedCommentRequest);
         given(commentService.modifyComment(any())).willReturn(comment);
 
-        ResultActions perform = mockMvc.perform(patch("/comment")
+        ResultActions perform = mockMvc.perform(put("/comment")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

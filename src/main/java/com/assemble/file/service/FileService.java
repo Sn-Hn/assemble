@@ -1,10 +1,12 @@
 package com.assemble.file.service;
 
+import com.assemble.commons.exception.AssembleException;
 import com.assemble.file.domain.UploadFile;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -15,6 +17,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    @Transactional(rollbackFor = AssembleException.class)
     public AttachedFile uploadFile(MultipartFile file, Long creatorId) {
         if (!existFile(file)) {
             return null;

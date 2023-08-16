@@ -127,7 +127,7 @@ class CategoryControllerTest {
         category.modify(modifiedCategoryRequest, userId);
         given(categoryService.modifyCategory(any())).willReturn(category);
 
-        ResultActions perform = mockMvc.perform(patch("/category")
+        ResultActions perform = mockMvc.perform(put("/category")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

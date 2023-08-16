@@ -44,7 +44,6 @@ public class SignupRequest {
     private SignupRequest() {
     }
 
-
     public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
     }

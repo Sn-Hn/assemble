@@ -38,7 +38,7 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "카테고리 수정")
-    @PatchMapping
+    @PutMapping
     public ApiResult<CategoryResponse> modifyCategory(@RequestBody @Valid ModifiedCategoryRequest modifiedCategoryRequest) {
         return ApiResult.ok(new CategoryResponse(categoryService.modifyCategory(modifiedCategoryRequest)));
     }

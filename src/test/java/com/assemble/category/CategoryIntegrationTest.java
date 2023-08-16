@@ -83,7 +83,7 @@ public class CategoryIntegrationTest {
                 .body(modifiedCategoryRequest)
                 .log().all()
         .when()
-                .patch("category")
+                .put("category")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

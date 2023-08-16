@@ -48,7 +48,7 @@ public class PostController {
     }
 
     @ApiOperation(value = "모임 수정")
-    @PatchMapping
+    @PutMapping
     public ApiResult<PostResponse> modifyPost(@RequestBody @Valid ModifiedPostRequest modifiedPostRequest) {
         return ApiResult.ok(new PostResponse(postService.modifyPost(modifiedPostRequest)));
     }

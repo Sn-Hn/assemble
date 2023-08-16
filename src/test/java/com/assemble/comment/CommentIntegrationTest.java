@@ -70,7 +70,7 @@ public class CommentIntegrationTest {
                 .body(modifiedCommentRequest)
                 .log().all()
         .when()
-                .patch("comment")
+                .put("comment")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

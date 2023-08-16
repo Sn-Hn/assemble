@@ -168,7 +168,7 @@ public class PostIntegrationTest {
                 .log().all()
         .when()
                 .config(config)
-                .patch("post")
+                .put("post")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
