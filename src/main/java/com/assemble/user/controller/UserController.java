@@ -10,15 +10,18 @@ import com.assemble.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.concurrent.CompletableFuture;
 
 @Api(tags = "회원 APIs")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -31,7 +34,12 @@ public class UserController {
             @RequestPart(required = false)MultipartFile profileImage) {
 
         User user = userService.signup(signupRequest);
-        fileService.uploadFile(profileImage, user);
+        CompletableFuture.runAsync(() -> fileService.uploadFile(profileImage, user.getUserId()))
+                .exceptionally(e -> {
+                    log.warn("fail file upload!!!");
+                    log.warn("FileUploadException={}", e.getMessage(), e);
+                    return null;
+                });
         return ApiResult.ok(SignupResponse.from(user), HttpStatus.CREATED);
     }
 

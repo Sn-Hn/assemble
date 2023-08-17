@@ -1,18 +1,17 @@
 package com.assemble.file.service;
 
 import com.assemble.commons.exception.AssembleException;
-import com.assemble.commons.exception.FileUploadException;
+import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.domain.UploadFile;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.repository.FileRepository;
 import com.assemble.user.entity.User;
+import com.assemble.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,22 +22,21 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    private final UserRepository userRepository;
+
     @Transactional(rollbackFor = AssembleException.class)
-    public void uploadFile(MultipartFile file, User user) {
+    public void uploadFile(MultipartFile file, Long userId) {
         if (!existFile(file)) {
             return;
         }
 
-        CompletableFuture.supplyAsync(() -> uploadFile.upload(file)).thenAccept(f -> {
-            f.createUser(user.getUserId());
-            AttachedFile savedFile = fileRepository.save(f);
-            user.setProfile(savedFile);
-            log.info("success file upload");
-        }).exceptionally(e -> {
-            log.warn("fail file upload!!!");
-            log.warn("FileUploadException={}", e.getMessage(), e);
-            throw new FileUploadException();
-        });
+        AttachedFile uploadFile = this.uploadFile.upload(file);
+        uploadFile.createUser(userId);
+        AttachedFile savedFile = fileRepository.save(uploadFile);
+        User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new NotFoundException(User.class, userId));
+        user.setProfile(savedFile);
+        log.info("success file upload");
     }
 
     private boolean existFile(MultipartFile file) {
