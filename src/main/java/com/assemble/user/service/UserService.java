@@ -1,7 +1,6 @@
 package com.assemble.user.service;
 
 import com.assemble.commons.base.UserContext;
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
@@ -23,7 +22,7 @@ public class UserService {
 
     private final UserContext userContext;
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public User signup(SignupRequest signupRequest) {
         verificationService.verifyDuplicationEmail(signupRequest.getEmail());
         verificationService.verifyDuplicationNickname(signupRequest.getNickname());
@@ -44,7 +43,7 @@ public class UserService {
         return user;
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public boolean withdrawUser() {
         User user = new User(userContext.getUserId());
         userRepository.delete(user);

@@ -1,6 +1,5 @@
 package com.assemble.file.service;
 
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.domain.UploadFile;
 import com.assemble.file.entity.AttachedFile;
@@ -24,7 +23,7 @@ public class FileService {
 
     private final UserRepository userRepository;
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public void uploadFile(MultipartFile file, Long userId) {
         if (!existFile(file)) {
             return;

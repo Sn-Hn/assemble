@@ -1,7 +1,6 @@
 package com.assemble.post.service;
 
 import com.assemble.commons.base.UserContext;
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.entity.Likes;
@@ -20,7 +19,7 @@ public class PostLikeService {
     private final PostRepository postRepository;
     private final UserContext userContext;
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public boolean likePost(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity(userContext.getUserId());
         if (isAleadyLikeByUser(postLikeRequest)) {
@@ -37,7 +36,7 @@ public class PostLikeService {
         return true;
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public boolean cancelLikePost(Long postId) {
         Likes likes = postLikeRepository.findPostByUser(postId, userContext.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("this post didn't like it"));

@@ -5,7 +5,6 @@ import com.assemble.category.dto.request.ModifiedCategoryRequest;
 import com.assemble.category.entity.Category;
 import com.assemble.category.repository.CategoryRepository;
 import com.assemble.commons.base.UserContext;
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,12 +24,13 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public Category createCategory(CategoryCreationRequest categoryCreationRequest) {
         Category category = categoryCreationRequest.toEntity();
         return categoryRepository.save(category);
     }
 
+    @Transactional
     public Category modifyCategory(ModifiedCategoryRequest modifiedCategoryRequest) {
         Category category = categoryRepository.findById(modifiedCategoryRequest.getId())
                 .orElseThrow(() -> new NotFoundException(Category.class, modifiedCategoryRequest.getId()));
@@ -40,6 +40,7 @@ public class CategoryService {
         return category;
     }
 
+    @Transactional
     public boolean deleteCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(Category.class, categoryId));

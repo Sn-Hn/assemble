@@ -1,7 +1,6 @@
 package com.assemble.post.service;
 
 import com.assemble.commons.base.UserContext;
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
@@ -30,7 +29,7 @@ public class PostService {
 
     private final UserContext userContext;
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public Post createPost(PostCreationRequest postCreationRequest) {
         Post post = postCreationRequest.toEntity(userContext.getUserId());
         post.createUser(post.getUser().getUserId());
@@ -60,7 +59,7 @@ public class PostService {
         return post;
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public Post modifyPost(ModifiedPostRequest modifiedPostRequest) {
         Post post = getPostOfWriter(modifiedPostRequest.getPostId());
 
@@ -69,7 +68,7 @@ public class PostService {
         return post;
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public boolean deletePost(Long postId) {
         Post post = getPostOfWriter(postId);
 

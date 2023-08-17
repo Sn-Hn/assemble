@@ -4,9 +4,7 @@ import com.assemble.comment.dto.request.CommentCreationRequest;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.entity.Comment;
 import com.assemble.comment.repository.CommentRepository;
-import com.assemble.commons.annotation.UserCheck;
 import com.assemble.commons.base.UserContext;
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,14 +20,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserContext userContext;
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public Comment createComment(CommentCreationRequest commentCreationRequest) {
         Comment comment = commentCreationRequest.toEntity(userContext.getUserId());
 
         return commentRepository.save(comment);
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public Comment modifyComment(ModifiedCommentRequest modifiedCommentRequest) {
         Comment comment = getComment(modifiedCommentRequest.getCommentId());
 
@@ -37,7 +35,7 @@ public class CommentService {
         return comment;
     }
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public boolean deleteComment(Long commentId) {
         Comment comment = getComment(commentId);
 

@@ -1,6 +1,5 @@
 package com.assemble.auth.service;
 
-import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.commons.exception.UnauthenticationException;
 import com.assemble.user.domain.Email;
@@ -20,7 +19,7 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(rollbackFor = AssembleException.class)
+    @Transactional
     public User login(LoginRequest loginRequest) {
         Email email = new Email(loginRequest.getEmail());
         User user = userRepository.findByEmail(email)
