@@ -2,6 +2,7 @@ package com.assemble.user.service;
 
 import com.assemble.commons.base.UserContext;
 import com.assemble.file.service.FileService;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
@@ -90,5 +91,24 @@ class UserServiceTest {
 
         // then
         assertThat(isWithdrawal).isTrue();
+    }
+
+    @Test
+    void 회원정보_수정() {
+        // given
+        ModifiedUserRequest modifiedUserRequest = UserFixture.회원정보_수정();
+        MultipartFile profileImage = null;
+        given(userRepository.findById(any()))
+                .willReturn(Optional.of(UserFixture.회원()));
+
+        // when
+        User signupUser = userService.modifyUserInfo(modifiedUserRequest);
+
+        // then
+        assertAll(
+                () -> assertThat(signupUser).isNotNull(),
+                () -> assertThat(signupUser.getName().getValue()).isEqualTo(modifiedUserRequest.getName()),
+                () -> assertThat(signupUser.getNickname()).isEqualTo(modifiedUserRequest.getNickname())
+        );
     }
 }

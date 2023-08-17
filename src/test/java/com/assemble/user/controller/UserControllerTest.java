@@ -6,6 +6,7 @@ import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.file.service.FileService;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -100,8 +102,7 @@ public class UserControllerTest {
                         fieldWithPath("response.name").description("이름"),
                         fieldWithPath("response.nickname").description("닉네임"),
                         fieldWithPath("response.phoneNumber").description("핸드폰번호"),
-                        fieldWithPath("response.role").description("역할"),
-                        fieldWithPath("response.profile").description("프로필 사진")
+                        fieldWithPath("response.role").description("역할")
                 ))
         );
     }
@@ -164,6 +165,46 @@ public class UserControllerTest {
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
                         fieldWithPath("response").description("닉네임 중복 여부")
+                ))
+        );
+    }
+
+    @Test
+    void 회원정보_수정() throws Exception {
+        ModifiedUserRequest modifiedUserRequest = UserFixture.회원정보_수정();
+        User user = UserFixture.회원();
+        user.modifyInfo(modifiedUserRequest);
+        given(userService.modifyUserInfo(any())).willReturn(user);
+
+        ResultActions perform = mockMvc.perform(multipart(HttpMethod.PUT, "/user")
+                .file(FileFixture.MockMultipartFile_생성())
+                .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .queryParams(MultiValueMapConverter.convert(objectMapper, modifiedUserRequest)));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
+
+        perform.andDo(document("/user",
+                requestParameters(
+                        parameterWithName("name").description("이름"),
+                        parameterWithName("nickname").description("닉네임"),
+                        parameterWithName("phoneNumber").description("핸드폰 번호"),
+                        parameterWithName("birthDate").description("생년월일")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response.userId").description("회원 ID"),
+                        fieldWithPath("response.email").description("이메일"),
+                        fieldWithPath("response.name").description("이름"),
+                        fieldWithPath("response.nickname").description("닉네임"),
+                        fieldWithPath("response.phoneNumber").description("핸드폰번호"),
+                        fieldWithPath("response.role").description("역할"),
+                        fieldWithPath("response.profile").description("프로필 사진")
                 ))
         );
     }

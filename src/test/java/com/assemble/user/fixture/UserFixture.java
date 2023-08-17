@@ -3,6 +3,7 @@ package com.assemble.user.fixture;
 import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.auth.dto.request.LoginRequest;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
@@ -28,6 +29,10 @@ public class UserFixture {
     private static final String secondNickname = "test developer2";
     private static final String birthDate = "20000101";
     private static final String duplicationNickname = "test01";
+    private static final String modifiedName = "수정된 이름";
+    private static final String modifiedNickname = "수정된 닉네임";
+    private static final String modifiedPhoneNumber = "01012341234";
+    private static final String modifiedBirthDate = "20000101";
 
     public static SignupRequest 회원가입_정상_신청_회원() {
         return new SignupRequest(email, name, nickname, phoneNumber, password, birthDate);
@@ -93,5 +98,9 @@ public class UserFixture {
 
     public static NicknameRequest 중복_닉네임() {
         return new NicknameRequest(duplicationNickname);
+    }
+
+    public static ModifiedUserRequest 회원정보_수정() {
+        return new ModifiedUserRequest(modifiedName, modifiedNickname, modifiedPhoneNumber, modifiedBirthDate);
     }
 }

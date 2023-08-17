@@ -2,6 +2,8 @@ package com.assemble.user.service;
 
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
+import com.assemble.file.repository.FileRepository;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
@@ -21,6 +23,8 @@ public class UserService {
     private final VerificationService verificationService;
 
     private final UserContext userContext;
+
+    private final FileRepository fileRepository;
 
     @Transactional
     public User signup(SignupRequest signupRequest) {
@@ -49,5 +53,16 @@ public class UserService {
         userRepository.delete(user);
 
         return true;
+    }
+
+    @Transactional
+    public User modifyUserInfo(ModifiedUserRequest modifiedUserRequest) {
+        User user = userRepository.findById(userContext.getUserId())
+                .orElseThrow(() -> new NotFoundException(User.class, userContext.getUserId()));
+
+        user.modifyInfo(modifiedUserRequest);
+        user.getProfiles().clear();
+
+        return user;
     }
 }

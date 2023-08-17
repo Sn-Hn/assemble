@@ -5,6 +5,7 @@ import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,7 +52,7 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserImage> profiles = new ArrayList<>();
 
     public User() {
@@ -109,5 +110,12 @@ public class User extends BaseDateEntity {
         if (this.getStatus().equals(UserStatus.WITHDRAWAL)) {
             throw new NotFoundException("withdrawal user", this.getUserId(), this.getNickname());
         }
+    }
+
+    public void modifyInfo(ModifiedUserRequest modifiedUserRequest) {
+        this.name = new Name(modifiedUserRequest.getName());
+        this.nickname = modifiedUserRequest.getNickname();
+        this.phoneNumber = new PhoneNumber(modifiedUserRequest.getPhoneNumber());
+        this.birthDate = new BirthDate(modifiedUserRequest.getBirthDate());
     }
 }

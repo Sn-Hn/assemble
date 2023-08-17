@@ -4,8 +4,7 @@ import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.service.JwtService;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
-import com.assemble.user.dto.request.EmailRequest;
-import com.assemble.user.dto.request.NicknameRequest;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -128,6 +127,30 @@ public class UserIntegrationTest {
                 .body("success", is(true),
                         "error", equalTo(null),
                         "response", equalTo(true))
+                .log().all();
+    }
+
+    @Test
+    void 회원정보_수정() throws FileNotFoundException {
+        ModifiedUserRequest modifiedUserRequest = UserFixture.회원정보_수정();
+        File file = FileFixture.File_생성();
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecFromWithdrawUser(jwtService))
+                .config(config)
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .queryParams(objectMapper.convertValue(modifiedUserRequest, Map.class))
+                .multiPart("profileImage", file)
+                .urlEncodingEnabled(true)
+                .log().all()
+        .when()
+                .put("user")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response.name", equalTo(modifiedUserRequest.getName()))
                 .log().all();
     }
 }

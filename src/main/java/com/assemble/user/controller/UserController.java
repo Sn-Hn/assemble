@@ -2,6 +2,7 @@ package com.assemble.user.controller;
 
 import com.assemble.commons.response.ApiResult;
 import com.assemble.file.service.FileService;
+import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.dto.response.SignupResponse;
 import com.assemble.user.dto.response.UserInfoResponse;
@@ -36,7 +37,6 @@ public class UserController {
         User user = userService.signup(signupRequest);
         CompletableFuture.runAsync(() -> fileService.uploadFile(profileImage, user.getUserId()))
                 .exceptionally(e -> {
-                    log.warn("fail file upload!!!");
                     log.warn("FileUploadException={}", e.getMessage(), e);
                     return null;
                 });
@@ -53,5 +53,20 @@ public class UserController {
     @DeleteMapping("user/withdrawal")
     public ApiResult<Boolean> withdrawUser() {
         return ApiResult.ok(userService.withdrawUser());
+    }
+
+    @ApiOperation(value = "회원 정보 수정")
+    @PutMapping("user")
+    public ApiResult<UserInfoResponse> modifyUser(
+            @Valid ModifiedUserRequest modifiedUserRequest,
+            @RequestPart(required = false)MultipartFile profileImage) {
+
+        User user = userService.modifyUserInfo(modifiedUserRequest);
+        CompletableFuture.runAsync(() -> fileService.uploadFile(profileImage, user.getUserId()))
+                .exceptionally(e -> {
+                    log.warn("FileUploadException={}", e.getMessage(), e);
+                    return null;
+                });
+        return ApiResult.ok(new UserInfoResponse(user));
     }
 }
