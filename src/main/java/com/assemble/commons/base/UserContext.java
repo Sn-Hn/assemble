@@ -29,7 +29,7 @@ public class UserContext {
 
     @Override
     public String toString() {
-        return "BaseRequest{" +
+        return "UserContext{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 '}';

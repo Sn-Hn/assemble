@@ -5,6 +5,7 @@ import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.file.fixture.FileFixture;
+import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
@@ -53,6 +54,9 @@ public class UserControllerTest {
     private UserService userService;
 
     @MockBean
+    private FileService fileService;
+
+    @MockBean
     private WebMvcConfig webMvcConfig;
 
     @MockBean
@@ -65,7 +69,7 @@ public class UserControllerTest {
     void 회원가입_성공() throws Exception {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
         User user = UserFixture.회원();
-        given(userService.signup(any(), any())).willReturn(user);
+        given(userService.signup(any())).willReturn(user);
 
         ResultActions perform = mockMvc.perform(multipart("/signup")
                         .file(FileFixture.MockMultipartFile_생성())

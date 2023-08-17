@@ -1,11 +1,11 @@
 package com.assemble.user.controller;
 
 import com.assemble.commons.response.ApiResult;
-import com.assemble.user.dto.request.EmailRequest;
-import com.assemble.user.dto.request.NicknameRequest;
+import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.dto.response.SignupResponse;
 import com.assemble.user.dto.response.UserInfoResponse;
+import com.assemble.user.entity.User;
 import com.assemble.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,13 +22,17 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final FileService fileService;
 
     @ApiOperation(value = "회원가입")
     @PostMapping(value = "signup")
     public ApiResult<SignupResponse> signup(
             @Valid SignupRequest signupRequest,
             @RequestPart(required = false)MultipartFile profileImage) {
-        return ApiResult.ok(SignupResponse.from(userService.signup(signupRequest, profileImage)), HttpStatus.CREATED);
+
+        User user = userService.signup(signupRequest);
+        fileService.uploadFile(profileImage, user);
+        return ApiResult.ok(SignupResponse.from(user), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "회원 정보 조회")

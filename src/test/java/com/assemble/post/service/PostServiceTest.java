@@ -99,6 +99,7 @@ class PostServiceTest {
     void 게시글_수정() {
         // given
         given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        given(userContext.getUserId()).willReturn(PostFixture.게시글().getUser().getUserId());
         ModifiedPostRequest modifiedPostRequest = PostFixture.게시글_수정();
 
         // when
@@ -115,8 +116,9 @@ class PostServiceTest {
     @Test
     void 게시글_삭제() {
         // given
-        given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글())).willReturn(null);
         Post post = PostFixture.게시글();
+        given(postRepository.findById(any())).willReturn(Optional.of(post)).willReturn(null);
+        given(userContext.getUserId()).willReturn(post.getUser().getUserId());
 
         // when
         boolean isDeletedPost = postService.deletePost(post.getPostId());

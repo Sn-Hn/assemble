@@ -3,8 +3,6 @@ package com.assemble.user.service;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.AssembleException;
 import com.assemble.commons.exception.NotFoundException;
-import com.assemble.file.entity.AttachedFile;
-import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +19,12 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final FileService fileService;
-
     private final VerificationService verificationService;
 
     private final UserContext userContext;
 
     @Transactional(rollbackFor = AssembleException.class)
-    public User signup(SignupRequest signupRequest, MultipartFile profileImage) {
+    public User signup(SignupRequest signupRequest) {
         verificationService.verifyDuplicationEmail(signupRequest.getEmail());
         verificationService.verifyDuplicationNickname(signupRequest.getNickname());
 
@@ -37,9 +32,6 @@ public class UserService {
         User user = User.createUser(signupRequest);
 
         User savedUser = userRepository.save(user);
-
-        AttachedFile profile = fileService.uploadFile(profileImage, savedUser.getUserId());
-        user.setProfile(profile);
 
         return savedUser;
     }

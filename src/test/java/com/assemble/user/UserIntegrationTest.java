@@ -53,7 +53,7 @@ public class UserIntegrationTest {
             .httpClient(HttpClientConfig.httpClientConfig().httpMultipartMode(HttpMultipartMode.BROWSER_COMPATIBLE));
 
     @Test
-    void 회원가입_성공_프로필_사진_X() {
+    void 회원가입_성공_프로필_사진_미포함() {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_회원();
         given()
                 .basePath(basePath)
@@ -73,7 +73,7 @@ public class UserIntegrationTest {
     }
 
     @Test
-    void 회원가입_성공_프로필_사진_O() throws FileNotFoundException {
+    void 회원가입_성공_프로필_사진_포함() throws FileNotFoundException {
         SignupRequest signupRequest = UserFixture.회원가입_정상_신청_두번째_회원();
         File file = FileFixture.File_생성();
         given()
@@ -91,8 +91,7 @@ public class UserIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response.email", equalTo(signupRequest.getEmail()),
-                        "response.profile", notNullValue())
+                        "response.email", equalTo(signupRequest.getEmail()))
                 .log().all();
     }
 

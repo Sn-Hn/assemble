@@ -35,7 +35,7 @@ public class AttachedFile extends BaseUserEntity {
     protected AttachedFile() {
     }
 
-    private AttachedFile(Long fileId, String path, String fullPath, String name, long size, String savedName) {
+    public AttachedFile(Long fileId, String path, String fullPath, String name, long size, String savedName) {
         this.fileId = fileId;
         this.path = path;
         this.fullPath = fullPath;

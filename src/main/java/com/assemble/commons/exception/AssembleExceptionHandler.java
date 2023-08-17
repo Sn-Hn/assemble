@@ -43,7 +43,7 @@ public class AssembleExceptionHandler {
         return newResponse(e, HttpStatus.FORBIDDEN, headers);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({AssembleException.class, Exception.class})
     public ResponseEntity<?> handleException(Exception e) {
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }

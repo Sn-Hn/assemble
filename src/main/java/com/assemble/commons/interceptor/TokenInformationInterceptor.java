@@ -33,7 +33,7 @@ public class TokenInformationInterceptor implements HandlerInterceptor {
         userContext.setUserId(userId);
         userContext.setEmail(email);
 
-        log.info("BaseRequest={}", userContext);
+        log.info("UserContext={}", userContext);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

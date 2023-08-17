@@ -72,6 +72,7 @@ class CommentServiceTest {
         // given
         given(commentRepository.findById(any())).willReturn(Optional.of(CommentFixture.댓글_조회())).willReturn(null);
         Post post = PostFixture.게시글();
+        given(userContext.getUserId()).willReturn(post.getUser().getUserId());
 
         // when
         boolean isDeletedComment = commentService.deleteComment(post.getPostId());

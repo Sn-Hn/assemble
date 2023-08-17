@@ -89,9 +89,10 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
-        if (userContext.getUserId().equals(post.getUser().getUserId())) {
+        if (!userContext.getUserId().equals(post.getUser().getUserId())) {
             throw new IllegalArgumentException("not writer");
         }
+
         return post;
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,11 +52,9 @@ class UserServiceTest {
         MultipartFile profileImage = null;
         given(userRepository.save(any()))
                 .willReturn(UserFixture.회원());
-        given(fileService.uploadFile(any(), any()))
-                .willReturn(null);
 
         // when
-        User signupUser = userService.signup(signupRequest, profileImage);
+        User signupUser = userService.signup(signupRequest);
 
         // then
         assertAll(
