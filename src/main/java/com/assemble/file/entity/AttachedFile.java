@@ -1,15 +1,21 @@
 package com.assemble.file.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
+import com.assemble.commons.converter.BooleanToYNConverter;
 import com.assemble.file.dto.response.ProfileResponse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @EqualsAndHashCode
 @Entity
 @Getter
+@Inheritance(strategy = InheritanceType.JOINED)
+@SQLDelete(sql = "UPDATE attached_file SET is_deleted = 'Y' WHERE file_id = ?")
+@Where(clause = "is_deleted = 'N'")
 public class AttachedFile extends BaseUserEntity {
 
     @Id
@@ -31,6 +37,8 @@ public class AttachedFile extends BaseUserEntity {
     @Column(name = "FILE_SAVED_NAME")
     private String savedName;
 
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean isDeleted;
 
     protected AttachedFile() {
     }
@@ -42,6 +50,7 @@ public class AttachedFile extends BaseUserEntity {
         this.name = name;
         this.size = size;
         this.savedName = savedName;
+        this.isDeleted = false;
     }
 
     public AttachedFile(String path, String fullPath, String name, long size, String savedName) {
@@ -58,6 +67,6 @@ public class AttachedFile extends BaseUserEntity {
     }
 
     public ProfileResponse mapProfile() {
-        return new ProfileResponse(this.name, "/images/" + this.savedName);
+        return new ProfileResponse(this.fileId, this.name, "/images/" + this.savedName);
     }
 }

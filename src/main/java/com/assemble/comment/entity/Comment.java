@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE comment_Id = ?")
+@SQLDelete(sql = "UPDATE comment SET is_deleted = 'Y' WHERE comment_Id = ?")
 @Where(clause = "is_deleted = 'N'")
 public class Comment extends BaseDateEntity {
 

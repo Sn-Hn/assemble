@@ -8,6 +8,9 @@ import lombok.Getter;
 @Getter
 public class ProfileResponse {
 
+    @ApiModelProperty(value = "파일 Id")
+    private Long fileId;
+
     @ApiModelProperty(value = "파일 이름")
     private String originalName;
 

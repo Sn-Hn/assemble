@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE post_Id = ?")
+@SQLDelete(sql = "UPDATE post SET is_deleted = 'Y' WHERE post_Id = ?")
 @Where(clause = "is_deleted = 'N'")
 public class Post extends BaseUserEntity {
 
