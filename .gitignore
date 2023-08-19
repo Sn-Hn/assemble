@@ -45,3 +45,4 @@ out/
 
 /BOOT-INF/
 /src/main/resources/static/docs/
+*.sql
