@@ -51,7 +51,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
         // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한
-        post.increaseHits();
+        postRepository.increaseHits(postId);
 
         PostLikeRequest postLikeRequest = new PostLikeRequest(postId);
         post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));

@@ -37,7 +37,7 @@ public class PostLikeService {
         Post post = postRepository.findById(postLikeRequest.getPostId())
                 .orElseThrow(() -> new NotFoundException(Post.class, postLikeRequest.getPostId()));
 
-        post.increaseLikes();
+        postRepository.increaseLikes(post.getPostId());
 
         return true;
     }
@@ -52,7 +52,7 @@ public class PostLikeService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
-        post.decreaseLikes();
+        postRepository.decreaseLikes(post.getPostId());
 
         return true;
     }
