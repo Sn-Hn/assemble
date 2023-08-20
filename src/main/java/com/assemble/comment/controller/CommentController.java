@@ -3,6 +3,7 @@ package com.assemble.comment.controller;
 import com.assemble.comment.dto.request.CommentCreationRequest;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.dto.response.CommentResponse;
+import com.assemble.comment.dto.response.UserCommentResponse;
 import com.assemble.comment.service.CommentService;
 import com.assemble.commons.response.ApiResult;
 import io.swagger.annotations.Api;
@@ -43,9 +44,9 @@ public class CommentController {
 
     @ApiOperation(value = "특정 유저 댓글 조회")
     @GetMapping("user/{userId}")
-    public ApiResult<Page<CommentResponse>> getCommentsByUser(@PathVariable Long userId, Pageable pageable) {
+    public ApiResult<Page<UserCommentResponse>> getCommentsByUser(@PathVariable Long userId, Pageable pageable) {
         return ApiResult.ok(commentService.getCommentsByUser(userId, pageable)
-                        .map(CommentResponse::new));
+                        .map(UserCommentResponse::new));
     }
 
 }

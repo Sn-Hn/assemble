@@ -7,14 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class CommentResponse {
+public class UserCommentResponse {
 
     @ApiModelProperty(value = "모임 ID")
     private Long postId;
+
+    @ApiModelProperty(value = "모임 제목")
+    private String postTitle;
 
     @ApiModelProperty(value = "회원 ID")
     private Long userId;
@@ -34,9 +36,10 @@ public class CommentResponse {
     @ApiModelProperty(value = "작성자 프로필")
     private ProfileResponse profile;
 
-    public CommentResponse(Comment comment) {
+    public UserCommentResponse(Comment comment) {
         this(
                 comment.getPost().getPostId(),
+                comment.getPost().getTitle().getValue(),
                 comment.getUser().getUserId(),
                 comment.getCommentId(),
                 comment.getContents(),
