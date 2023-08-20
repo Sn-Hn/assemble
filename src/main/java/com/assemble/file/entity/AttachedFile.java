@@ -69,4 +69,17 @@ public class AttachedFile extends BaseUserEntity {
     public ProfileResponse mapProfile() {
         return new ProfileResponse(this.fileId, this.name, "/images/" + this.savedName);
     }
+
+    @Override
+    public String toString() {
+        return "AttachedFile{" +
+                "fileId=" + fileId +
+                ", path='" + path + '\'' +
+                ", fullPath='" + fullPath + '\'' +
+                ", name='" + name + '\'' +
+                ", size=" + size +
+                ", savedName='" + savedName + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }

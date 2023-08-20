@@ -9,6 +9,7 @@ import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ public class FileService {
 
     private final UserRepository userRepository;
 
+    @Async
     @Transactional
     public void uploadFile(MultipartFile file, Long userId) {
         if (!existFile(file)) {
@@ -36,7 +38,6 @@ public class FileService {
         User user = userRepository.findById(userId)
                     .orElseThrow(() -> new NotFoundException(User.class, userId));
         user.setProfile(savedFile);
-        log.info("success file upload");
     }
 
     private boolean existFile(MultipartFile file) {
@@ -44,6 +45,7 @@ public class FileService {
             return true;
         }
 
+        log.warn("file empty");
         return false;
     }
 }

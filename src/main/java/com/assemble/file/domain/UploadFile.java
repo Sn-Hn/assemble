@@ -20,7 +20,7 @@ public class UploadFile {
     private String basePath;
 
     public AttachedFile upload(MultipartFile multipartFile) {
-        verifyEmptyFile(multipartFile);
+        verifyFile(multipartFile);
         createDirectory();
         log.info("file path={}", basePath);
         try {
@@ -67,7 +67,7 @@ public class UploadFile {
         }
     }
 
-    private void verifyEmptyFile(MultipartFile file) {
+    private void verifyFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("empty file");
         }

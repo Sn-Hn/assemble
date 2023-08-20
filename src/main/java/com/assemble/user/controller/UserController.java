@@ -1,6 +1,7 @@
 package com.assemble.user.controller;
 
 import com.assemble.commons.response.ApiResult;
+import com.assemble.file.domain.CustomMultipartFile;
 import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.concurrent.CompletableFuture;
+import java.io.IOException;
 
 @Api(tags = "회원 APIs")
 @RestController
@@ -32,14 +33,12 @@ public class UserController {
     @PostMapping(value = "signup")
     public ApiResult<SignupResponse> signup(
             @Valid SignupRequest signupRequest,
-            @RequestPart(required = false)MultipartFile profileImage) {
+            @RequestPart(required = false)MultipartFile profileImage) throws IOException {
 
         User user = userService.signup(signupRequest);
-        CompletableFuture.runAsync(() -> fileService.uploadFile(profileImage, user.getUserId()))
-                .exceptionally(e -> {
-                    log.warn("FileUploadException={}", e.getMessage(), e);
-                    return null;
-                });
+
+        CustomMultipartFile.from(profileImage)
+                .ifPresent(file -> fileService.uploadFile(file, user.getUserId()));
         return ApiResult.ok(SignupResponse.from(user), HttpStatus.CREATED);
     }
 
@@ -59,14 +58,11 @@ public class UserController {
     @PutMapping("user")
     public ApiResult<UserInfoResponse> modifyUser(
             @Valid ModifiedUserRequest modifiedUserRequest,
-            @RequestPart(required = false)MultipartFile profileImage) {
+            @RequestPart(required = false)MultipartFile profileImage) throws IOException {
 
         User user = userService.modifyUserInfo(modifiedUserRequest);
-        CompletableFuture.runAsync(() -> fileService.uploadFile(profileImage, user.getUserId()))
-                .exceptionally(e -> {
-                    log.warn("FileUploadException={}", e.getMessage(), e);
-                    return null;
-                });
+        CustomMultipartFile.from(profileImage)
+                .ifPresent(file -> fileService.uploadFile(file, user.getUserId()));
         return ApiResult.ok(new UserInfoResponse(user));
     }
 }
