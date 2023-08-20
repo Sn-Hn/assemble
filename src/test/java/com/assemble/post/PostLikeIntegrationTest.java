@@ -85,4 +85,21 @@ public class PostLikeIntegrationTest {
                         "response", is(true))
                 .log().all();
     }
+
+    @Test
+    void 좋아요_한_모임_목록_조회() {
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .log().all()
+        .when()
+                .get("post/like")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "response", notNullValue())
+                .log().all();
+    }
 }

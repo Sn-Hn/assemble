@@ -11,20 +11,18 @@ public class RestAssuredSpecificationSpy {
     private static TokenSpy tokenSpy;
 
     public static RequestSpecification setTokenRestAssuredSpec(JwtService jwtService) {
-        tokenSpy = TokenSpy.generateTokenSpy(jwtService);
-        User user = UserFixture.회원();
-        return new RequestSpecBuilder()
-                .addHeader("Authorization", "Bearer " + tokenSpy.generateAccessToken(user))
-                .addCookie("RefreshToken", tokenSpy.generateRefreshToken(user))
-                .build();
+        return getRequestSpecification(jwtService, UserFixture.회원());
     }
 
     public static RequestSpecification setTokenRestAssuredSpecFromWithdrawUser(JwtService jwtService) {
+        return getRequestSpecification(jwtService, UserFixture.탈퇴할_회원());
+    }
+
+    private static RequestSpecification getRequestSpecification(JwtService jwtService, User mockUser) {
         tokenSpy = TokenSpy.generateTokenSpy(jwtService);
-        User user = UserFixture.탈퇴할_회원();
         return new RequestSpecBuilder()
-                .addHeader("Authorization", "Bearer " + tokenSpy.generateAccessToken(user))
-                .addCookie("RefreshToken", tokenSpy.generateRefreshToken(user))
+                .addHeader("Authorization", "Bearer " + tokenSpy.generateAccessToken(mockUser))
+                .addCookie("RefreshToken", tokenSpy.generateRefreshToken(mockUser))
                 .build();
     }
 }
