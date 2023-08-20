@@ -52,7 +52,7 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<UserImage> profiles = new ArrayList<>();
 
     public User() {
@@ -83,12 +83,6 @@ public class User extends BaseDateEntity {
 
     public void setProfile(AttachedFile file) {
         this.profiles.add(new UserImage(this, file));
-    }
-
-    public List<String> getUserImages() {
-        return getProfiles().stream()
-                .map(userImage -> userImage.getFile().getFullPath())
-                .collect(Collectors.toList());
     }
 
     public ProfileResponse toProfile() {

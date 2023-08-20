@@ -138,7 +138,8 @@ public class UserControllerTest {
                         fieldWithPath("response.nickname").description("닉네임"),
                         fieldWithPath("response.phoneNumber").description("핸드폰번호"),
                         fieldWithPath("response.role").description("역할"),
-                        fieldWithPath("response.profile").description("프로필 사진")
+                        fieldWithPath("response.profile").description("프로필 사진"),
+                        fieldWithPath("response.birthDate").description("생년월일")
                 ))
         );
     }
@@ -204,7 +205,8 @@ public class UserControllerTest {
                         fieldWithPath("response.nickname").description("닉네임"),
                         fieldWithPath("response.phoneNumber").description("핸드폰번호"),
                         fieldWithPath("response.role").description("역할"),
-                        fieldWithPath("response.profile").description("프로필 사진")
+                        fieldWithPath("response.profile").description("프로필 사진"),
+                        fieldWithPath("response.birthDate").description("생년월일")
                 ))
         );
     }

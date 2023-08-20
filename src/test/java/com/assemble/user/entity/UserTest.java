@@ -1,6 +1,5 @@
 package com.assemble.user.entity;
 
-import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.fixture.UserFixture;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,11 +50,7 @@ class UserTest {
 
         List<UserImage> test = new ArrayList<>();
 
-        assertThat(user.getUserImages().size()).isEqualTo(0);
+        assertThat(user.toProfile()).isNull();
     }
 
-    @Test
-    void 회원_프로필_사진_조회() {
-
-    }
 }

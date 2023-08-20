@@ -6,8 +6,6 @@ import com.assemble.comment.repository.CommentCustomRepository;
 import com.assemble.post.entity.QPost;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
@@ -22,7 +20,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
     }
 
     @Override
-    public List<Comment> findByUser(Long userId, Pageable pageable, long count) {
+    public List<Comment> findByUser(Long userId, Pageable pageable) {
         return queryFactory.selectFrom(QComment.comment)
                 .innerJoin(QPost.post)
                 .on(QComment.comment.post.postId.eq(QPost.post.postId),

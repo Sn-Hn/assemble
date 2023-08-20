@@ -64,7 +64,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                 .orderBy(QPost.post.postId.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch()
+                .fetchJoin().fetch()
                 .stream()
                 .map(tuple -> {
                     Post post = tuple.get(QPost.post);

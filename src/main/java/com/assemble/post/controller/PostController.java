@@ -59,7 +59,7 @@ public class PostController {
         return ApiResult.ok(postService.deletePost(postId));
     }
 
-    @ApiOperation(value = "특정 회원이 쓴 글 조회")
+    @ApiOperation(value = "특정 회원이 생성한 모임 조회")
     @GetMapping(path = "user/{userId}")
     public ApiResult<Page<PostsResponse>> getPostsByUser(@PathVariable Long userId,
                                                          @PageableDefault(size = 12) Pageable pageable) {

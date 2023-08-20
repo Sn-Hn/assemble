@@ -47,7 +47,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Page<Comment> getCommentsByUser(Long userId, Pageable pageable) {
         long commentCountByUser = commentRepository.countByUserId(userId);
-        return new PageImpl<>(commentRepository.findByUser(userId, pageable, commentCountByUser));
+        return new PageImpl<>(commentRepository.findByUser(userId, pageable), pageable, commentCountByUser);
     }
 
     private Comment getComment(Long commentId) {

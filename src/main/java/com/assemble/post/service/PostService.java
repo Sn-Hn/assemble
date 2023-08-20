@@ -45,16 +45,16 @@ public class PostService {
         return new PageImpl<>(posts, pageable, count);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Post getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
-        PostLikeRequest postLikeRequest = new PostLikeRequest(postId);
-        post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));
-
         // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한
         post.increaseHits();
+
+        PostLikeRequest postLikeRequest = new PostLikeRequest(postId);
+        post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));
 
         return post;
     }
@@ -77,6 +77,7 @@ public class PostService {
         return true;
     }
 
+    @Transactional(readOnly = true)
     public Page<Post> getPostsByUser(Long userId, Pageable pageable) {
         long count = postRepository.countByUserId(userId);
         List<Post> posts = postRepository.findAllByUserId(userId, userContext.getUserId(), pageable);

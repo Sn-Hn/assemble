@@ -28,6 +28,9 @@ public class UserInfoResponse {
     @ApiModelProperty(value = "이름")
     private String name;
 
+    @ApiModelProperty(value = "생년월일")
+    private String birthDate;
+
     @ApiModelProperty(value = "프로필 이미지")
     private ProfileResponse profile;
 
@@ -39,6 +42,7 @@ public class UserInfoResponse {
                 user.getRole().toString(),
                 user.getNickname(),
                 user.getName().getValue(),
+                user.getBirthDate().getValue(),
                 user.toProfile()
         );
     }
