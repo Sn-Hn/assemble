@@ -32,7 +32,7 @@ public class CommentResponse {
     private LocalDateTime writeDate;
 
     @ApiModelProperty(value = "작성자 프로필")
-    private List<ProfileResponse> profile;
+    private ProfileResponse profile;
 
     public CommentResponse(Comment comment) {
         this(
@@ -42,7 +42,7 @@ public class CommentResponse {
                 comment.getContents(),
                 comment.getUser().getNickname(),
                 comment.getCreatedDate(),
-                comment.getUser().toProfiles()
+                comment.getUser().toProfile()
         );
     }
 }
