@@ -32,4 +32,3 @@ public class UnauthorizedException extends AssembleException {
         return MessageUtils.getMessage(getDetailMessage(), getParams());
     }
 }
-

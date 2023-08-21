@@ -16,8 +16,8 @@ public class PhoneNumber {
     private String value;
 
     public PhoneNumber(String value) {
-        verifyPhoneNumberForm(value);
-        verifyEmptyPhoneNumber(value);
+        validatePhoneNumberForm(value);
+        validateEmptyPhoneNumber(value);
         this.value = value;
     }
 
@@ -28,13 +28,13 @@ public class PhoneNumber {
         return value;
     }
 
-    private void verifyEmptyPhoneNumber(String phoneNumber) {
+    private void validateEmptyPhoneNumber(String phoneNumber) {
         if (!StringUtils.hasText(phoneNumber)) {
             throw new IllegalArgumentException("empty phoneNumber");
         }
     }
 
-    private void verifyPhoneNumberForm(String phoneNumber) {
+    private void validatePhoneNumberForm(String phoneNumber) {
         if (!pattern.matcher(phoneNumber).matches()) {
             throw new IllegalArgumentException("invalid form phoneNumber");
         }

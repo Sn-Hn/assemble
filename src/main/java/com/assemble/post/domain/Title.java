@@ -12,7 +12,7 @@ public class Title {
     private String value;
 
     public Title(String value) {
-        verifyEmpty(value);
+        validateEmpty(value);
         this.value = value;
     }
 
@@ -22,7 +22,7 @@ public class Title {
         return value;
     }
 
-    private void verifyEmpty(String title) {
+    private void validateEmpty(String title) {
         if (!StringUtils.hasText(title)) {
             throw new IllegalArgumentException("title empty");
         }

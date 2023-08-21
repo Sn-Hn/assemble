@@ -14,7 +14,7 @@ public class Contents {
     private String value;
 
     public Contents(String value) {
-        verifyEmpty(value);
+        validateEmpty(value);
         this.value = value;
     }
 
@@ -25,7 +25,7 @@ public class Contents {
         return value;
     }
 
-    private void verifyEmpty(String contents) {
+    private void validateEmpty(String contents) {
         if (!StringUtils.hasText(contents)) {
             throw new IllegalArgumentException("contents empty");
         }

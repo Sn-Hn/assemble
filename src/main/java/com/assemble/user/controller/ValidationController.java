@@ -3,7 +3,7 @@ package com.assemble.user.controller;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
-import com.assemble.user.service.VerificationService;
+import com.assemble.user.service.ValidationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -15,20 +15,20 @@ import javax.validation.Valid;
 @Api(tags = "검증 Apis")
 @RequiredArgsConstructor
 @RestController
-public class VerificationController {
+public class ValidationController {
 
-    private final VerificationService verificationService;
+    private final ValidationService validationService;
 
     @ApiOperation(value = "이메일 검증")
     @GetMapping("email/validation")
     public ApiResult<Boolean> validateUserEmail(@Valid EmailRequest emailRequest) {
-        return ApiResult.ok(verificationService.isDuplicationEmail(emailRequest.getEmail()));
+        return ApiResult.ok(validationService.isDuplicationEmail(emailRequest.getEmail()));
     }
 
     @ApiOperation(value = "닉네임 검증")
     @GetMapping("nickname/validation")
     public ApiResult<Boolean> validateUserEmail(@Valid NicknameRequest nicknameRequest) {
-        return ApiResult.ok(verificationService.isDuplicationNickname(nicknameRequest.getNickname()));
+        return ApiResult.ok(validationService.isDuplicationNickname(nicknameRequest.getNickname()));
     }
 
 }

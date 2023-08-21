@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(tags = "댓글 APIs")
+@Api(tags = "댓글 Apis")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "comment")

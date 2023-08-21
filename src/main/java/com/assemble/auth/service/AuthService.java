@@ -25,7 +25,7 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(User.class, email));
 
-        user.verifyWithdrawal();
+        user.validateWithdrawal();
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword().getValue())) {
             throw new UnauthenticationException();
         }

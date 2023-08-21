@@ -18,8 +18,8 @@ public class Email {
     protected Email() {}
 
     public Email(String value) {
-        verifyEmptyEmail(value);
-        verifyEmailForm(value);
+        validateEmptyEmail(value);
+        validateEmailForm(value);
         this.value = value;
     }
 
@@ -27,13 +27,13 @@ public class Email {
         return value;
     }
 
-    private void verifyEmptyEmail(String email) {
+    private void validateEmptyEmail(String email) {
         if (!StringUtils.hasText(email)) {
             throw new IllegalArgumentException("empty email");
         }
     }
 
-    private void verifyEmailForm(String email) {
+    private void validateEmailForm(String email) {
         if (!pattern.matcher(email).matches()) {
             throw new IllegalArgumentException("invalid form email");
         }

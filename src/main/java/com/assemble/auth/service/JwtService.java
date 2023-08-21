@@ -37,7 +37,7 @@ public class JwtService {
 
     @Transactional(readOnly = true)
     public String reissueAccessToken(String refreshToken) {
-        verifyToken(refreshToken);
+        validateToken(refreshToken);
 
         return jwtProvider.createAccessToken(
                 NumberUtils.parseNumber(jwtProvider.getUserId(refreshToken), Long.class),
@@ -45,7 +45,7 @@ public class JwtService {
         );
     }
 
-    private void verifyToken(String refreshToken) {
+    private void validateToken(String refreshToken) {
         if (!jwtRepository.findByRefreshToken(refreshToken).isPresent() || !jwtProvider.isValidToken(refreshToken)) {
             throw new RefreshTokenException();
         }

@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api(tags = "카테고리 APIs")
+@Api(tags = "카테고리 Apis")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "category")

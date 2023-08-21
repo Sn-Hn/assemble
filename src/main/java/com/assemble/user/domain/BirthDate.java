@@ -18,14 +18,14 @@ public class BirthDate {
     private String value;
 
     public BirthDate(String value) {
-        verifyBirthDateForm(value);
+        validateBirthDateForm(value);
         this.value = value;
     }
 
     protected BirthDate() {
     }
 
-    private void verifyBirthDateForm(String birthDate) {
+    private void validateBirthDateForm(String birthDate) {
         if (!pattern.matcher(birthDate).matches()) {
             throw new IllegalArgumentException("invalid form birthDate");
         }

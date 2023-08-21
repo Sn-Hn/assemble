@@ -21,9 +21,9 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-@DisplayName("Verification Integration Test")
+@DisplayName("Validation Integration Test")
 @CustomIntegrationTest
-public class VerificationIntegrationTest {
+public class ValidationIntegrationTest {
 
     private final String basePath = "/assemble/";
 

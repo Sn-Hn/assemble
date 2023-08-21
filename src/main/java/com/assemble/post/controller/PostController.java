@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(tags = "게시글 APIs")
+@Api(tags = "게시글 Apis")
 @RequestMapping(path = "post")
 @RequiredArgsConstructor
 @RestController

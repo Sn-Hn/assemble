@@ -20,7 +20,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final VerificationService verificationService;
+    private final ValidationService validationService;
 
     private final UserContext userContext;
 
@@ -28,8 +28,8 @@ public class UserService {
 
     @Transactional
     public User signup(SignupRequest signupRequest) {
-        verificationService.verifyDuplicationEmail(signupRequest.getEmail());
-        verificationService.verifyDuplicationNickname(signupRequest.getNickname());
+        validationService.validateDuplicationEmail(signupRequest.getEmail());
+        validationService.validateDuplicationNickname(signupRequest.getNickname());
 
         signupRequest.encodePassword(passwordEncoder);
         User user = User.createUser(signupRequest);

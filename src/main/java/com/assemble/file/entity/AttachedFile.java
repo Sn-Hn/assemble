@@ -57,15 +57,6 @@ public class AttachedFile extends BaseUserEntity {
         this(null, path, fullPath, name, size, savedName);
     }
 
-    public void setCreatorId(Long creatorId) {
-        setCreator(creatorId);
-        setModifier(creatorId);
-    }
-
-    public void setModifierId(Long modifierId) {
-        setModifier(modifierId);
-    }
-
     public ProfileResponse mapProfile() {
         return new ProfileResponse(this.fileId, this.name, "/images/" + this.savedName);
     }

@@ -6,7 +6,7 @@ import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.fixture.UserFixture;
-import com.assemble.user.service.VerificationService;
+import com.assemble.user.service.ValidationService;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -34,18 +34,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Slf4j
-@WebMvcTest(controllers = VerificationController.class,
+@WebMvcTest(controllers = ValidationController.class,
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtFilter.class)
         })
 @AutoConfigureRestDocs
 @WithMockUser
-public class VerificationControllerTest {
+public class ValidationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private VerificationService verificationService;
+    private ValidationService validationService;
 
     @MockBean
     private WebMvcConfig webMvcConfig;
@@ -59,7 +59,7 @@ public class VerificationControllerTest {
     @Test
     void 이메일_중복_아님() throws Exception {
         EmailRequest emailRequest = UserFixture.중복_아닌_이메일();
-        given(verificationService.isDuplicationEmail(any())).willReturn(false);
+        given(validationService.isDuplicationEmail(any())).willReturn(false);
 
         ResultActions perform = mockMvc.perform(get("/email/validation")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -85,7 +85,7 @@ public class VerificationControllerTest {
     @Test
     void 닉네임_중복_아님() throws Exception {
         NicknameRequest nicknameRequest = UserFixture.중복_아닌_닉네임();
-        given(verificationService.isDuplicationNickname(any())).willReturn(false);
+        given(validationService.isDuplicationNickname(any())).willReturn(false);
 
         ResultActions perform = mockMvc.perform(get("/nickname/validation")
                 .contentType(MediaType.APPLICATION_JSON)

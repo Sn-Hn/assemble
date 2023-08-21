@@ -32,13 +32,11 @@ public class Category extends BaseUserEntity {
 
     public static Category createCategory(String name, Long creator) {
         Category category = new Category(name);
-        category.createUser(creator);
 
         return category;
     }
 
     public void modify(ModifiedCategoryRequest modifiedCategoryRequest, Long modifierId) {
         this.name = modifiedCategoryRequest.getCategoryName();
-        modifyUser(modifierId);
     }
 }

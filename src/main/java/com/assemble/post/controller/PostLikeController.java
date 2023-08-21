@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(tags = "게시판 좋아요 APIs")
+@Api(tags = "게시판 좋아요 Apis")
 @RequiredArgsConstructor
 @RestController
 public class PostLikeController {

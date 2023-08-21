@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 
-@Api(tags = "회원 APIs")
+@Api(tags = "회원 Apis")
 @RestController
 @RequiredArgsConstructor
 @Slf4j

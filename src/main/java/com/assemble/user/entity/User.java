@@ -100,7 +100,7 @@ public class User extends BaseDateEntity {
                 .collect(Collectors.toList());
     }
 
-    public void verifyWithdrawal() {
+    public void validateWithdrawal() {
         if (this.getStatus().equals(UserStatus.WITHDRAWAL)) {
             throw new NotFoundException("withdrawal user", this.getUserId(), this.getNickname());
         }

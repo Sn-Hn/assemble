@@ -17,11 +17,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("VerificationService")
-public class VerificationServiceTest {
+@DisplayName("ValidationService")
+public class ValidationServiceTest {
 
     @InjectMocks
-    private VerificationService verificationService;
+    private ValidationService validationService;
 
     @Mock
     private UserRepository userRepository;
@@ -34,7 +34,7 @@ public class VerificationServiceTest {
         given(userRepository.findByEmail(any())).willReturn(Optional.of(user));
 
         // when
-        boolean isDuplicationEmail = verificationService.isDuplicationEmail(email);
+        boolean isDuplicationEmail = validationService.isDuplicationEmail(email);
 
         // then
         assertThat(isDuplicationEmail).isTrue();
@@ -48,7 +48,7 @@ public class VerificationServiceTest {
         given(userRepository.findByEmail(any())).willReturn(Optional.empty());
 
         // when
-        boolean isDuplicationEmail = verificationService.isDuplicationEmail(email);
+        boolean isDuplicationEmail = validationService.isDuplicationEmail(email);
 
         // then
         assertThat(isDuplicationEmail).isFalse();
@@ -62,7 +62,7 @@ public class VerificationServiceTest {
         given(userRepository.findByNickname(any())).willReturn(Optional.of(user));
 
         // when
-        boolean isDuplicationNickname = verificationService.isDuplicationNickname(nickname);
+        boolean isDuplicationNickname = validationService.isDuplicationNickname(nickname);
 
         // then
         assertThat(isDuplicationNickname).isTrue();
@@ -76,7 +76,7 @@ public class VerificationServiceTest {
         given(userRepository.findByNickname(any())).willReturn(Optional.empty());
 
         // when
-        boolean isDuplicationNickname = verificationService.isDuplicationNickname(nickname);
+        boolean isDuplicationNickname = validationService.isDuplicationNickname(nickname);
 
         // then
         assertThat(isDuplicationNickname).isFalse();

@@ -14,14 +14,14 @@ public class Password {
     private String value;
 
     public Password(String value) {
-        verifyEmptyPassword(value);
+        validateEmptyPassword(value);
         this.value = value;
     }
 
     protected Password() {
     }
 
-    private void verifyEmptyPassword(String password) {
+    private void validateEmptyPassword(String password) {
         if (!StringUtils.hasText(password)) {
             throw new IllegalArgumentException("empty password");
         }

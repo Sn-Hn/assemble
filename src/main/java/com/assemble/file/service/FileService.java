@@ -33,7 +33,6 @@ public class FileService {
         }
 
         AttachedFile uploadFile = this.uploadFile.upload(file);
-        uploadFile.createUser(userId);
         AttachedFile savedFile = fileRepository.save(uploadFile);
         User user = userRepository.findById(userId)
                     .orElseThrow(() -> new NotFoundException(User.class, userId));

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class VerificationService {
+public class ValidationService {
 
     private final UserRepository userRepository;
 
@@ -25,13 +25,13 @@ public class VerificationService {
                 .isPresent();
     }
 
-    protected void verifyDuplicationEmail(String email) {
+    protected void validateDuplicationEmail(String email) {
         if (isDuplicationEmail(email)) {
             throw new IllegalArgumentException("email duplication");
         }
     }
 
-    protected void verifyDuplicationNickname(String nickname) {
+    protected void validateDuplicationNickname(String nickname) {
         if (isDuplicationNickname(nickname)) {
             throw new IllegalArgumentException("nickname duplication");
         }

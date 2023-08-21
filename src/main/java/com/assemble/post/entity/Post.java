@@ -95,21 +95,6 @@ public class Post extends BaseUserEntity {
         this.postStatus = PostStatus.valueOf(modifiedPostRequest.getPostStatus());
     }
 
-    public void increaseHits() {
-        this.hits ++;
-    }
-
-    public void increaseLikes() {
-        this.likes ++;
-    }
-
-    public void decreaseLikes() {
-        if (likes <= 0) {
-            throw new IllegalArgumentException();
-        }
-        this.likes --;
-    }
-
     public List<ProfileResponse> toPostProfileResponse() {
         return profiles.stream()
                 .filter(postImage -> postImage.getFile() != null)

@@ -14,14 +14,14 @@ public class CategoryName {
     private String value;
 
     public CategoryName(String value) {
-        verifyEmpty(value);
+        validateEmpty(value);
         this.value = value;
     }
 
     protected CategoryName() {
     }
 
-    private void verifyEmpty(String name) {
+    private void validateEmpty(String name) {
         if (!StringUtils.hasText(name)) {
             throw new IllegalArgumentException("category name empty");
         }

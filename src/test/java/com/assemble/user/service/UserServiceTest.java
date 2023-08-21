@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +34,7 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private VerificationService verificationService;
+    private ValidationService validationService;
 
     @Mock
     private FileService fileService;

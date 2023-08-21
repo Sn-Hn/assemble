@@ -32,7 +32,6 @@ public class PostService {
     @Transactional
     public Post createPost(PostCreationRequest postCreationRequest) {
         Post post = postCreationRequest.toEntity(userContext.getUserId());
-        post.createUser(post.getUser().getUserId());
 
         return postRepository.save(post);
     }
