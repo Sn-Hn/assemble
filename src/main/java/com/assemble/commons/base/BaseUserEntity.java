@@ -1,5 +1,7 @@
 package com.assemble.commons.base;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,6 +11,8 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 public abstract class BaseUserEntity extends BaseDateEntity {
 
     @CreatedBy
@@ -16,24 +20,4 @@ public abstract class BaseUserEntity extends BaseDateEntity {
 
     @LastModifiedBy
     private Long modifier;
-
-    public Long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Long creator) {
-        this.creator = creator;
-    }
-
-    public Long getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(Long modifier) {
-        this.modifier = modifier;
-    }
-
-    public void modifyUser(Long modifier) {
-        this.modifier = modifier;
-    }
 }

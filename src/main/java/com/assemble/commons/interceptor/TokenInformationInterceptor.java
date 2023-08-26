@@ -5,6 +5,11 @@ import com.assemble.commons.base.UserContext;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
@@ -32,6 +37,10 @@ public class TokenInformationInterceptor implements HandlerInterceptor {
         String email = jwtProvider.getEmail(accessTokenFromHeader);
         userContext.setUserId(userId);
         userContext.setEmail(email);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userId, null);
+        SecurityContext securityContext = new SecurityContextImpl(authentication);
+        SecurityContextHolder.setContext(securityContext);
 
         log.info("UserContext={}", userContext);
 
