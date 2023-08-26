@@ -28,7 +28,7 @@ public class PostLikeService {
     @Transactional
     public boolean likePost(PostLikeRequest postLikeRequest) {
         Likes postLike = postLikeRequest.toEntity(userContext.getUserId());
-        if (isAleadyLikeByUser(postLikeRequest)) {
+        if (isAleadyLikeByUser(postLikeRequest.getPostId())) {
             throw new IllegalArgumentException("this post is already like");
         }
 
@@ -52,14 +52,16 @@ public class PostLikeService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
+        post.validateLikeCount();
+
         postRepository.decreaseLikes(post.getPostId());
 
         return true;
     }
 
     @Transactional(readOnly = true)
-    public boolean isAleadyLikeByUser(PostLikeRequest postLikeRequest) {
-        if (postLikeRepository.findPostByUser(postLikeRequest.getPostId(), userContext.getUserId()).isPresent()) {
+    public boolean isAleadyLikeByUser(Long postId) {
+        if (postLikeRepository.findPostByUser(postId, userContext.getUserId()).isPresent()) {
             return true;
         }
 
@@ -71,7 +73,11 @@ public class PostLikeService {
         Long userId = userContext.getUserId();
         long count = postLikeRepository.countByUserId(userId);
         List<Post> posts = postLikeRepository.findAllByUserId(userId, pageable).stream()
-                .map(like -> like.getPost())
+                .map(like -> {
+                    Post post = like.getPost();
+                    post.setIsLike(true);
+                    return post;
+                })
                 .collect(Collectors.toUnmodifiableList());
 
         return new PageImpl<>(posts, pageable, count);

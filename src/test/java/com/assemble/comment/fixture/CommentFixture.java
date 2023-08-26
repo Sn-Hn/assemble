@@ -3,7 +3,7 @@ package com.assemble.comment.fixture;
 import com.assemble.comment.dto.request.CommentCreationRequest;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.comment.entity.Comment;
-import com.assemble.post.entity.Post;
+import com.assemble.post.fixture.PostFixture;
 import com.assemble.user.entity.User;
 
 public class CommentFixture {
@@ -18,7 +18,7 @@ public class CommentFixture {
     }
 
     public static Comment 댓글_조회() {
-        return new Comment(commentId, new Post(postId), new User(userId), contents, false);
+        return new Comment(commentId, PostFixture.게시글(), new User(userId), contents, false);
     }
 
     public static ModifiedCommentRequest 댓글_수정_요청() {

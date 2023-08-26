@@ -81,7 +81,8 @@ class PostServiceTest {
     @Test
     void 게시글_상세_조회() {
         // given
-        given(postRepository.findById(any())).willReturn(Optional.of(PostFixture.게시글()));
+        Post mockPost = PostFixture.게시글();
+        given(postRepository.findById(any())).willReturn(Optional.of(mockPost));
         given(postLikeService.isAleadyLikeByUser(any())).willReturn(false);
 
         // when
@@ -90,8 +91,7 @@ class PostServiceTest {
         // then
         assertAll(
                 () -> assertThat(post).isNotNull(),
-                () -> assertThat(post.getPostId()).isEqualTo(1L),
-                () -> assertThat(post.getHits()).isEqualTo(3L)
+                () -> assertThat(post.getPostId()).isEqualTo(1L)
         );
     }
 

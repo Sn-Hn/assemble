@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService {
 
     private final UploadFile uploadFile;
-
     private final FileRepository fileRepository;
-
     private final UserRepository userRepository;
 
     @Async

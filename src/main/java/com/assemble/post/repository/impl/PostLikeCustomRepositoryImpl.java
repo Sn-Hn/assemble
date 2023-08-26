@@ -4,7 +4,6 @@ import com.assemble.post.entity.Likes;
 import com.assemble.post.entity.QLikes;
 import com.assemble.post.entity.QPost;
 import com.assemble.post.repository.PostLikeCustomRepository;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;

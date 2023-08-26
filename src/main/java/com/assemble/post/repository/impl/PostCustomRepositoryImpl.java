@@ -33,7 +33,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(eqLikeUserId(myUserId), eqPostId())
+                .on(QPost.post.postId.eq(QLikes.likes.post.postId),
+                        eqLikeUserId(myUserId))
                 .where(searchByLike(postSearchRequest.getSearchBy(), postSearchRequest.getSearchQuery()),
                         searchByCategory(postSearchRequest.getCategoryId()))
                 .orderBy(findOrder(pageable))
@@ -59,7 +60,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return queryFactory.select(QPost.post, QLikes.likes)
                 .from(QPost.post)
                 .leftJoin(QLikes.likes)
-                .on(eqLikeUserId(myUserId), eqPostId())
+                .on(QPost.post.postId.eq(QLikes.likes.post.postId),
+                        eqLikeUserId(myUserId))
                 .where(eqUserId(userId))
                 .orderBy(QPost.post.postId.desc())
                 .offset(pageable.getOffset())
@@ -98,10 +100,6 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
 
     private BooleanExpression eqUserId(Long userId) {
         return QPost.post.user.userId.eq(userId);
-    }
-
-    private static BooleanExpression eqPostId() {
-        return QPost.post.postId.eq(QLikes.likes.post.postId);
     }
 
     private static BooleanExpression eqLikeUserId(Long userId) {

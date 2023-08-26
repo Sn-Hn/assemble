@@ -81,7 +81,7 @@ class PostLikeServiceTest {
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
+        boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest.getPostId());
 
         // then
         assertThat(aleadyLikeByUser).isTrue();
@@ -95,7 +95,7 @@ class PostLikeServiceTest {
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest);
+        boolean aleadyLikeByUser = postLikeService.isAleadyLikeByUser(postLikeRequest.getPostId());
 
         // then
         assertThat(aleadyLikeByUser).isFalse();

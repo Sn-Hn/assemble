@@ -56,6 +56,7 @@ class CommentControllerTest {
 
     @MockBean
     private TokenInformationInterceptor tokenInformationInterceptor;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -198,6 +199,7 @@ class CommentControllerTest {
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
                                 fieldWithPath("response.content[0].postId").description("모임 ID"),
+                                fieldWithPath("response.content[0].postTitle").description("모임 제목"),
                                 fieldWithPath("response.content[0].userId").description("댓글 작성자 ID"),
                                 fieldWithPath("response.content[0].commentId").description("댓글 ID"),
                                 fieldWithPath("response.content[0].contents").description("댓글 내용"),

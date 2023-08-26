@@ -46,14 +46,13 @@ public class PostService {
 
     @Transactional
     public Post getPost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException(Post.class, postId));
-
         // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한
         postRepository.increaseHits(postId);
 
-        PostLikeRequest postLikeRequest = new PostLikeRequest(postId);
-        post.setIsLike(postLikeService.isAleadyLikeByUser(postLikeRequest));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(Post.class, postId));
+
+        post.setIsLike(postLikeService.isAleadyLikeByUser(postId));
 
         return post;
     }

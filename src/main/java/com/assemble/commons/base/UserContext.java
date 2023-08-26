@@ -1,10 +1,11 @@
 package com.assemble.commons.base;
 
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 @Component
-@RequestScope
+@RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserContext {
     // default -> 로그인하지 않은 회원
     private Long userId = -1L;

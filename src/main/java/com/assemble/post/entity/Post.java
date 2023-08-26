@@ -105,4 +105,10 @@ public class Post extends BaseUserEntity {
     public void setIsLike(boolean isLike) {
         this.isLike = isLike;
     }
+
+    public void validateLikeCount() {
+        if (this.likes <= 0) {
+            throw new IllegalStateException("cannot cancel like");
+        }
+    }
 }

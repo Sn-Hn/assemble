@@ -188,7 +188,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
-        perform.andDo(document("/user",
+        perform.andDo(document("/user/update",
                 requestParameters(
                         parameterWithName("name").description("이름"),
                         parameterWithName("nickname").description("닉네임"),

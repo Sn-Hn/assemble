@@ -177,6 +177,7 @@ public class PostIntegrationTest {
                         "response.contents", equalTo(modifiedPostRequest.getContents()))
                 .log().all();
     }
+
     @Test
     void 게시글_삭제() {
         Long id = 2L;
