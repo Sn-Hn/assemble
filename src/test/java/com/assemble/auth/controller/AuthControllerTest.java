@@ -68,7 +68,7 @@ class AuthControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @MockBean(name = "executor")
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Test

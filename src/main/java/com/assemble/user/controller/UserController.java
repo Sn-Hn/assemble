@@ -9,16 +9,12 @@ import com.assemble.user.dto.response.SignupResponse;
 import com.assemble.user.dto.response.UserInfoResponse;
 import com.assemble.user.entity.User;
 import com.assemble.user.service.UserService;
+import com.assemble.util.AuthenticationUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,9 +38,7 @@ public class UserController {
 
         User user = userService.signup(signupRequest);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserId(), null);
-        SecurityContext securityContext = new SecurityContextImpl(authentication);
-        SecurityContextHolder.setContext(securityContext);
+        AuthenticationUtils.setSecurityContextToUser(user.getUserId());
 
         CustomMultipartFile.from(profileImage)
                 .ifPresent(file -> fileService.uploadFile(file, user.getUserId()));

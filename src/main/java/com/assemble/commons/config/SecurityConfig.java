@@ -1,5 +1,6 @@
 package com.assemble.commons.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -51,7 +52,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor delegate) {
+    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(@Qualifier("executor") ThreadPoolTaskExecutor delegate) {
         return new DelegatingSecurityContextAsyncTaskExecutor(delegate);
     }
 }

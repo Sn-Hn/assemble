@@ -10,7 +10,7 @@ public class TaskExecutorConfig {
     @Bean
     public ThreadPoolTaskExecutor executor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("my-");
+        executor.setThreadNamePrefix("assemble-");
         return executor;
     }
 }
