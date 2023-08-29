@@ -2,14 +2,11 @@ package com.assemble.commons.interceptor;
 
 import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.base.UserContext;
+import com.assemble.util.AuthenticationUtils;
 import com.assemble.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
@@ -29,6 +26,8 @@ public class TokenInformationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String accessTokenFromHeader = JwtUtils.getAccessTokenFromHeader(request);
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+
         if (!StringUtils.hasText(accessTokenFromHeader)) {
             return HandlerInterceptor.super.preHandle(request, response, handler);
         }
@@ -38,9 +37,8 @@ public class TokenInformationInterceptor implements HandlerInterceptor {
         userContext.setUserId(userId);
         userContext.setEmail(email);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userId, null);
-        SecurityContext securityContext = new SecurityContextImpl(authentication);
-        SecurityContextHolder.setContext(securityContext);
+        AuthenticationUtils.setSecurityContextToUser(userId);
+
 
         log.info("UserContext={}", userContext);
 
