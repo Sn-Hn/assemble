@@ -1,14 +1,15 @@
 package com.assemble.join.domain;
 
-public enum RequestStatus {
+public enum JoinRequestStatus {
     REQUEST("신청"),
     REJECT("거절"),
     APPROVAL("승인"),
-    BLOCK("차단");
+    BLOCK("차단"),
+    CANCEL("신청 취소");
 
     private String description;
 
-    RequestStatus(String description) {
+    JoinRequestStatus(String description) {
         this.description = description;
     }
 }
