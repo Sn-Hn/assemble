@@ -29,9 +29,9 @@ public class PostFixture {
     private static final int personnelNumber = 0;
     private static final int expectedPeriod = 0;
     private static final String searchByTitle = "title";
-    private static final String searchQueryTitle = "제목";
+    private static final String searchQueryTitle = "모임";
     private static final String searchByContents = "contents";
-    private static final String searchQueryContents = "내용";
+    private static final String searchQueryContents = "설명";
     private static final Long searchQueryUserId = 1L;
     private static final String searchByWriter = "writer";
     private static final String categoryName = "카테고리 이름";

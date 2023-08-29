@@ -180,13 +180,13 @@ public class PostIntegrationTest {
 
     @Test
     void 게시글_삭제() {
-        Long id = 2L;
+        Long postId = 3L;
 
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("postId", id)
+                .pathParam("postId", postId)
                 .log().all()
         .when()
                 .config(config)

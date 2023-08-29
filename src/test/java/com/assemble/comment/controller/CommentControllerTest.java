@@ -7,8 +7,11 @@ import com.assemble.comment.fixture.CommentFixture;
 import com.assemble.comment.service.CommentService;
 import com.assemble.commons.TokenFixture;
 import com.assemble.commons.config.WebMvcConfig;
+import com.assemble.commons.converter.PageableConverter;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
+import com.assemble.fixture.PageableFixture;
+import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,12 +178,13 @@ class CommentControllerTest {
     @Test
     void 특정_회원이_작성한_댓글_조회() throws Exception {
         Long userId = 1L;
+        PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given(commentService.getCommentsByUser(anyLong(), any())).willReturn(new PageImpl<>(List.of(CommentFixture.댓글_조회())));
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/comment/user/{userId}", userId)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
-                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(MultiValueMapConverter.convert(objectMapper, pageableConverter)));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
@@ -193,6 +197,11 @@ class CommentControllerTest {
                         ),
                         pathParameters(
                                 parameterWithName("userId").description("특정 회원 ID")
+                        ),
+                        requestParameters(
+                                parameterWithName("size").description("페이지 별 수"),
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("sort").description("정렬")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("성공 여부"),

@@ -298,7 +298,8 @@ class PostControllerTest {
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/post/user/{userId}", userId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
-                .contentType(MediaType.APPLICATION_JSON_VALUE));
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(MultiValueMapConverter.convert(objectMapper, pageableConverter)));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
@@ -308,6 +309,11 @@ class PostControllerTest {
         perform.andDo(document("/post/user",
                 pathParameters(
                         parameterWithName("userId").description("특정 회원 ID")
+                ),
+                requestParameters(
+                        parameterWithName("size").description("페이지 별 수"),
+                        parameterWithName("page").description("페이지 번호"),
+                        parameterWithName("sort").description("정렬")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
