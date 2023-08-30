@@ -1,4 +1,4 @@
-package com.assemble.joinrequest.controller;
+package com.assemble.join.controller;
 
 import com.assemble.commons.TokenFixture;
 import com.assemble.commons.config.WebMvcConfig;
@@ -6,11 +6,11 @@ import com.assemble.commons.converter.PageableConverter;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
-import com.assemble.joinrequest.domain.JoinRequestStatus;
-import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
-import com.assemble.joinrequest.dto.request.JoinRequestDto;
-import com.assemble.joinrequest.fixture.JoinRequestFixture;
-import com.assemble.joinrequest.service.JoinRequestService;
+import com.assemble.join.domain.JoinRequestStatus;
+import com.assemble.join.dto.request.JoinRequestAnswer;
+import com.assemble.join.dto.request.JoinRequestDto;
+import com.assemble.join.fixture.JoinRequestFixture;
+import com.assemble.join.service.JoinRequestService;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         })
 @AutoConfigureRestDocs
 @WithMockUser
-public class JoinControllerTest {
+public class JoinRequestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -98,6 +98,7 @@ public class JoinControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
+                                fieldWithPath("response.joinRequestId").description("가입 신청 ID"),
                                 fieldWithPath("response.postId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
@@ -136,6 +137,7 @@ public class JoinControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
+                                fieldWithPath("response.joinRequestId").description("가입 신청 ID"),
                                 fieldWithPath("response.postId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
@@ -209,6 +211,7 @@ public class JoinControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
+                                fieldWithPath("response.content[0].joinRequestId").description("가입 신청 ID"),
                                 fieldWithPath("response.content[0].postId").description("모임 ID"),
                                 fieldWithPath("response.content[0].userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response.content[0].status").description("가입 신청 상태"),

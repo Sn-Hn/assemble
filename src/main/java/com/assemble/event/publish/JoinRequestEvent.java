@@ -1,6 +1,6 @@
 package com.assemble.event.publish;
 
-import com.assemble.joinrequest.entity.JoinRequest;
+import com.assemble.join.entity.JoinRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

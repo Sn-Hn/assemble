@@ -15,7 +15,6 @@ endif::[]
 include::{snippets}/signup/curl-request.adoc[]
 include::{snippets}/signup/http-request.adoc[]
 include::{snippets}/signup/httpie-request.adoc[]
-include::{snippets}/signup/request-fields.adoc[]
 
 ===== example
 include::{snippets}/signup/request-body.adoc[]

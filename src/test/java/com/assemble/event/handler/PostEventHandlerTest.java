@@ -2,9 +2,9 @@ package com.assemble.event.handler;
 
 import com.assemble.commons.base.UserContext;
 import com.assemble.event.publish.PostEvent;
-import com.assemble.join.domain.JoinStatus;
-import com.assemble.join.entity.Join;
-import com.assemble.join.repository.JoinRepository;
+import com.assemble.activity.domain.ActivityStatus;
+import com.assemble.activity.entity.Activity;
+import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.post.entity.Post;
 import com.assemble.post.fixture.PostFixture;
 import com.assemble.user.entity.User;
@@ -28,7 +28,7 @@ class PostEventHandlerTest {
     private PostEventHandler postEventHandler;
 
     @Mock
-    private JoinRepository joinRepository;
+    private ActivityRepository activityRepository;
 
     @Mock
     private UserContext userContext;
@@ -40,16 +40,16 @@ class PostEventHandlerTest {
         Long userId = 1L;
         PostEvent postEvent = new PostEvent(post);
         given(userContext.getUserId()).willReturn(userId);
-        given(joinRepository.save(any())).willReturn(new Join(post, new User(userId), JoinStatus.NORMAL));
+        given(activityRepository.save(any())).willReturn(new Activity(post, new User(userId), ActivityStatus.NORMAL));
 
         // when
-        Join join = postEventHandler.doPostEvent(postEvent);
+        Activity activity = postEventHandler.doPostEvent(postEvent);
 
         // then
         assertAll(
-                () -> assertThat(join.getPost().getPostId()).isEqualTo(post.getPostId()),
-                () -> assertThat(join.getUser().getUserId()).isEqualTo(userContext.getUserId()),
-                () -> assertThat(join.getJoinStatus()).isEqualTo(JoinStatus.NORMAL)
+                () -> assertThat(activity.getPost().getPostId()).isEqualTo(post.getPostId()),
+                () -> assertThat(activity.getUser().getUserId()).isEqualTo(userContext.getUserId()),
+                () -> assertThat(activity.getStatus()).isEqualTo(ActivityStatus.NORMAL)
         );
     }
 }

@@ -1,13 +1,15 @@
-package com.assemble.joinrequest.dto.response;
+package com.assemble.join.dto.response;
 
-import com.assemble.joinrequest.domain.JoinRequestStatus;
-import com.assemble.joinrequest.entity.JoinRequest;
+import com.assemble.join.domain.JoinRequestStatus;
+import com.assemble.join.entity.JoinRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
 public class JoinResponse {
+
+    private Long joinRequestId;
 
     private Long postId;
 
@@ -19,6 +21,7 @@ public class JoinResponse {
 
     public JoinResponse(JoinRequest joinRequest) {
         this(
+                joinRequest.getId(),
                 joinRequest.getPost().getPostId(),
                 joinRequest.getUser().getUserId(),
                 joinRequest.getStatus().toString(),

@@ -1,12 +1,12 @@
-package com.assemble.joinrequest.service;
+package com.assemble.join.service;
 
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.event.publish.JoinRequestEvent;
-import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
-import com.assemble.joinrequest.dto.request.JoinRequestDto;
-import com.assemble.joinrequest.entity.JoinRequest;
-import com.assemble.joinrequest.repository.JoinRequestRepository;
+import com.assemble.join.dto.request.JoinRequestAnswer;
+import com.assemble.join.dto.request.JoinRequestDto;
+import com.assemble.join.entity.JoinRequest;
+import com.assemble.join.repository.JoinRequestRepository;
 import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;

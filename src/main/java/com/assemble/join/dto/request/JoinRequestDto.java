@@ -1,7 +1,7 @@
-package com.assemble.joinrequest.dto.request;
+package com.assemble.join.dto.request;
 
-import com.assemble.joinrequest.domain.JoinRequestStatus;
-import com.assemble.joinrequest.entity.JoinRequest;
+import com.assemble.join.domain.JoinRequestStatus;
+import com.assemble.join.entity.JoinRequest;
 import com.assemble.post.entity.Post;
 import com.assemble.user.entity.User;
 import io.swagger.annotations.ApiModelProperty;

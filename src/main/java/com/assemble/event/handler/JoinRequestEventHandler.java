@@ -1,10 +1,10 @@
 package com.assemble.event.handler;
 
 import com.assemble.event.publish.JoinRequestEvent;
-import com.assemble.join.domain.JoinStatus;
-import com.assemble.join.entity.Join;
-import com.assemble.join.repository.JoinRepository;
-import com.assemble.joinrequest.entity.JoinRequest;
+import com.assemble.activity.domain.ActivityStatus;
+import com.assemble.activity.entity.Activity;
+import com.assemble.activity.repository.ActivityRepository;
+import com.assemble.join.entity.JoinRequest;
 import com.assemble.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +16,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JoinRequestEventHandler {
 
-    private final JoinRepository joinRepository;
+    private final ActivityRepository activityRepository;
 
     @EventListener
-    public Join doJoinRequestEvent(JoinRequestEvent joinRequestEvent) {
+    public Activity doJoinRequestEvent(JoinRequestEvent joinRequestEvent) {
         JoinRequest joinRequest = joinRequestEvent.getJoinRequest();
         log.info("JoinRequest id={}", joinRequest.getId());
 
-        Join join = new Join(joinRequest.getPost(), new User(joinRequest.getUser().getUserId()), JoinStatus.NORMAL);
+        Activity activity = new Activity(joinRequest.getPost(), new User(joinRequest.getUser().getUserId()), ActivityStatus.NORMAL);
 
-        Join savedJoin = joinRepository.save(join);
-        log.info("Saved Join id={}", savedJoin.getId());
+        Activity savedActivity = activityRepository.save(activity);
+        log.info("Saved Join id={}", savedActivity.getId());
 
-        return savedJoin;
+        return savedActivity;
     }
 }

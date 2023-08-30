@@ -1,8 +1,8 @@
-package com.assemble.joinrequest.repository.impl;
+package com.assemble.join.repository.impl;
 
-import com.assemble.joinrequest.entity.JoinRequest;
-import com.assemble.joinrequest.entity.QJoinRequest;
-import com.assemble.joinrequest.repository.JoinRequestCustomRepository;
+import com.assemble.join.entity.JoinRequest;
+import com.assemble.join.entity.QJoinRequest;
+import com.assemble.join.repository.JoinRequestCustomRepository;
 import com.assemble.post.entity.QPost;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;

@@ -1,10 +1,10 @@
-package com.assemble.joinrequest.entity;
+package com.assemble.join.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.commons.exception.UserBlockException;
-import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
+import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.post.entity.Post;
-import com.assemble.joinrequest.domain.JoinRequestStatus;
+import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
