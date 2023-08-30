@@ -1,4 +1,4 @@
-package com.assemble.join.dto.response;
+package com.assemble.activity.dto.response;
 
 import com.assemble.comment.dto.response.CommentResponse;
 import com.assemble.file.dto.response.ProfileResponse;

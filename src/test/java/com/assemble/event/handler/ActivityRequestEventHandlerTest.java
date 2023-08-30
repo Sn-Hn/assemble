@@ -1,11 +1,11 @@
 package com.assemble.event.handler;
 
 import com.assemble.event.publish.JoinRequestEvent;
-import com.assemble.join.domain.JoinStatus;
-import com.assemble.join.entity.Join;
-import com.assemble.join.repository.JoinRepository;
-import com.assemble.joinrequest.entity.JoinRequest;
-import com.assemble.joinrequest.fixture.JoinRequestFixture;
+import com.assemble.activity.domain.ActivityStatus;
+import com.assemble.activity.entity.Activity;
+import com.assemble.activity.repository.ActivityRepository;
+import com.assemble.join.entity.JoinRequest;
+import com.assemble.join.fixture.JoinRequestFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,29 +20,29 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("JoinRequset Event Handler")
 @ExtendWith(MockitoExtension.class)
-class JoinRequestEventHandlerTest {
+class ActivityRequestEventHandlerTest {
 
     @InjectMocks
     private JoinRequestEventHandler joinRequestEventHandler;
 
     @Mock
-    private JoinRepository joinRepository;
+    private ActivityRepository activityRepository;
 
     @Test
     void 모임_가입_신청_승인_시_모임_가입() {
         // given
         JoinRequest joinRequest = JoinRequestFixture.승인된_회원();
         JoinRequestEvent event = new JoinRequestEvent(joinRequest);
-        given(joinRepository.save(any())).willReturn(new Join(event.getJoinRequest().getPost(), event.getJoinRequest().getUser(), JoinStatus.NORMAL));
+        given(activityRepository.save(any())).willReturn(new Activity(event.getJoinRequest().getPost(), event.getJoinRequest().getUser(), ActivityStatus.NORMAL));
 
         // when
-        Join join = joinRequestEventHandler.doJoinRequestEvent(event);
+        Activity activity = joinRequestEventHandler.doJoinRequestEvent(event);
 
         // then
         assertAll(
-                () -> assertThat(join.getPost().getPostId()).isEqualTo(joinRequest.getPost().getPostId()),
-                () -> assertThat(join.getUser().getUserId()).isEqualTo(joinRequest.getUser().getUserId()),
-                () -> assertThat(join.getJoinStatus()).isEqualTo(JoinStatus.NORMAL)
+                () -> assertThat(activity.getPost().getPostId()).isEqualTo(joinRequest.getPost().getPostId()),
+                () -> assertThat(activity.getUser().getUserId()).isEqualTo(joinRequest.getUser().getUserId()),
+                () -> assertThat(activity.getStatus()).isEqualTo(ActivityStatus.NORMAL)
         );
     }
 

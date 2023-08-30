@@ -1,12 +1,12 @@
-package com.assemble.join.domain;
+package com.assemble.activity.domain;
 
-public enum JoinStatus {
+public enum ActivityStatus {
     NORMAL("정상"),
     WITHDRAWAL("탈퇴");
 
     private String description;
 
-    JoinStatus(String description) {
+    ActivityStatus(String description) {
         this.description = description;
     }
 
