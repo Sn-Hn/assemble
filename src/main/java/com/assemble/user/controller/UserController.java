@@ -3,8 +3,8 @@ package com.assemble.user.controller;
 import com.assemble.commons.response.ApiResult;
 import com.assemble.file.domain.CustomMultipartFile;
 import com.assemble.file.service.FileService;
-import com.assemble.user.dto.request.ModifiedUserRequest;
-import com.assemble.user.dto.request.SignupRequest;
+import com.assemble.user.dto.request.*;
+import com.assemble.user.dto.response.FindEmailResponse;
 import com.assemble.user.dto.response.SignupResponse;
 import com.assemble.user.dto.response.UserInfoResponse;
 import com.assemble.user.entity.User;
@@ -67,5 +67,17 @@ public class UserController {
         CustomMultipartFile.from(profileImage)
                 .ifPresent(file -> fileService.uploadFile(file, user.getUserId()));
         return ApiResult.ok(new UserInfoResponse(user));
+    }
+
+    @ApiOperation(value = "이메일 찾기")
+    @GetMapping("user/email")
+    public ApiResult<FindEmailResponse> findEmail(@Valid FindEmailRequest findEmailRequest) {
+        return ApiResult.ok(new FindEmailResponse(userService.findEmailByUser(findEmailRequest)));
+    }
+
+    @ApiOperation(value = "비밀번호 변경")
+    @PutMapping("user/password")
+    public ApiResult<Boolean> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        return ApiResult.ok(userService.changePasswordByUser(changePasswordRequest));
     }
 }

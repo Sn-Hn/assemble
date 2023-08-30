@@ -7,11 +7,13 @@ import com.assemble.file.entity.AttachedFile;
 import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +57,9 @@ public class User extends BaseDateEntity {
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<UserImage> profiles = new ArrayList<>();
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime changedPasswordDate;
+
     public User() {
     }
 
@@ -63,7 +68,7 @@ public class User extends BaseDateEntity {
     }
 
     public User(Email email, Name name, String nickname, Password password, PhoneNumber phoneNumber, BirthDate birthDate) {
-        this(null, email, name, nickname, password, phoneNumber, birthDate, UserRole.USER, UserStatus.NORMAL, new ArrayList<>());
+        this(null, email, name, nickname, password, phoneNumber, birthDate, UserRole.USER, UserStatus.NORMAL, new ArrayList<>(), LocalDateTime.now());
     }
 
     public User(Email email, Password password) {
@@ -111,5 +116,10 @@ public class User extends BaseDateEntity {
         this.nickname = modifiedUserRequest.getNickname();
         this.phoneNumber = new PhoneNumber(modifiedUserRequest.getPhoneNumber());
         this.birthDate = new BirthDate(modifiedUserRequest.getBirthDate());
+    }
+
+    public void changePassword(Password password) {
+        this.password = password;
+        this.changedPasswordDate = LocalDateTime.now();
     }
 }

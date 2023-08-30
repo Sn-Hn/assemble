@@ -11,6 +11,7 @@ public class ExclusionApis {
 
     private ExclusionApis() {
         Map<String, String> apis = new HashMap<>();
+        apis.put("/images/**", "GET");
         apis.put("/authentication", "POST");
         apis.put("/signup", "POST");
         apis.put("/email/validation", "GET");
@@ -19,7 +20,9 @@ public class ExclusionApis {
         apis.put("/post/*", "GET");
         apis.put("/category", "GET");
         apis.put("/auth/token", "POST");
-        apis.put("/images/**", "GET");
+        apis.put("/user/validation", "GET");
+        apis.put("/user/email", "GET");
+        apis.put("/user/password", "PUT");
 
         this.exclusionApis = apis;
     }
