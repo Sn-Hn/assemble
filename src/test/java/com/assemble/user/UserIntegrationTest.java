@@ -4,6 +4,8 @@ import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.service.JwtService;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
+import com.assemble.user.dto.request.ChangePasswordRequest;
+import com.assemble.user.dto.request.FindEmailRequest;
 import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.fixture.UserFixture;
@@ -151,6 +153,43 @@ public class UserIntegrationTest {
                 .body("success", is(true),
                         "error", equalTo(null),
                         "response.name", equalTo(modifiedUserRequest.getName()))
+                .log().all();
+    }
+
+    @Test
+    void 이메일_찾기() {
+        FindEmailRequest findEmailRequest = new FindEmailRequest("tester01", "01000000000");
+        given()
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(objectMapper.convertValue(findEmailRequest, Map.class))
+                .log().all()
+        .when()
+                .get("user/email")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response.name", equalTo(findEmailRequest.getName()))
+                .log().all();
+    }
+
+    @Test
+    void 비밀번호_변경() {
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("test00@gmail.com", "password2@");
+        given()
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(changePasswordRequest)
+                .log().all()
+        .when()
+                .put("user/password")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response", is(true))
                 .log().all();
     }
 }

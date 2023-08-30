@@ -3,7 +3,9 @@ package com.assemble.user;
 import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
+import com.assemble.user.dto.request.ValidationUserRequest;
 import com.assemble.user.fixture.UserFixture;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.HttpClientConfig;
@@ -13,9 +15,12 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -29,6 +34,9 @@ public class ValidationIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -108,9 +116,28 @@ public class ValidationIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .formParam("nicknameRequest", nicknameRequest.getNickname())
                 .log().all()
-                .when()
+        .when()
                 .get("nickname/validation")
-                .then()
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response", is(true))
+                .log().all();
+    }
+
+    @Test
+    void 계정_확인() {
+        ValidationUserRequest validationUserRequest = new ValidationUserRequest("test00@gmail.com", "tester00", "01000000000");
+        given()
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(objectMapper.convertValue(validationUserRequest, Map.class))
+                .log().all()
+        .when()
+                .get("user/validation")
+        .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),

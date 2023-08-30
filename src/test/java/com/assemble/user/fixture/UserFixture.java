@@ -1,15 +1,13 @@
 package com.assemble.user.fixture;
 
 import com.assemble.user.domain.*;
-import com.assemble.user.dto.request.EmailRequest;
+import com.assemble.user.dto.request.*;
 import com.assemble.auth.dto.request.LoginRequest;
-import com.assemble.user.dto.request.ModifiedUserRequest;
-import com.assemble.user.dto.request.NicknameRequest;
-import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UserFixture {
@@ -21,6 +19,7 @@ public class UserFixture {
     private static final String secondEmail = "test2@test.com";
     private static final String successLoginEmail = "test00@gmail.com";
     private static final String password = "password1!";
+    private static final String changePassword = "password2!";
     private static final String failedLoginPassword = "passd12!@#$";
     private static final String name = "test";
     private static final String phoneNumber = "01011112222";
@@ -65,7 +64,8 @@ public class UserFixture {
                 new BirthDate(birthDate),
                 UserRole.USER,
                 UserStatus.NORMAL,
-                new ArrayList<>()
+                new ArrayList<>(),
+                LocalDateTime.now()
         );
     }
 
@@ -80,7 +80,8 @@ public class UserFixture {
                 new BirthDate(birthDate),
                 UserRole.USER,
                 UserStatus.NORMAL,
-                new ArrayList<>()
+                new ArrayList<>(),
+                LocalDateTime.now()
         );
     }
 
@@ -102,5 +103,21 @@ public class UserFixture {
 
     public static ModifiedUserRequest 회원정보_수정() {
         return new ModifiedUserRequest(modifiedName, modifiedNickname, modifiedPhoneNumber, modifiedBirthDate);
+    }
+
+    public static FindEmailRequest 이메일_찾기_요청() {
+        return new FindEmailRequest(name, phoneNumber);
+    }
+
+    public static ChangePasswordRequest 비밀번호_변경_요청() {
+        return new ChangePasswordRequest(email, changePassword);
+    }
+
+    public static ValidationUserRequest 정상_본인_확인_요청() {
+        return new ValidationUserRequest(email, name, phoneNumber);
+    }
+
+    public static ValidationUserRequest 비정상_본인_확인_요청() {
+        return new ValidationUserRequest(email, "wrongName", phoneNumber);
     }
 }

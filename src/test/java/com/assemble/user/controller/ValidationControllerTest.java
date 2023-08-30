@@ -4,7 +4,10 @@ import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.user.dto.request.EmailRequest;
+import com.assemble.user.dto.request.FindEmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
+import com.assemble.user.dto.request.ValidationUserRequest;
+import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.service.ValidationService;
 import com.assemble.util.MultiValueMapConverter;
@@ -19,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -104,6 +108,36 @@ public class ValidationControllerTest {
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
                         fieldWithPath("response").description("닉네임 중복 여부 (true: 중복, false: 중복 아님)")
+                ))
+        );
+    }
+
+    @Test
+    void 계정_확인() throws Exception {
+        ValidationUserRequest validationUserRequest = new ValidationUserRequest("test@test.com", "test", "01000000000");
+        User user = UserFixture.회원();
+        given(validationService.checkUser(any())).willReturn(true);
+
+        ResultActions perform = mockMvc.perform(get("/user/validation")
+                .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(MultiValueMapConverter.convert(objectMapper, validationUserRequest)));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response").value(true));
+
+        perform.andDo(document("/user/validation",
+                requestParameters(
+                        parameterWithName("email").description("이메일"),
+                        parameterWithName("name").description("이름"),
+                        parameterWithName("phoneNumber").description("핸드폰 번호")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response").description("계정 확인")
                 ))
         );
     }

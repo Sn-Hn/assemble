@@ -6,6 +6,8 @@ import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.file.service.FileService;
+import com.assemble.user.dto.request.ChangePasswordRequest;
+import com.assemble.user.dto.request.FindEmailRequest;
 import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
@@ -28,6 +30,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -207,6 +211,66 @@ public class UserControllerTest {
                         fieldWithPath("response.role").description("역할"),
                         fieldWithPath("response.profile").description("프로필 사진"),
                         fieldWithPath("response.birthDate").description("생년월일")
+                ))
+        );
+    }
+
+    @Test
+    void 이메일_찾기() throws Exception {
+        FindEmailRequest findEmailRequest = UserFixture.이메일_찾기_요청();
+        User user = UserFixture.회원();
+        given(userService.findEmailByUser(any())).willReturn(user);
+
+        ResultActions perform = mockMvc.perform(get("/user/email")
+                .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(MultiValueMapConverter.convert(objectMapper, findEmailRequest)));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response.name").value(user.getName().getValue()));
+
+        perform.andDo(document("/user/email/find",
+                requestParameters(
+                        parameterWithName("name").description("이름"),
+                        parameterWithName("phoneNumber").description("핸드폰 번호")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response.userId").description("회원 ID"),
+                        fieldWithPath("response.email").description("이메일"),
+                        fieldWithPath("response.name").description("이름")
+                ))
+        );
+    }
+
+    @Test
+    void 비밀번호_변경() throws Exception {
+        ChangePasswordRequest changePasswordRequest = UserFixture.비밀번호_변경_요청();
+        given(userService.changePasswordByUser(any())).willReturn(true);
+
+        ResultActions perform = mockMvc.perform(put("/user/password")
+                .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(changePasswordRequest)));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response").value(true));
+
+        perform.andDo(document("/user/password/change",
+                requestFields(
+                        fieldWithPath("email").description("이메일"),
+                        fieldWithPath("password").description("변경할 비밀번호")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response").description("비밀번호 변경 여부")
                 ))
         );
     }
