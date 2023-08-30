@@ -1,6 +1,7 @@
 package com.assemble.joinrequest.service;
 
 import com.assemble.commons.base.UserContext;
+import com.assemble.event.publish.JoinRequestEvent;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.joinrequest.domain.JoinRequestStatus;
 import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
@@ -19,6 +20,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("JoinServiceTest")
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +51,9 @@ class JoinRequestServiceTest {
 
     @Mock
     private UserContext userContext;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     @Test
     void 모임_가입_신청() {
@@ -67,8 +74,28 @@ class JoinRequestServiceTest {
         );
     }
 
+    @Test
+    void 모임_가입_승인_검증() {
+        // given
+        String status = "APPROVAL";
+        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
+        given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
+        given(userContext.getUserId()).willReturn(1L);
+
+        // when
+        JoinRequest joinRequest = joinRequestService.responseJoinFromAssemble(joinRequestAnswer);
+
+        // then
+        assertAll(
+                () -> assertThat(joinRequest.getPost().getUser().getUserId()).isEqualTo(userContext.getUserId()),
+                () -> assertThat(joinRequest.getStatus().toString()).isEqualTo(status)
+        );
+
+        verify(eventPublisher, times(1)).publishEvent(any(JoinRequestEvent.class));
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = {"APPROVAL", "REJECT", "BLOCK"})
+    @ValueSource(strings = {"REJECT", "BLOCK"})
     void 모임_가입_처리_검증(String status) {
         // given
         JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
@@ -83,6 +110,8 @@ class JoinRequestServiceTest {
                 () -> assertThat(joinRequest.getPost().getUser().getUserId()).isEqualTo(userContext.getUserId()),
                 () -> assertThat(joinRequest.getStatus().toString()).isEqualTo(status)
         );
+
+        verify(eventPublisher, times(0)).publishEvent(any(JoinRequestEvent.class));
     }
 
     @ParameterizedTest

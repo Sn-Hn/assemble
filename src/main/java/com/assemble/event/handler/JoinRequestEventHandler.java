@@ -1,6 +1,5 @@
 package com.assemble.event.handler;
 
-import com.assemble.commons.base.UserContext;
 import com.assemble.event.publish.JoinRequestEvent;
 import com.assemble.join.domain.JoinStatus;
 import com.assemble.join.entity.Join;
@@ -15,10 +14,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JoinRequestHandler {
+public class JoinRequestEventHandler {
 
     private final JoinRepository joinRepository;
-    private final UserContext userContext;
 
     @EventListener
     public Join doJoinRequestEvent(JoinRequestEvent joinRequestEvent) {

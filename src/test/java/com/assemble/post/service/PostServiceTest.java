@@ -1,6 +1,7 @@
 package com.assemble.post.service;
 
 import com.assemble.commons.base.UserContext;
+import com.assemble.event.publish.PostEvent;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +42,9 @@ class PostServiceTest {
     @Mock
     private UserContext userContext;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     @Test
     void 게시글_작성() {
         // given
@@ -57,8 +62,9 @@ class PostServiceTest {
                 () -> assertThat(response.getContents().getValue()).isEqualTo(postCreationRequest.getContents()),
                 () -> assertThat(response.getCategory().getId()).isEqualTo(postCreationRequest.getCategoryId()),
                 () -> assertThat(response.getUser().getUserId()).isEqualTo(userContext.getUserId())
-
         );
+
+        verify(eventPublisher, times(1)).publishEvent(any(PostEvent.class));
     }
 
     @Test
