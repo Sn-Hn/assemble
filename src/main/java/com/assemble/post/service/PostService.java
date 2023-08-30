@@ -8,7 +8,7 @@ import com.assemble.post.dto.request.PostCreationRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;

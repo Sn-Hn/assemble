@@ -24,7 +24,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
         return queryFactory.selectFrom(QComment.comment)
                 .innerJoin(QPost.post)
                 .on(QComment.comment.post.postId.eq(QPost.post.postId),
-                        QPost.post.isDeleted.eq(false))
+                        QPost.post.isDeleted.isFalse())
                 .where(isCommentsByUserId(userId))
                 .orderBy(QComment.comment.createdDate.desc())
                 .offset(pageable.getOffset())
@@ -38,7 +38,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository {
                 .from(QComment.comment)
                 .innerJoin(QPost.post)
                 .on(QComment.comment.post.postId.eq(QPost.post.postId),
-                        QPost.post.isDeleted.eq(false))
+                        QPost.post.isDeleted.isFalse())
                 .where(isCommentsByUserId(userId))
                 .fetchOne();
     }
