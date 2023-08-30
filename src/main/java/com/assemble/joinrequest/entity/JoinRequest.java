@@ -1,10 +1,10 @@
-package com.assemble.join.entity;
+package com.assemble.joinrequest.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.commons.exception.UserBlockException;
-import com.assemble.join.dto.request.JoinRequestAnswer;
+import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
 import com.assemble.post.entity.Post;
-import com.assemble.join.domain.JoinRequestStatus;
+import com.assemble.joinrequest.domain.JoinRequestStatus;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,6 +56,10 @@ public class JoinRequest extends BaseUserEntity {
         validateEqualRequestUser(userId);
         validateNotExistJoinRequest();
         this.status = JoinRequestStatus.CANCEL;
+    }
+
+    public boolean isApproval() {
+        return JoinRequestStatus.APPROVAL.equals(this.status);
     }
 
     public void validateAlreadyJoinRequest() {

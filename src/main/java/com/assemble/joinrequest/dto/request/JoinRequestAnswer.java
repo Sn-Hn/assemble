@@ -1,4 +1,4 @@
-package com.assemble.join.dto.request;
+package com.assemble.joinrequest.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,15 +1,16 @@
 package com.assemble.post.service;
 
 import com.assemble.commons.base.UserContext;
+import com.assemble.event.publish.PostEvent;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.post.dto.request.ModifiedPostRequest;
 import com.assemble.post.dto.request.PostCreationRequest;
-import com.assemble.post.dto.request.PostLikeRequest;
 import com.assemble.post.dto.request.PostSearchRequest;
 import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,16 +25,18 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-
     private final PostLikeService postLikeService;
-
     private final UserContext userContext;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Post createPost(PostCreationRequest postCreationRequest) {
         Post post = postCreationRequest.toEntity(userContext.getUserId());
 
-        return postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        eventPublisher.publishEvent(new PostEvent(post));
+
+        return savedPost;
     }
 
     @Transactional(readOnly = true)

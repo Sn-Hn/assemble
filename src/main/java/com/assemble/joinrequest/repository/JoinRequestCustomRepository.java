@@ -1,6 +1,6 @@
-package com.assemble.join.repository;
+package com.assemble.joinrequest.repository;
 
-import com.assemble.join.entity.JoinRequest;
+import com.assemble.joinrequest.entity.JoinRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.assemble.join.controller;
+package com.assemble.joinrequest.controller;
 
 import com.assemble.commons.response.ApiResult;
-import com.assemble.join.dto.request.JoinRequestAnswer;
-import com.assemble.join.dto.request.JoinRequestDto;
-import com.assemble.join.dto.response.JoinResponse;
-import com.assemble.join.service.JoinRequestService;
+import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
+import com.assemble.joinrequest.dto.request.JoinRequestDto;
+import com.assemble.joinrequest.dto.response.JoinResponse;
+import com.assemble.joinrequest.service.JoinRequestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

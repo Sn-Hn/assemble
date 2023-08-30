@@ -1,4 +1,4 @@
-package com.assemble.join.domain;
+package com.assemble.joinrequest.domain;
 
 public enum JoinRequestStatus {
     REQUEST("신청"),

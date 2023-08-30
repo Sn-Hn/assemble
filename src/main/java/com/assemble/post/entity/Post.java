@@ -111,4 +111,24 @@ public class Post extends BaseUserEntity {
             throw new IllegalStateException("cannot cancel like");
         }
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", title=" + title +
+                ", contents=" + contents +
+                ", user=" + user +
+                ", hits=" + hits +
+                ", likes=" + likes +
+                ", personnelNumber=" + personnelNumber +
+                ", comments=" + comments +
+                ", expectedPeriod=" + expectedPeriod +
+                ", category=" + category +
+                ", profiles=" + profiles +
+                ", isDeleted=" + isDeleted +
+                ", isLike=" + isLike +
+                ", postStatus=" + postStatus +
+                '}';
+    }
 }

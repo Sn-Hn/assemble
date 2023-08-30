@@ -1,13 +1,13 @@
-package com.assemble.join.service;
+package com.assemble.joinrequest.service;
 
 import com.assemble.commons.base.UserContext;
 import com.assemble.fixture.PageableFixture;
-import com.assemble.join.domain.JoinRequestStatus;
-import com.assemble.join.dto.request.JoinRequestAnswer;
-import com.assemble.join.dto.request.JoinRequestDto;
-import com.assemble.join.entity.JoinRequest;
-import com.assemble.join.fixture.JoinRequestFixture;
-import com.assemble.join.repository.JoinRequestRepository;
+import com.assemble.joinrequest.domain.JoinRequestStatus;
+import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
+import com.assemble.joinrequest.dto.request.JoinRequestDto;
+import com.assemble.joinrequest.entity.JoinRequest;
+import com.assemble.joinrequest.fixture.JoinRequestFixture;
+import com.assemble.joinrequest.repository.JoinRequestRepository;
 import com.assemble.post.entity.Post;
 import com.assemble.post.fixture.PostFixture;
 import com.assemble.post.repository.PostRepository;

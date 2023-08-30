@@ -1,4 +1,4 @@
-package com.assemble.join.controller;
+package com.assemble.joinrequest.controller;
 
 import com.assemble.commons.TokenFixture;
 import com.assemble.commons.config.WebMvcConfig;
@@ -6,11 +6,11 @@ import com.assemble.commons.converter.PageableConverter;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
-import com.assemble.join.domain.JoinRequestStatus;
-import com.assemble.join.dto.request.JoinRequestAnswer;
-import com.assemble.join.dto.request.JoinRequestDto;
-import com.assemble.join.fixture.JoinRequestFixture;
-import com.assemble.join.service.JoinRequestService;
+import com.assemble.joinrequest.domain.JoinRequestStatus;
+import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
+import com.assemble.joinrequest.dto.request.JoinRequestDto;
+import com.assemble.joinrequest.fixture.JoinRequestFixture;
+import com.assemble.joinrequest.service.JoinRequestService;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -25,14 +25,12 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;

@@ -1,14 +1,16 @@
-package com.assemble.join.service;
+package com.assemble.joinrequest.service;
 
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
-import com.assemble.join.dto.request.JoinRequestAnswer;
-import com.assemble.join.dto.request.JoinRequestDto;
-import com.assemble.join.entity.JoinRequest;
-import com.assemble.join.repository.JoinRequestRepository;
+import com.assemble.event.publish.JoinRequestEvent;
+import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
+import com.assemble.joinrequest.dto.request.JoinRequestDto;
+import com.assemble.joinrequest.entity.JoinRequest;
+import com.assemble.joinrequest.repository.JoinRequestRepository;
 import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ public class JoinRequestService {
     private final JoinRequestRepository joinRequestRepository;
     private final PostRepository postRepository;
     private final UserContext userContext;
+    private final ApplicationEventPublisher eventPublisher;
 
     // TODO: 2023-08-29 가입신청 시 이미 가입된 사람들(모임 생성자) 처리 -신한
     @Transactional
@@ -43,6 +46,9 @@ public class JoinRequestService {
                 .orElseThrow(() -> new NotFoundException(JoinRequest.class, joinRequestAnswer.getJoinRequestId()));
 
         joinRequest.answerJoinRequest(joinRequestAnswer, userContext.getUserId());
+        if (joinRequest.isApproval()) {
+            eventPublisher.publishEvent(new JoinRequestEvent(joinRequest));
+        }
 
         return joinRequest;
     }

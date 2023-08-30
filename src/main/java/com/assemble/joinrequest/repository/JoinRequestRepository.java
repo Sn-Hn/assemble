@@ -1,6 +1,6 @@
-package com.assemble.join.repository;
+package com.assemble.joinrequest.repository;
 
-import com.assemble.join.entity.JoinRequest;
+import com.assemble.joinrequest.entity.JoinRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

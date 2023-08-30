@@ -1,7 +1,7 @@
-package com.assemble.join.dto.response;
+package com.assemble.joinrequest.dto.response;
 
-import com.assemble.join.domain.JoinRequestStatus;
-import com.assemble.join.entity.JoinRequest;
+import com.assemble.joinrequest.domain.JoinRequestStatus;
+import com.assemble.joinrequest.entity.JoinRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

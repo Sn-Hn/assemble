@@ -1,12 +1,12 @@
-package com.assemble.join;
+package com.assemble.joinrequest;
 
 import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.service.JwtService;
 import com.assemble.commons.converter.PageableConverter;
 import com.assemble.fixture.PageableFixture;
-import com.assemble.join.dto.request.JoinRequestAnswer;
-import com.assemble.join.dto.request.JoinRequestDto;
-import com.assemble.join.fixture.JoinRequestFixture;
+import com.assemble.joinrequest.dto.request.JoinRequestAnswer;
+import com.assemble.joinrequest.dto.request.JoinRequestDto;
+import com.assemble.joinrequest.fixture.JoinRequestFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
