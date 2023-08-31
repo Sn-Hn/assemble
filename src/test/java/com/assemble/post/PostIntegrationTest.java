@@ -180,7 +180,7 @@ public class PostIntegrationTest {
 
     @Test
     void 게시글_삭제() {
-        Long postId = 3L;
+        Long postId = 2L;
 
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))

@@ -135,7 +135,7 @@ class PostControllerTest {
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response.content[0].postId").description("모인 번호"),
+                        fieldWithPath("response.content[0].postId").description("모임 번호"),
                         fieldWithPath("response.content[0].title").description("모임 제목"),
                         fieldWithPath("response.content[0].contents").description("내용"),
                         fieldWithPath("response.content[0].categoryName").description("카테고리 이름"),

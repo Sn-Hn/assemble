@@ -9,6 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ActivityUserResponse {
 
+    private Long assembleId;
+
     private Long userId;
 
     private String nickname;
@@ -19,6 +21,7 @@ public class ActivityUserResponse {
 
     public ActivityUserResponse(Activity activity) {
         this(
+                activity.getPost().getPostId(),
                 activity.getUser().getUserId(),
                 activity.getUser().getNickname(),
                 activity.getUser().toProfile(),

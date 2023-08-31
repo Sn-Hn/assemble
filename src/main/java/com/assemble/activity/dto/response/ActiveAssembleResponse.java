@@ -51,12 +51,6 @@ public class ActiveAssembleResponse {
     @ApiModelProperty(value = "카테고리 이름")
     private String categoryName;
 
-    @ApiModelProperty(value = "댓글")
-    private List<CommentResponse> comments;
-
-    @ApiModelProperty(value = "모임 프로필 이미지")
-    private List<ProfileResponse> postProfileImages;
-
     @ApiModelProperty(value = "작성일")
     private LocalDateTime createdTime;
 
@@ -80,10 +74,6 @@ public class ActiveAssembleResponse {
                 post.getExpectedPeriod(),
                 post.getComments().getComments().size(),
                 post.getCategory().getName(),
-                post.getComments().getComments().stream()
-                        .map(CommentResponse::new)
-                        .collect(Collectors.toList()),
-                post.toPostProfileResponse(),
                 post.getCreatedDate(),
                 post.isLike(),
                 post.getPostStatus().toString()
