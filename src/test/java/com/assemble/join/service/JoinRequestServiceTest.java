@@ -21,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -176,18 +175,18 @@ class JoinRequestServiceTest {
         Long postId = post.getPostId();
         given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
         given(joinRequestRepository.countByPostId(anyLong())).willReturn(1L);
-        given(joinRequestRepository.findAllByPostId(anyLong(), any())).willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
+        given(joinRequestRepository.findAllByPostId(anyLong())).willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        Page<JoinRequest> joinRequests = joinRequestService.getJoinRequests(postId, pageable);
+        List<JoinRequest> joinRequests = joinRequestService.getJoinRequests(postId);
 
         // then
         assertAll(
                 () -> assertThat(joinRequests).isNotEmpty(),
-                () -> assertThat(joinRequests.get().count()).isEqualTo(1),
-                () -> assertThat(joinRequests.get().findFirst().get().getPost().getPostId()).isEqualTo(postId),
-                () -> assertThat(joinRequests.get().findFirst().get().getPost().getUser().getUserId()).isEqualTo(post.getUser().getUserId())
+                () -> assertThat(joinRequests.size()).isEqualTo(1),
+                () -> assertThat(joinRequests.stream().findFirst().get().getPost().getPostId()).isEqualTo(postId),
+                () -> assertThat(joinRequests.stream().findFirst().get().getPost().getUser().getUserId()).isEqualTo(post.getUser().getUserId())
         );
     }
 
@@ -202,7 +201,7 @@ class JoinRequestServiceTest {
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> joinRequestService.getJoinRequests(postId, pageable));
+                .isThrownBy(() -> joinRequestService.getJoinRequests(postId));
 
     }
 }

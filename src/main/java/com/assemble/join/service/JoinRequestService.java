@@ -11,11 +11,10 @@ import com.assemble.post.entity.Post;
 import com.assemble.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -64,7 +63,7 @@ public class JoinRequestService {
     }
 
     @Transactional(readOnly = true)
-    public Page<JoinRequest> getJoinRequests(Long postId, Pageable pageable) {
+    public List<JoinRequest> getJoinRequests(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(Post.class, postId));
 
@@ -73,6 +72,6 @@ public class JoinRequestService {
         }
 
         long count = joinRequestRepository.countByPostId(postId);
-        return new PageImpl<>(joinRequestRepository.findAllByPostId(postId, pageable), pageable, count);
+        return joinRequestRepository.findAllByPostId(postId);
     }
 }

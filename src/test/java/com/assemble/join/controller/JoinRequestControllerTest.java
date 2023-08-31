@@ -22,7 +22,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -101,8 +100,10 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("response.joinRequestId").description("가입 신청 ID"),
                                 fieldWithPath("response.postId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
+                                fieldWithPath("response.nickname").description("모임 가입 신청자 닉네임"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
-                                fieldWithPath("response.message").description("가입 신청 메시지")
+                                fieldWithPath("response.message").description("가입 신청 메시지"),
+                                fieldWithPath("response.createdDate").description("가입 신청일")
                         )
                 ));
     }
@@ -140,8 +141,10 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("response.joinRequestId").description("가입 신청 ID"),
                                 fieldWithPath("response.postId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
+                                fieldWithPath("response.nickname").description("모임 가입 신청자 닉네임"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
-                                fieldWithPath("response.message").description("가입 신청 메시지")
+                                fieldWithPath("response.message").description("가입 신청 메시지"),
+                                fieldWithPath("response.createdDate").description("가입 신청일")
                         )
                 ));
     }
@@ -181,8 +184,8 @@ public class JoinRequestControllerTest {
     void 모임_가입_신청_목록_조회() throws Exception {
         Long postId = 1L;
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
-        given(joinRequestService.getJoinRequests(anyLong(), any()))
-                .willReturn(new PageImpl<>(List.of(JoinRequestFixture.정상_신청_회원())));
+        given(joinRequestService.getJoinRequests(anyLong()))
+                .willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/join/{postId}", postId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
@@ -191,8 +194,7 @@ public class JoinRequestControllerTest {
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.content").isNotEmpty());
+                .andExpect(jsonPath("$.response").isNotEmpty());
 
         perform
                 .andDo(document("/join/cancel",
@@ -211,23 +213,13 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.content[0].joinRequestId").description("가입 신청 ID"),
-                                fieldWithPath("response.content[0].postId").description("모임 ID"),
-                                fieldWithPath("response.content[0].userId").description("모임 가입 신청자 ID"),
-                                fieldWithPath("response.content[0].status").description("가입 신청 상태"),
-                                fieldWithPath("response.content[0].message").description("가입 신청 메시지"),
-                                fieldWithPath("response.pageable").description("pageable"),
-                                fieldWithPath("response.last").description("last"),
-                                fieldWithPath("response.totalPages").description("총 페이지 수"),
-                                fieldWithPath("response.totalElements").description("총 개수"),
-                                fieldWithPath("response.size").description("size"),
-                                fieldWithPath("response.number").description("number"),
-                                fieldWithPath("response.sort.empty").description("sort.empty"),
-                                fieldWithPath("response.sort.sorted").description("sort.sorted"),
-                                fieldWithPath("response.sort.unsorted").description("sort.unsorted"),
-                                fieldWithPath("response.numberOfElements").description("numberOfElements"),
-                                fieldWithPath("response.first").description("first"),
-                                fieldWithPath("response.empty").description("empty")
+                                fieldWithPath("response[0].joinRequestId").description("가입 신청 ID"),
+                                fieldWithPath("response[0].postId").description("모임 ID"),
+                                fieldWithPath("response[0].userId").description("모임 가입 신청자 ID"),
+                                fieldWithPath("response[0].nickname").description("모임 가입 신청자 닉네임"),
+                                fieldWithPath("response[0].status").description("가입 신청 상태"),
+                                fieldWithPath("response[0].message").description("가입 신청 메시지"),
+                                fieldWithPath("response[0].createdDate").description("가입 신청일")
                         )
                 ));
     }

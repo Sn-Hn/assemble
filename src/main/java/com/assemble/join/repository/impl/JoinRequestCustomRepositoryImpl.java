@@ -5,7 +5,6 @@ import com.assemble.join.entity.QJoinRequest;
 import com.assemble.join.repository.JoinRequestCustomRepository;
 import com.assemble.post.entity.QPost;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -19,16 +18,14 @@ public class JoinRequestCustomRepositoryImpl implements JoinRequestCustomReposit
     }
 
     @Override
-    public List<JoinRequest> findAllByPostId(Long postId, Pageable pageable) {
+    public List<JoinRequest> findAllByPostId(Long postId) {
         return queryFactory.selectFrom(QJoinRequest.joinRequest)
                 .leftJoin(QPost.post)
                 .on(QJoinRequest.joinRequest.post.postId.eq(QPost.post.postId),
                         QJoinRequest.joinRequest.post.isDeleted.isFalse())
                 .fetchJoin()
                 .where(QJoinRequest.joinRequest.post.postId.eq(postId))
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .orderBy(QJoinRequest.joinRequest.id.desc())
+                .orderBy(QJoinRequest.joinRequest.modifiedDate.desc())
                 .fetch();
     }
 
