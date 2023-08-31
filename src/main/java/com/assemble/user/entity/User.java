@@ -122,4 +122,12 @@ public class User extends BaseDateEntity {
         this.password = password;
         this.changedPasswordDate = LocalDateTime.now();
     }
+
+    public boolean isAdmin() {
+        if (this.role.equals(UserRole.ADMIN)) {
+            return true;
+        }
+
+        return false;
+    }
 }

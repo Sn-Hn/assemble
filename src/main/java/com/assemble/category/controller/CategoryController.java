@@ -4,6 +4,7 @@ import com.assemble.category.dto.request.CategoryCreationRequest;
 import com.assemble.category.dto.request.ModifiedCategoryRequest;
 import com.assemble.category.dto.response.CategoryResponse;
 import com.assemble.category.service.CategoryService;
+import com.assemble.commons.annotation.AdminCheck;
 import com.assemble.commons.response.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,18 +32,30 @@ public class CategoryController {
                 .collect(Collectors.toUnmodifiableList()));
     }
 
+    @AdminCheck
+    @ApiOperation(value = "카테고리 목록 조회 (관리자)")
+    @GetMapping("admin")
+    public ApiResult<List<CategoryResponse>> getCategoriesFromAdmin() {
+        return ApiResult.ok(categoryService.getCategories().stream()
+                .map(CategoryResponse::new)
+                .collect(Collectors.toUnmodifiableList()));
+    }
+
+    @AdminCheck
     @ApiOperation(value = "카테고리 등록")
     @PostMapping
     public ApiResult<CategoryResponse> createCategory(@RequestBody @Valid CategoryCreationRequest categoryCreationRequest) {
         return ApiResult.ok(new CategoryResponse(categoryService.createCategory(categoryCreationRequest)), HttpStatus.CREATED);
     }
 
+    @AdminCheck
     @ApiOperation(value = "카테고리 수정")
     @PutMapping
     public ApiResult<CategoryResponse> modifyCategory(@RequestBody @Valid ModifiedCategoryRequest modifiedCategoryRequest) {
         return ApiResult.ok(new CategoryResponse(categoryService.modifyCategory(modifiedCategoryRequest)));
     }
 
+    @AdminCheck
     @ApiOperation(value = "카테고리 삭제")
     @DeleteMapping("{categoryId}")
     public ApiResult<Boolean> deleteCategory(@PathVariable Long categoryId) {

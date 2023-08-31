@@ -43,13 +43,17 @@ public class AssembleExceptionHandler {
         return newResponse(e, HttpStatus.FORBIDDEN, headers);
     }
 
+    @ExceptionHandler(NotAdminException.class)
+    public ResponseEntity<?> handleNotAdminException(Exception e) {
+        return newResponse(e, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
     @ExceptionHandler({AssembleException.class, Exception.class})
     public ResponseEntity<?> handleException(Exception e) {
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
-        log.error("error={}", throwable.getMessage(), throwable);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return newResponse(throwable, status, headers);
