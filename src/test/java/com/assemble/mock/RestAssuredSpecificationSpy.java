@@ -14,6 +14,10 @@ public class RestAssuredSpecificationSpy {
         return getRequestSpecification(jwtService, UserFixture.회원());
     }
 
+    public static RequestSpecification setTokenRestAssuredSpecAdmin(JwtService jwtService) {
+        return getRequestSpecification(jwtService, UserFixture.관리자());
+    }
+
     public static RequestSpecification setTokenRestAssuredSpecFromWithdrawUser(JwtService jwtService) {
         return getRequestSpecification(jwtService, UserFixture.탈퇴할_회원());
     }

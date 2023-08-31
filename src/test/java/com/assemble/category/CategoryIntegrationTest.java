@@ -56,7 +56,7 @@ public class CategoryIntegrationTest {
     void 카테고리_등록() {
         CategoryCreationRequest categoryCreationRequest = CategoryFixture.카테고리_등록();
         given()
-                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecAdmin(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -76,7 +76,7 @@ public class CategoryIntegrationTest {
     void 카테고리_수정() {
         ModifiedCategoryRequest modifiedCategoryRequest = CategoryFixture.카테고리_수정();
         given()
-                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecAdmin(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -95,7 +95,7 @@ public class CategoryIntegrationTest {
     @Test
     void 카테고리_삭제() {
         given()
-                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecAdmin(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("categoryId", 2L)

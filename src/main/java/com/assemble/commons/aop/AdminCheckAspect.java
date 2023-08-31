@@ -21,15 +21,19 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AdminCheckAspect {
 
-    private final UserContext userContext;
     private final UserRepository userRepository;
+    private final UserContext userContext;
 
     @Before("@annotation(com.assemble.commons.annotation.AdminCheck)")
     public void doAdminCheck() {
         Long userId = userContext.getUserId();
+        log.info("User Id={}", userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, userId));
+
+        log.info("User Nickname={}", user.getNickname());
+        log.info("User Role={}", user.getRole());
 
         if (!user.isAdmin()) {
             throw new NotAdminException();

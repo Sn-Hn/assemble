@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-// TODO: 2023-08-31 오늘 단위, 통합테스트 작성하기 -신한
-// TODO: 2023-08-31 관리자 체킹 AOP 작성하기 -신한
 @Service
 @RequiredArgsConstructor
 public class ActivityService {

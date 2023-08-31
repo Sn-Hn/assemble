@@ -69,6 +69,22 @@ public class UserFixture {
         );
     }
 
+    public static User 관리자() {
+        return new User(
+                2L,
+                new Email("test01@gmail.com"),
+                new Name("관리자"),
+                "관리자",
+                new Password(passwordEncoder.encode(password)),
+                new PhoneNumber(phoneNumber),
+                new BirthDate(birthDate),
+                UserRole.ADMIN,
+                UserStatus.NORMAL,
+                new ArrayList<>(),
+                LocalDateTime.now()
+        );
+    }
+
     public static User 탈퇴할_회원() {
         return new User(
                 withdrawUserId,
