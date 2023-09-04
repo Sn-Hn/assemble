@@ -46,13 +46,17 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                     Meeting meeting = tuple.get(QMeeting.meeting);
                     Likes likes = tuple.get(QLikes.likes);
 
-                    if (meeting != null && likes != null) {
-                        meeting.setIsLike(true);
-                    }
+                    setIsLike(meeting, likes);
 
                     return meeting;
                 })
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    private static void setIsLike(Meeting meeting, Likes likes) {
+        if (meeting != null && likes != null) {
+            meeting.setIsLike(true);
+        }
     }
 
     @Override
@@ -72,9 +76,7 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
                     Meeting meeting = tuple.get(QMeeting.meeting);
                     Likes likes = tuple.get(QLikes.likes);
 
-                    if (meeting != null && likes != null) {
-                        meeting.setIsLike(true);
-                    }
+                    setIsLike(meeting, likes);
 
                     return meeting;
                 })

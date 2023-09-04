@@ -10,7 +10,7 @@ import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.meeting.service.MeetingService;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,8 +68,8 @@ class MeetingControllerTest {
 
     @Test
     void 모임_등록() throws Exception {
-        MeetingCreationRequest meetingCreationRequest = PostFixture.모임_작성_사진_X();
-        given(meetingService.createPost(any())).willReturn(PostFixture.모임());
+        MeetingCreationRequest meetingCreationRequest = MeetingFixture.모임_작성_사진_X();
+        given(meetingService.createPost(any())).willReturn(MeetingFixture.모임());
         ResultActions perform = mockMvc.perform(post("/meeting")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
@@ -90,8 +90,10 @@ class MeetingControllerTest {
                         fieldWithPath("name").description("모임 이름"),
                         fieldWithPath("description").description("모임 설명"),
                         fieldWithPath("categoryId").description("카테고리 ID"),
-                        fieldWithPath("personnelNumber").description("모집 인원"),
-                        fieldWithPath("expectedPeriod").description("예상 기간")
+                        fieldWithPath("zipCode").description("우편번호"),
+                        fieldWithPath("roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("lotNumberAddress").description("지번 주소"),
+                        fieldWithPath("detailAddress").description("상세 주소")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
@@ -104,18 +106,19 @@ class MeetingControllerTest {
                         fieldWithPath("response.writerId").description("작성자 ID"),
                         fieldWithPath("response.hits").description("조회 수"),
                         fieldWithPath("response.likeCount").description("좋아요 수"),
-                        fieldWithPath("response.personnelNumber").description("모집 인원"),
-                        fieldWithPath("response.expectedPeriod").description("예상 기간"),
+                        fieldWithPath("response.activityUserCount").description("모임 활동 중인 인원"),
                         fieldWithPath("response.meetingProfile").description("모임 프로필 사진 목록"),
-                        fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)")
+                        fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                        fieldWithPath("response.roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("response.detailAddress").description("상세 주소")
                 ))
         );
     }
 
     @Test
     void 모임_목록_조회() throws Exception {
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_이름_검색();
-        given(meetingService.getMeetings(any(), any())).willReturn(new PageImpl<>(List.of(PostFixture.모임())));
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_이름_검색();
+        given(meetingService.getMeetings(any(), any())).willReturn(new PageImpl<>(List.of(MeetingFixture.모임())));
 
         ResultActions perform = mockMvc.perform(get("/meeting")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -146,10 +149,11 @@ class MeetingControllerTest {
                         fieldWithPath("response.content[0].likes").description("좋아요 수"),
                         fieldWithPath("response.content[0].likeStatus").description("좋아요 여부"),
                         fieldWithPath("response.content[0].commentCount").description("댓글 수"),
-                        fieldWithPath("response.content[0].personnelNumber").description("모집 인원"),
-                        fieldWithPath("response.content[0].expectedPeriod").description("예상 기간"),
+                        fieldWithPath("response.content[0].activityUserCount").description("모임 활동 중인 인원"),
                         fieldWithPath("response.content[0].meetingProfileImages").description("모임 프로필 사진 목록"),
                         fieldWithPath("response.content[0].meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                        fieldWithPath("response.content[0].roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("response.content[0].detailAddress").description("상세 주소"),
                         fieldWithPath("response.pageable").description("pageable"),
                         fieldWithPath("response.last").description("last"),
                         fieldWithPath("response.totalPages").description("총 페이지 수"),
@@ -169,7 +173,7 @@ class MeetingControllerTest {
     @Test
     void 모임_상세_조회() throws Exception {
         Long meetingId = 1L;
-        given(meetingService.getMeeting(any())).willReturn(PostFixture.모임());
+        given(meetingService.getMeeting(any())).willReturn(MeetingFixture.모임());
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/meeting/{meetingId}", meetingId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
@@ -196,21 +200,22 @@ class MeetingControllerTest {
                         fieldWithPath("response.hits").description("조회 수"),
                         fieldWithPath("response.likes").description("좋아요 수"),
                         fieldWithPath("response.likeStatus").description("좋아요 여부"),
-                        fieldWithPath("response.personnelNumber").description("모집 인원"),
-                        fieldWithPath("response.expectedPeriod").description("예상 기간"),
+                        fieldWithPath("response.activityUserCount").description("모임 활동 중인 인원"),
                         fieldWithPath("response.commentCount").description("댓글 수"),
                         fieldWithPath("response.comments").description("댓글"),
                         fieldWithPath("response.createdTime").description("작성일"),
                         fieldWithPath("response.meetingProfileImages").description("모임 프로필 사진 목록"),
-                        fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)")
+                        fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                        fieldWithPath("response.roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("response.detailAddress").description("상세 주소")
                 ))
         );
     }
 
     @Test
     void 모임_수정() throws Exception {
-        ModifiedMeetingRequest modifiedMeetingRequest = PostFixture.모임_수정();
-        Meeting meeting = PostFixture.모임();
+        ModifiedMeetingRequest modifiedMeetingRequest = MeetingFixture.모임_수정();
+        Meeting meeting = MeetingFixture.모임();
         meeting.modifyPost(modifiedMeetingRequest);
         given(meetingService.modifyPost(any())).willReturn(meeting);
         ResultActions perform = mockMvc.perform(put("/meeting")
@@ -235,8 +240,6 @@ class MeetingControllerTest {
                         fieldWithPath("name").description("모임 이름"),
                         fieldWithPath("description").description("모임 설명"),
                         fieldWithPath("categoryId").description("카테고리 ID"),
-                        fieldWithPath("personnelNumber").description("모집 인원"),
-                        fieldWithPath("expectedPeriod").description("예상 기간"),
                         fieldWithPath("meetingStatus").description("모임 상태 (모집 중, 모집 완료)")
                 ),
                 responseFields(
@@ -253,13 +256,14 @@ class MeetingControllerTest {
                         fieldWithPath("response.hits").description("조회 수"),
                         fieldWithPath("response.likes").description("좋아요 수"),
                         fieldWithPath("response.likeStatus").description("좋아요 여부"),
-                        fieldWithPath("response.personnelNumber").description("모집 인원"),
-                        fieldWithPath("response.expectedPeriod").description("예상 기간"),
+                        fieldWithPath("response.activityUserCount").description("모임 활동 중인 인원"),
                         fieldWithPath("response.commentCount").description("댓글 수"),
                         fieldWithPath("response.comments").description("댓글"),
                         fieldWithPath("response.createdTime").description("작성일"),
                         fieldWithPath("response.meetingProfileImages").description("모임 프로필 사진 목록"),
-                        fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)")
+                        fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                        fieldWithPath("response.roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("response.detailAddress").description("상세 주소")
                 ))
         );
     }
@@ -294,7 +298,7 @@ class MeetingControllerTest {
     void 특정_회원이_작성한_모임_조회() throws Exception {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         Long userId = 1L;
-        given(meetingService.getMeetingsByUser(anyLong(), any())).willReturn((new PageImpl<>(List.of(PostFixture.모임()))));
+        given(meetingService.getMeetingsByUser(anyLong(), any())).willReturn((new PageImpl<>(List.of(MeetingFixture.모임()))));
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/meeting/user/{userId}", userId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
@@ -330,10 +334,11 @@ class MeetingControllerTest {
                         fieldWithPath("response.content[0].likes").description("좋아요 수"),
                         fieldWithPath("response.content[0].likeStatus").description("좋아요 여부"),
                         fieldWithPath("response.content[0].commentCount").description("댓글 수"),
-                        fieldWithPath("response.content[0].personnelNumber").description("모집 인원"),
-                        fieldWithPath("response.content[0].expectedPeriod").description("예상 기간"),
+                        fieldWithPath("response.content[0].activityUserCount").description("모임 활동 중인 인원"),
                         fieldWithPath("response.content[0].meetingProfileImages").description("모임 프로필 사진 목록"),
                         fieldWithPath("response.content[0].meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                        fieldWithPath("response.content[0].roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("response.content[0].detailAddress").description("상세 주소"),
                         fieldWithPath("response.pageable").description("pageable"),
                         fieldWithPath("response.last").description("last"),
                         fieldWithPath("response.totalPages").description("총 페이지 수"),

@@ -1,10 +1,9 @@
 package com.assemble.meeting.fixture;
 
+import com.assemble.activity.domain.Activities;
 import com.assemble.category.entity.Category;
 import com.assemble.comment.domain.Comments;
-import com.assemble.meeting.domain.Description;
-import com.assemble.meeting.domain.MeetingStatus;
-import com.assemble.meeting.domain.MeetingName;
+import com.assemble.meeting.domain.*;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
@@ -15,7 +14,7 @@ import com.assemble.user.entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PostFixture {
+public class MeetingFixture {
     private static final Long meetingId = 1L;
     private static final String name = "스터디 모집";
     private static final String modifiedTitle = "스터디 모집 1명 (수정)";
@@ -35,14 +34,20 @@ public class PostFixture {
     private static final Long searchQueryUserId = 1L;
     private static final String searchByWriter = "writer";
     private static final String categoryName = "카테고리 이름";
+    private static final String zipCode = "10011";
+    private static final String roadNameAddress = "서울시 강남구 XXX번길";
+    private static final String lotNumberAddress = "서울시 강남구 XXX-X";
+    private static final String detailAddress = "XX건물 2층 201호";
 
     public static MeetingCreationRequest 모임_작성_사진_X() {
         return new MeetingCreationRequest(
                 name,
                 description,
                 categoryId,
-                personnelNumber,
-                expectedPeriod
+                zipCode,
+                roadNameAddress,
+                lotNumberAddress,
+                detailAddress
         );
     }
 
@@ -51,13 +56,27 @@ public class PostFixture {
                 name,
                 description,
                 categoryId,
-                personnelNumber,
-                expectedPeriod
+                zipCode,
+                roadNameAddress,
+                lotNumberAddress,
+                detailAddress
         );
     }
 
     public static MeetingCreationResponse 모임_작성_응답() {
-        return new MeetingCreationResponse(name, description, categoryId, writerNickname, writer, hits, likeCount, personnelNumber, expectedPeriod, new ArrayList<>(), MeetingStatus.PROGRESS.toString());
+        return new MeetingCreationResponse(
+                name,
+                description,
+                categoryId,
+                writerNickname,
+                writer,
+                hits,
+                likeCount,
+                new ArrayList<>(),
+                MeetingStatus.PROGRESS.toString(),
+                1,
+                roadNameAddress,
+                detailAddress);
     }
 
     public static Meeting 모임() {
@@ -68,14 +87,14 @@ public class PostFixture {
                 new User(writer),
                 hits,
                 likeCount,
-                personnelNumber,
                 new Comments(),
-                expectedPeriod,
                 new Category(categoryId, categoryName),
-                new ArrayList<>(),
+                new MeetingImages(),
                 false,
                 false,
-                MeetingStatus.PROGRESS
+                MeetingStatus.PROGRESS,
+                new Activities(),
+                주소()
         );
     }
 
@@ -97,9 +116,11 @@ public class PostFixture {
                 modifiedTitle,
                 modifiedContents,
                 categoryId,
-                personnelNumber,
-                expectedPeriod,
                 MeetingStatus.COMPLETED.toString()
         );
+    }
+
+    public static Address 주소() {
+        return new Address("0000", "test 1번길", null, "test");
     }
 }

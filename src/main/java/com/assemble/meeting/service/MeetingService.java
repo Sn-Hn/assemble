@@ -1,5 +1,6 @@
 package com.assemble.meeting.service;
 
+import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.event.publish.PostEvent;
 import com.assemble.commons.exception.NotFoundException;
@@ -28,6 +29,7 @@ public class MeetingService {
     private final MeetingLikeService meetingLikeService;
     private final UserContext userContext;
     private final ApplicationEventPublisher eventPublisher;
+    private final ActivityRepository activityRepository;
 
     @Transactional
     public Meeting createPost(MeetingCreationRequest meetingCreationRequest) {

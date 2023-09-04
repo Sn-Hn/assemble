@@ -18,7 +18,7 @@ public class JoinRequestCustomRepositoryImpl implements JoinRequestCustomReposit
     }
 
     @Override
-    public List<JoinRequest> findAllByPostId(Long meetingId) {
+    public List<JoinRequest> findAllByMeetingId(Long meetingId) {
         return queryFactory.selectFrom(QJoinRequest.joinRequest)
                 .leftJoin(QMeeting.meeting)
                 .on(QJoinRequest.joinRequest.meeting.meetingId.eq(QMeeting.meeting.meetingId),
@@ -30,7 +30,7 @@ public class JoinRequestCustomRepositoryImpl implements JoinRequestCustomReposit
     }
 
     @Override
-    public long countByPostId(Long meetingId) {
+    public long countByMeetingId(Long meetingId) {
         return queryFactory.select(QJoinRequest.joinRequest.count())
                 .from(QJoinRequest.joinRequest)
                 .leftJoin(QMeeting.meeting)

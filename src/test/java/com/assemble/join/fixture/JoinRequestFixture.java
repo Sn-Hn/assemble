@@ -5,7 +5,7 @@ import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.entity.JoinRequest;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.user.entity.User;
 
 public class JoinRequestFixture {
@@ -29,7 +29,7 @@ public class JoinRequestFixture {
 
     public static JoinRequest 가입_처리_응답(JoinRequestStatus status, String message) {
         return new JoinRequest(
-                PostFixture.모임(),
+                MeetingFixture.모임(),
                 new User(userId),
                 status,
                 null,

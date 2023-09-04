@@ -24,7 +24,7 @@ public class MeetingLikeCustomRepositoryImpl implements MeetingLikeCustomReposit
     public Optional<Likes> findPostByUser(Long meetingId, Long myUserId) {
         return jpaQueryFactory.selectFrom(QLikes.likes)
                 .where(searchByUserId(myUserId),
-                        searchByPostId(meetingId))
+                        searchByMeetingId(meetingId))
                 .fetch()
                 .stream().findFirst();
     }
@@ -60,7 +60,7 @@ public class MeetingLikeCustomRepositoryImpl implements MeetingLikeCustomReposit
         return QLikes.likes.user.userId.eq(userId);
     }
 
-    private BooleanExpression searchByPostId(Long meetingId) {
+    private BooleanExpression searchByMeetingId(Long meetingId) {
         if (meetingId == null) {
             throw new IllegalArgumentException("meetingId is null");
         }

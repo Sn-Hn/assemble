@@ -1,6 +1,7 @@
 package com.assemble.meeting.dto.request;
 
 import com.assemble.category.entity.Category;
+import com.assemble.meeting.domain.Address;
 import com.assemble.meeting.domain.Description;
 import com.assemble.meeting.domain.MeetingName;
 import com.assemble.meeting.entity.Meeting;
@@ -32,13 +33,20 @@ public class MeetingCreationRequest {
     @NotNull
     private Long categoryId;
 
-    @ApiModelProperty(value = "모집 인원", example = "0")
+    @ApiModelProperty(value = "우편 번호", required = true, example = "10011")
     @NotNull
-    private int personnelNumber;
+    private String zipCode;
 
-    @ApiModelProperty(value = "예상 기간", example = "0")
+    @ApiModelProperty(value = "도로명 주소", required = true, example = "서울시 강남구")
     @NotNull
-    private int expectedPeriod;
+    private String roadNameAddress;
+
+    @ApiModelProperty(value = "지번 주소", required = true, example = "서울시 강남구")
+    @NotNull
+    private String lotNumberAddress;
+
+    @ApiModelProperty(value = "모임 카테고리", required = true, example = "상세 주소")
+    private String detailAddress;
 
     private MeetingCreationRequest() {
     }
@@ -48,9 +56,8 @@ public class MeetingCreationRequest {
                 new MeetingName(this.name),
                 new Description(this.description),
                 new User(userId),
-                this.personnelNumber,
-                this.expectedPeriod,
-                new Category(categoryId)
+                new Category(categoryId),
+                new Address(zipCode, roadNameAddress, lotNumberAddress, detailAddress)
         );
     }
 }

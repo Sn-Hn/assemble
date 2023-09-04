@@ -39,7 +39,7 @@ public class ActivityService {
 
     @Transactional
     public boolean withdrawJoinAssemble(Long meetingId) {
-        Activity activity = activityRepository.findByPostIdAndUserId(meetingId, userContext.getUserId())
+        Activity activity = activityRepository.findByMeetingIdAndUserId(meetingId, userContext.getUserId())
                 .orElseThrow(() -> new NotFoundException(Activity.class, meetingId, userContext.getUserId()));
 
         activity.withdraw(userContext.getUserId());

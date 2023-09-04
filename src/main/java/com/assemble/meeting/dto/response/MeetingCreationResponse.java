@@ -37,17 +37,20 @@ public class MeetingCreationResponse {
     @ApiModelProperty(value = "모임 좋아요 수")
     private Long likeCount;
 
-    @ApiModelProperty(value = "모임 모집 인원")
-    private int personnelNumber;
-
-    @ApiModelProperty(value = "모임 예상 기간")
-    private int expectedPeriod;
-
     @ApiModelProperty(value = "모임 프로필 사진 목록")
     private List<ProfileResponse> meetingProfile;
 
     @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
     private String meetingStatus;
+
+    @ApiModelProperty(value = "모임에 활동 중인 인원")
+    private int activityUserCount;
+
+    @ApiModelProperty(value = "주소")
+    private String roadNameAddress;
+
+    @ApiModelProperty(value = "상세 주소")
+    private String detailAddress;
 
     public MeetingCreationResponse(Meeting meeting) {
         this(
@@ -58,10 +61,11 @@ public class MeetingCreationResponse {
                 meeting.getUser().getUserId(),
                 meeting.getHits(),
                 0L,
-                meeting.getPersonnelNumber(),
-                meeting.getExpectedPeriod(),
-                meeting.toPostProfileResponse(),
-                meeting.getMeetingStatus().toString()
+                meeting.toMeetingProfileResponse(),
+                meeting.getMeetingStatus().toString(),
+                meeting.getActivities().getValues().size(),
+                meeting.getAddress().getRoadName(),
+                meeting.getAddress().getDetail()
         );
     }
 }

@@ -43,18 +43,20 @@ VALUES (
             '프로젝트'
         );
 
-INSERT INTO meeting(user_id, meeting_name, meeting_description, hits, likes, personnel_number, category_id, expected_period, is_deleted, meeting_status)
+INSERT INTO meeting(user_id, meeting_name, meeting_description, hits, likes, category_id, is_deleted, meeting_status, zip_code, road_name_address, lot_number_address, detail_address)
 VALUES (
            '1',
            '첫 번째 모임',
            '첫 번째 모임 설명',
            0,
            1,
-           0,
            1,
-           0,
         'N',
-        'PROGRESS'
+        'PROGRESS',
+        '10110',
+        '서울시 강남구 XXX번길 X',
+        '서울시 강남구 XXX-X',
+        'XX 건물 2층 201호'
        ),
        (
            '1',
@@ -62,11 +64,13 @@ VALUES (
            '두 번째 모임 설명',
            0,
            1,
-           0,
            1,
-           0,
            'N',
-           'PROGRESS'
+           'PROGRESS',
+           '10110',
+           '서울시 강남구 XXX번길 X',
+           '서울시 강남구 XXX-X',
+           'XX 건물 2층 201호'
        ),
        (
            '2',
@@ -74,11 +78,13 @@ VALUES (
            '세 번째 모임 설명',
            0,
            1,
-           0,
            1,
-           0,
            'N',
-           'PROGRESS'
+           'PROGRESS',
+           '10110',
+           '서울시 강남구 XXX번길 X',
+           '서울시 강남구 XXX-X',
+           'XX 건물 2층 201호'
        );
 INSERT INTO comment(meeting_id, user_id, contents, is_deleted, created_date, modified_date)
 VALUES (

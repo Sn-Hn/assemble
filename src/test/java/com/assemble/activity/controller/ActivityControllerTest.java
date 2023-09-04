@@ -8,7 +8,7 @@ import com.assemble.commons.converter.PageableConverter;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -71,7 +71,7 @@ class ActivityControllerTest {
     void 회원이_활동_중인_모임_목록_조회() throws Exception {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given(activityService.getActiveAssembles(any()))
-                .willReturn(new PageImpl<>(List.of(PostFixture.모임())));
+                .willReturn(new PageImpl<>(List.of(MeetingFixture.모임())));
 
         ResultActions perform = this.mockMvc.perform(get("/activity/meeting")
                 .header("Authorization", TokenFixture.AccessToken_생성())
@@ -108,8 +108,7 @@ class ActivityControllerTest {
                                 fieldWithPath("response.content[0].likes").description("좋아요 수"),
                                 fieldWithPath("response.content[0].likeStatus").description("좋아요 여부"),
                                 fieldWithPath("response.content[0].commentCount").description("댓글 수"),
-                                fieldWithPath("response.content[0].personnelNumber").description("모집 인원"),
-                                fieldWithPath("response.content[0].expectedPeriod").description("예상 기간"),
+                                fieldWithPath("response.content[0].activityUserCount").description("모임 활동 중인 인원"),
                                 fieldWithPath("response.content[0].createdTime").description("모임 생성일"),
                                 fieldWithPath("response.content[0].meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
                                 fieldWithPath("response.pageable").description("pageable"),

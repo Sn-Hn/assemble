@@ -30,14 +30,6 @@ public class ModifiedMeetingRequest {
     @NotNull
     private Long categoryId;
 
-    @ApiModelProperty(value = "모집 인원", example = "0")
-    @NotNull
-    private int personnelNumber;
-
-    @ApiModelProperty(value = "예상 기간", example = "0")
-    @NotNull
-    private int expectedPeriod;
-
     @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
     @NotEmpty
     private String meetingStatus;

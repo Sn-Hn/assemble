@@ -5,7 +5,7 @@ import com.assemble.meeting.entity.Likes;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.user.entity.User;
 
-public class PostLikeFixture {
+public class MeetingLikeFixture {
     private static final Long meetingId = 1L;
     private static final Long userId = 2L;
     private static final Long aleadyLikeUserId = 1L;

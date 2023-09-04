@@ -84,7 +84,7 @@ class ActivityServiceTest {
         given(userContext.getUserId()).willReturn(2L);
         Activity activity = ActivityFixture.특정_모임_활동_중인_회원();
         Long meetingId = activity.getMeeting().getMeetingId();
-        given(activityRepository.findByPostIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(activity));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(activity));
 
         // when
         boolean isWithdrawal = activityService.withdrawJoinAssemble(meetingId);
@@ -102,7 +102,7 @@ class ActivityServiceTest {
         given(userContext.getUserId()).willReturn(1L);
         Activity activity = ActivityFixture.특정_모임_활동_중인_회원();
         Long meetingId = activity.getMeeting().getMeetingId();
-        given(activityRepository.findByPostIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(activity));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(activity));
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
@@ -116,7 +116,7 @@ class ActivityServiceTest {
         Long meetingId = 1L;
         given(userContext.getUserId()).willReturn(1L);
         Activity withdrawalActivity = ActivityFixture.특정_모임_탈퇴한_회원();
-        given(activityRepository.findByPostIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(withdrawalActivity));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(withdrawalActivity));
 
         // when, then
         assertThatExceptionOfType(IllegalStateException.class)

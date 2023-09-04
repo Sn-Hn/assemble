@@ -64,7 +64,7 @@ public class UserFixture {
                 new BirthDate(birthDate),
                 UserRole.USER,
                 UserStatus.NORMAL,
-                new ArrayList<>(),
+                new UserImages(),
                 LocalDateTime.now()
         );
     }
@@ -80,7 +80,7 @@ public class UserFixture {
                 new BirthDate(birthDate),
                 UserRole.ADMIN,
                 UserStatus.NORMAL,
-                new ArrayList<>(),
+                new UserImages(),
                 LocalDateTime.now()
         );
     }
@@ -96,7 +96,7 @@ public class UserFixture {
                 new BirthDate(birthDate),
                 UserRole.USER,
                 UserStatus.NORMAL,
-                new ArrayList<>(),
+                new UserImages(),
                 LocalDateTime.now()
         );
     }

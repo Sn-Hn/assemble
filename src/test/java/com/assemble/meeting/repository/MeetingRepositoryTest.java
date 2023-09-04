@@ -4,7 +4,7 @@ import com.assemble.annotation.CustomRepositoryTest;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class MeetingRepositoryTest {
     void 모임_목록_제목_검색() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_이름_검색();
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_이름_검색();
         Long myUserId = 1L;
 
         // when
@@ -52,7 +52,7 @@ class MeetingRepositoryTest {
     void 모임_목록_내용_검색() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_설명_검색();
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_설명_검색();
         Long myUserId = 1L;
 
         // when
@@ -74,7 +74,7 @@ class MeetingRepositoryTest {
     void 모임_목록_작성자_조회() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_작성자_검색();
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_작성자_검색();
         Long userId = 1L;
 
         // when
@@ -95,7 +95,7 @@ class MeetingRepositoryTest {
     @Test
     void 모임_삭제_검증() {
         // given
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
 
         // when
         meetingRepository.delete(meeting);

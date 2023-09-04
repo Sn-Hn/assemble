@@ -4,7 +4,7 @@ import com.assemble.annotation.CustomIntegrationTest;
 import com.assemble.auth.service.JwtService;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.meeting.dto.request.MeetingLikeRequest;
-import com.assemble.meeting.fixture.PostLikeFixture;
+import com.assemble.meeting.fixture.MeetingLikeFixture;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.HttpClientConfig;
@@ -47,7 +47,7 @@ public class MeetingLikeIntegrationTest {
 
     @Test
     void 모임_좋아요() {
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
 
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
@@ -68,7 +68,7 @@ public class MeetingLikeIntegrationTest {
 
     @Test
     void 모임_좋아요_취소() {
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_취소_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_취소_요청();
 
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))

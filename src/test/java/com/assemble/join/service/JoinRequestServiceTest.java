@@ -10,7 +10,7 @@ import com.assemble.join.entity.JoinRequest;
 import com.assemble.join.fixture.JoinRequestFixture;
 import com.assemble.join.repository.JoinRequestRepository;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.meeting.repository.MeetingRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -132,7 +132,7 @@ class JoinRequestServiceTest {
     @Test
     void 정상_모임_가입_취소() {
         // given
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(2L);
 
@@ -146,7 +146,7 @@ class JoinRequestServiceTest {
     @Test
     void 가입_취소_본인_아닌_경우_검증() {
         // given
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
@@ -158,7 +158,7 @@ class JoinRequestServiceTest {
     @Test
     void 가입_취소_시_신청_하지_않은_경우_검증() {
         // given
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.거절된_회원()));
         given(userContext.getUserId()).willReturn(2L);
 
@@ -171,10 +171,10 @@ class JoinRequestServiceTest {
     void 모임_가입_신청_조회() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         Long meetingId = meeting.getMeetingId();
         given(meetingRepository.findById(anyLong())).willReturn(Optional.of(meeting));
-        given(joinRequestRepository.findAllByPostId(anyLong())).willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
+        given(joinRequestRepository.findAllByMeetingId(anyLong())).willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
         // when
@@ -193,7 +193,7 @@ class JoinRequestServiceTest {
     void 모임장_아니면_가입_신청_조회_불가능() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         Long meetingId = meeting.getMeetingId();
         given(meetingRepository.findById(anyLong())).willReturn(Optional.of(meeting));
         given(userContext.getUserId()).willReturn(2L);

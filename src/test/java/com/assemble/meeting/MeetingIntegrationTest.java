@@ -8,7 +8,7 @@ import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
@@ -53,8 +53,8 @@ public class MeetingIntegrationTest {
             .httpClient(HttpClientConfig.httpClientConfig().httpMultipartMode(HttpMultipartMode.BROWSER_COMPATIBLE));
 
     @Test
-    void 모임_작성_프로필_사진_X() {
-        MeetingCreationRequest meetingCreationRequest = PostFixture.모임_작성_사진_X();
+    void 모임_생성_프로필_사진_X() {
+        MeetingCreationRequest meetingCreationRequest = MeetingFixture.모임_작성_사진_X();
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
@@ -97,7 +97,7 @@ public class MeetingIntegrationTest {
     @Test
     void 모임_목록_조회_제목_검색() {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_이름_검색();
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_이름_검색();
 
         given()
                 .basePath(basePath)
@@ -118,7 +118,7 @@ public class MeetingIntegrationTest {
     @Test
     void 모임_목록_조회_내용_검색() {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_설명_검색();
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_설명_검색();
 
         given()
                 .basePath(basePath)
@@ -157,7 +157,7 @@ public class MeetingIntegrationTest {
 
     @Test
     void 모임_수정() {
-        ModifiedMeetingRequest modifiedMeetingRequest = PostFixture.모임_수정();
+        ModifiedMeetingRequest modifiedMeetingRequest = MeetingFixture.모임_수정();
 
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))

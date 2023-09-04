@@ -5,8 +5,8 @@ import com.assemble.fixture.PageableFixture;
 import com.assemble.meeting.dto.request.MeetingLikeRequest;
 import com.assemble.meeting.entity.Likes;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
-import com.assemble.meeting.fixture.PostLikeFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
+import com.assemble.meeting.fixture.MeetingLikeFixture;
 import com.assemble.meeting.repository.MeetingLikeRepository;
 import com.assemble.meeting.repository.MeetingRepository;
 import org.junit.jupiter.api.Assertions;
@@ -46,10 +46,10 @@ class MeetingLikeServiceTest {
     void 모임_좋아요() {
         // given
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
-        given(postLikeRepository.save(any())).willReturn(PostLikeFixture.좋아요_객체());
-        given(meetingRepository.findById(any())).willReturn(Optional.of(PostFixture.모임()));
+        given(postLikeRepository.save(any())).willReturn(MeetingLikeFixture.좋아요_객체());
+        given(meetingRepository.findById(any())).willReturn(Optional.of(MeetingFixture.모임()));
         given(userContext.getUserId()).willReturn(1L);
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
 
         // when
         boolean isLike = meetingLikeService.likePost(meetingLikeRequest);
@@ -61,10 +61,10 @@ class MeetingLikeServiceTest {
     @Test
     void 모임_좋아요_취소() {
         // given
-        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
-        given(meetingRepository.findById(any())).willReturn(Optional.of(PostFixture.모임()));
+        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(MeetingLikeFixture.좋아요_객체()));
+        given(meetingRepository.findById(any())).willReturn(Optional.of(MeetingFixture.모임()));
         given(userContext.getUserId()).willReturn(1L);
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_취소_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_취소_요청();
 
         // when
         boolean isLike = meetingLikeService.cancelLikePost(meetingLikeRequest.getMeetingId());
@@ -76,8 +76,8 @@ class MeetingLikeServiceTest {
     @Test
     void 이미_좋아요_한_모임() {
         // given
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_요청();
-        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(PostLikeFixture.좋아요_객체()));
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
+        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(MeetingLikeFixture.좋아요_객체()));
         given(userContext.getUserId()).willReturn(1L);
 
         // when
@@ -90,7 +90,7 @@ class MeetingLikeServiceTest {
     @Test
     void 좋아요_하지_않은_모임() {
         // given
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
         given(userContext.getUserId()).willReturn(1L);
 
@@ -105,7 +105,7 @@ class MeetingLikeServiceTest {
     void 좋아요_한_모임_목록_조회() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        Likes likes = PostLikeFixture.좋아요_객체();
+        Likes likes = MeetingLikeFixture.좋아요_객체();
         given(userContext.getUserId()).willReturn(1L);
         given(postLikeRepository.countByUserId(anyLong())).willReturn(1L);
         given(postLikeRepository.findAllByUserId(anyLong(), any())).willReturn(List.of(likes));

@@ -7,8 +7,8 @@ import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.meeting.dto.request.MeetingLikeRequest;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
-import com.assemble.meeting.fixture.PostLikeFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
+import com.assemble.meeting.fixture.MeetingLikeFixture;
 import com.assemble.meeting.service.MeetingLikeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,7 @@ class MeetingLikeControllerTest {
 
     @Test
     void 좋아요() throws Exception {
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
         given(meetingLikeService.likePost(any())).willReturn(true);
 
         ResultActions perform = mockMvc.perform(post("/meeting/like")
@@ -94,7 +94,7 @@ class MeetingLikeControllerTest {
 
     @Test
     void 좋아요_취소() throws Exception {
-        MeetingLikeRequest meetingLikeRequest = PostLikeFixture.모임_좋아요_취소_요청();
+        MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_취소_요청();
         given(meetingLikeService.cancelLikePost(any())).willReturn(true);
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.delete("/meeting/like/{meetingId}", meetingLikeRequest.getMeetingId())
@@ -126,7 +126,7 @@ class MeetingLikeControllerTest {
     @Test
     void 좋아요_한_모임_목록_조회() throws Exception {
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        List<Meeting> meetings = List.of(PostFixture.모임());
+        List<Meeting> meetings = List.of(MeetingFixture.모임());
         given(meetingLikeService.getMeetingsByLike(any())).willReturn(new PageImpl<>(meetings));
 
         ResultActions perform = mockMvc.perform(get("/meeting/like")
@@ -157,10 +157,11 @@ class MeetingLikeControllerTest {
                         fieldWithPath("response.content[0].likes").description("좋아요 수"),
                         fieldWithPath("response.content[0].likeStatus").description("좋아요 여부"),
                         fieldWithPath("response.content[0].commentCount").description("댓글 수"),
-                        fieldWithPath("response.content[0].personnelNumber").description("모집 인원"),
-                        fieldWithPath("response.content[0].expectedPeriod").description("예상 기간"),
+                        fieldWithPath("response.content[0].activityUserCount").description("모임 활동 중인 인원"),
                         fieldWithPath("response.content[0].meetingProfileImages").description("모임 프로필 사진 목록"),
                         fieldWithPath("response.content[0].meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                        fieldWithPath("response.content[0].roadNameAddress").description("도로명 주소"),
+                        fieldWithPath("response.content[0].detailAddress").description("상세 주소"),
                         fieldWithPath("response.pageable").description("pageable"),
                         fieldWithPath("response.last").description("last"),
                         fieldWithPath("response.totalPages").description("총 페이지 수"),

@@ -54,8 +54,8 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<UserImage> profiles = new ArrayList<>();
+    @Embedded
+    private UserImages profiles = new UserImages();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime changedPasswordDate;
@@ -68,7 +68,15 @@ public class User extends BaseDateEntity {
     }
 
     public User(Email email, Name name, String nickname, Password password, PhoneNumber phoneNumber, BirthDate birthDate) {
-        this(null, email, name, nickname, password, phoneNumber, birthDate, UserRole.USER, UserStatus.NORMAL, new ArrayList<>(), LocalDateTime.now());
+        this.email = email;
+        this.name = name;
+        this.nickname = nickname;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.birthDate = birthDate;
+        this.role = UserRole.USER;
+        this.status = UserStatus.NORMAL;
+        this.changedPasswordDate = LocalDateTime.now();
     }
 
     public User(Email email, Password password) {
@@ -91,18 +99,11 @@ public class User extends BaseDateEntity {
     }
 
     public ProfileResponse toProfile() {
-        return profiles.stream()
-                .filter(userImage -> userImage.getFile() != null)
-                .map(userImage -> userImage.getFile().mapProfile())
-                .findFirst()
-                .orElse(null);
+        return this.profiles.toProfile();
     }
 
     public List<ProfileResponse> toProfiles() {
-        return profiles.stream()
-                .filter(userImage -> userImage.getFile() != null)
-                .map(userImage -> userImage.getFile().mapProfile())
-                .collect(Collectors.toList());
+        return this.profiles.toProfiles();
     }
 
     public void validateWithdrawal() {

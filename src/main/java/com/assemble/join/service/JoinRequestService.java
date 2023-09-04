@@ -71,6 +71,6 @@ public class JoinRequestService {
             throw new IllegalArgumentException("모임장이 아닙니다.");
         }
 
-        return joinRequestRepository.findAllByPostId(meetingId);
+        return joinRequestRepository.findAllByMeetingId(meetingId);
     }
 }

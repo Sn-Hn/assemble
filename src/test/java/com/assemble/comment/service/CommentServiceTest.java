@@ -7,7 +7,7 @@ import com.assemble.comment.fixture.CommentFixture;
 import com.assemble.comment.repository.CommentRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,7 +71,7 @@ class CommentServiceTest {
     void 댓글_삭제() {
         // given
         given(commentRepository.findById(any())).willReturn(Optional.of(CommentFixture.댓글_조회())).willReturn(null);
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         given(userContext.getUserId()).willReturn(meeting.getUser().getUserId());
 
         // when

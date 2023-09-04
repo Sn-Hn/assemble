@@ -6,7 +6,7 @@ import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
 import com.assemble.meeting.entity.Meeting;
-import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.meeting.repository.MeetingRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,9 +48,9 @@ class MeetingServiceTest {
     @Test
     void 모임_작성() {
         // given
-        MeetingCreationRequest meetingCreationRequest = PostFixture.모임_작성_사진_X();
+        MeetingCreationRequest meetingCreationRequest = MeetingFixture.모임_작성_사진_X();
         given(meetingRepository.save(any()))
-                .willReturn(PostFixture.모임());
+                .willReturn(MeetingFixture.모임());
         given(userContext.getUserId()).willReturn(1L);
 
         // when
@@ -71,8 +71,8 @@ class MeetingServiceTest {
     void 모임_목록_조회() {
         // given
         Pageable pageable = PageRequest.of(0, 12);
-        MeetingSearchRequest meetingSearchRequest = PostFixture.모임_이름_검색();
-        given(meetingRepository.findAllBySearch(any(), anyLong(), any())).willReturn(List.of(PostFixture.모임()));
+        MeetingSearchRequest meetingSearchRequest = MeetingFixture.모임_이름_검색();
+        given(meetingRepository.findAllBySearch(any(), anyLong(), any())).willReturn(List.of(MeetingFixture.모임()));
 
         // when
         Page<Meeting> posts = meetingService.getMeetings(meetingSearchRequest, pageable);
@@ -87,7 +87,7 @@ class MeetingServiceTest {
     @Test
     void 모임_상세_조회() {
         // given
-        Meeting mockMeeting = PostFixture.모임();
+        Meeting mockMeeting = MeetingFixture.모임();
         given(meetingRepository.findById(any())).willReturn(Optional.of(mockMeeting));
         given(meetingLikeService.isAleadyLikeByUser(any())).willReturn(false);
 
@@ -104,9 +104,9 @@ class MeetingServiceTest {
     @Test
     void 모임_수정() {
         // given
-        given(meetingRepository.findById(any())).willReturn(Optional.of(PostFixture.모임()));
-        given(userContext.getUserId()).willReturn(PostFixture.모임().getUser().getUserId());
-        ModifiedMeetingRequest modifiedMeetingRequest = PostFixture.모임_수정();
+        given(meetingRepository.findById(any())).willReturn(Optional.of(MeetingFixture.모임()));
+        given(userContext.getUserId()).willReturn(MeetingFixture.모임().getUser().getUserId());
+        ModifiedMeetingRequest modifiedMeetingRequest = MeetingFixture.모임_수정();
 
         // when
         Meeting meeting = meetingService.modifyPost(modifiedMeetingRequest);
@@ -122,7 +122,7 @@ class MeetingServiceTest {
     @Test
     void 모임_삭제() {
         // given
-        Meeting meeting = PostFixture.모임();
+        Meeting meeting = MeetingFixture.모임();
         given(meetingRepository.findById(any())).willReturn(Optional.of(meeting)).willReturn(null);
         given(userContext.getUserId()).willReturn(meeting.getUser().getUserId());
 
@@ -138,7 +138,7 @@ class MeetingServiceTest {
         // given
         Long userId = 1L;
         Pageable pageable = PageRequest.of(0, 12);
-        List<Meeting> meetings = List.of(PostFixture.모임());
+        List<Meeting> meetings = List.of(MeetingFixture.모임());
         given(meetingRepository.countByUserId(any())).willReturn(1L);
         given(meetingRepository.findAllByUserId(anyLong(), anyLong(), any())).willReturn(meetings);
 
