@@ -1,0 +1,57 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 검증 (Verification)
+검증에 관련된 기능을 제공합니다.
+
+=== 이메일 중복 확인
+GET /email/validation +
+이메일 중복 여부를 확인합니다.
+
+==== REQUEST
+include::{snippets}/email/validation/curl-request.adoc[]
+include::{snippets}/email/validation/http-request.adoc[]
+include::{snippets}/email/validation/httpie-request.adoc[]
+include::{snippets}/email/validation/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/email/validation/http-response.adoc[]
+include::{snippets}/email/validation/response-fields.adoc[]
+
+===== example
+include::{snippets}/email/validation/response-body.adoc[]
+
+=== 닉네임 중복 확인
+GET /nickname/validation +
+닉네임 중복 여부를 확인합니다.
+
+==== REQUEST
+include::{snippets}/nickname/validation/curl-request.adoc[]
+include::{snippets}/nickname/validation/http-request.adoc[]
+include::{snippets}/nickname/validation/httpie-request.adoc[]
+include::{snippets}/nickname/validation/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/nickname/validation/http-response.adoc[]
+include::{snippets}/nickname/validation/response-fields.adoc[]
+
+===== example
+include::{snippets}/nickname/validation/response-body.adoc[]
+
+=== 계정 확인
+GET /user/validation +
+계정 정보를 확인합니다.
+
+==== REQUEST
+include::{snippets}/user/validation/curl-request.adoc[]
+include::{snippets}/user/validation/http-request.adoc[]
+include::{snippets}/user/validation/httpie-request.adoc[]
+include::{snippets}/user/validation/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/user/validation/http-response.adoc[]
+include::{snippets}/user/validation/response-fields.adoc[]
+
+===== example
+include::{snippets}/user/validation/response-body.adoc[]

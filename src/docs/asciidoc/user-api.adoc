@@ -8,7 +8,7 @@ endif::[]
 회원가입, 회원 조회, 회원 탈퇴
 
 === 회원가입
-/signup +
+POST /signup +
 회원가입을 진행합니다.
 
 ==== REQUEST
@@ -27,13 +27,14 @@ include::{snippets}/signup/response-fields.adoc[]
 include::{snippets}/signup/response-body.adoc[]
 
 === 특정 회원 조회
-/user/{userId} +
+GET /user/{userId} +
 특정 회원(userId)을 조회합니다.
 
 ==== REQUEST
 include::{snippets}/user/detail/curl-request.adoc[]
 include::{snippets}/user/detail/http-request.adoc[]
 include::{snippets}/user/detail/httpie-request.adoc[]
+include::{snippets}/join/list/httpie-request.adoc[]
 include::{snippets}/user/detail/path-parameters.adoc[]
 
 ==== RESPONSE
@@ -44,7 +45,7 @@ include::{snippets}/user/detail/response-fields.adoc[]
 include::{snippets}/user/detail/response-body.adoc[]
 
 === 회원 탈퇴
-/user/withdrawal +
+DELETE /user/withdrawal +
 회원 탈퇴합니다.
 
 [WARNING]
@@ -56,6 +57,7 @@ include::{snippets}/user/detail/response-body.adoc[]
 include::{snippets}/user/withdrawal/curl-request.adoc[]
 include::{snippets}/user/withdrawal/http-request.adoc[]
 include::{snippets}/user/withdrawal/httpie-request.adoc[]
+include::{snippets}/user/withdrawal/request-headers.adoc[]
 
 ==== RESPONSE
 include::{snippets}/user/withdrawal/http-response.adoc[]
@@ -64,3 +66,58 @@ include::{snippets}/user/withdrawal/response-fields.adoc[]
 ===== example
 include::{snippets}/user/withdrawal/response-body.adoc[]
 
+=== 회원 정보 수정
+PUT /user +
+회원 정보를 수정합니다.
+
+==== REQUEST
+include::{snippets}/user/update/curl-request.adoc[]
+include::{snippets}/user/update/http-request.adoc[]
+include::{snippets}/user/update/httpie-request.adoc[]
+include::{snippets}/user/update/request-headers.adoc[]
+include::{snippets}/user/update/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/user/update/http-response.adoc[]
+include::{snippets}/user/update/response-fields.adoc[]
+
+===== example
+include::{snippets}/user/update/response-body.adoc[]
+
+
+=== 이메일 찾기
+GET /user/email +
+회원 이메일 찾기 기능입니다.
+
+==== REQUEST
+include::{snippets}/user/email/find/curl-request.adoc[]
+include::{snippets}/user/email/find/http-request.adoc[]
+include::{snippets}/user/email/find/httpie-request.adoc[]
+include::{snippets}/user/email/find/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/user/email/find/http-response.adoc[]
+include::{snippets}/user/email/find/response-fields.adoc[]
+
+===== example
+include::{snippets}/user/email/find/response-body.adoc[]
+
+=== 비밀번호 변경
+PUT /user/password +
+회원 이메일 찾기 기능입니다.
+
+==== REQUEST
+include::{snippets}/user/password/change/curl-request.adoc[]
+include::{snippets}/user/password/change/http-request.adoc[]
+include::{snippets}/user/password/change/httpie-request.adoc[]
+include::{snippets}/user/password/change/request-fields.adoc[]
+
+===== example
+include::{snippets}/user/password/change/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/user/password/change/http-response.adoc[]
+include::{snippets}/user/password/change/response-fields.adoc[]
+
+===== example
+include::{snippets}/user/password/change/response-body.adoc[]
