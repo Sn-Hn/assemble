@@ -22,22 +22,22 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @ApiOperation("활동 중인(가입한) 모임 조회")
-    @GetMapping("activity/assemble")
+    @GetMapping("activity/meeting")
     public ApiResult<Page<ActiveAssembleResponse>> getActiveAssembles(Pageable pageable) {
         return ApiResult.ok(activityService.getActiveAssembles(pageable)
                 .map(ActiveAssembleResponse::new));
     }
 
     @ApiOperation("모임에서 활동 중인 회원 조회")
-    @GetMapping("activity/user/{postId}")
-    public ApiResult<Page<ActivityUserResponse>> getJoinUser(@PathVariable Long postId, Pageable pageable) {
-        return ApiResult.ok(activityService.getJoinUserOfAssemble(postId, pageable)
+    @GetMapping("activity/user/{meetingId}")
+    public ApiResult<Page<ActivityUserResponse>> getJoinUser(@PathVariable Long meetingId, Pageable pageable) {
+        return ApiResult.ok(activityService.getJoinUserOfAssemble(meetingId, pageable)
                 .map(ActivityUserResponse::new));
     }
 
     @ApiOperation("활동 중인 모임 탈퇴")
-    @PutMapping("activity/withdrawal/{postId}")
-    public ApiResult<Boolean> withdrawJoinAssemble(@PathVariable Long postId) {
-        return ApiResult.ok(activityService.withdrawJoinAssemble(postId));
+    @PutMapping("activity/withdrawal/{meetingId}")
+    public ApiResult<Boolean> withdrawJoinAssemble(@PathVariable Long meetingId) {
+        return ApiResult.ok(activityService.withdrawJoinAssemble(meetingId));
     }
 }

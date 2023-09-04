@@ -16,7 +16,7 @@ public class JoinResponse {
     private Long joinRequestId;
 
     @ApiModelProperty(value = "모임 ID")
-    private Long postId;
+    private Long meetingId;
 
     @ApiModelProperty(value = "가입 신청 회원 ID")
     private Long userId;
@@ -36,7 +36,7 @@ public class JoinResponse {
     public JoinResponse(JoinRequest joinRequest) {
         this(
                 joinRequest.getId(),
-                joinRequest.getPost().getPostId(),
+                joinRequest.getMeeting().getMeetingId(),
                 joinRequest.getUser().getUserId(),
                 joinRequest.getUser().getNickname(),
                 joinRequest.getStatus().toString(),

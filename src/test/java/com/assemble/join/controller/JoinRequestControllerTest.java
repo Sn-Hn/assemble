@@ -81,16 +81,16 @@ public class JoinRequestControllerTest {
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.response.postId").value(joinRequestDto.getPostId()))
+                .andExpect(jsonPath("$.response.meetingId").value(joinRequestDto.getMeetingId()))
                 .andExpect(jsonPath("$.response.status").value(JoinRequestStatus.REQUEST.toString()));
 
         perform
-                .andDo(document("/join",
+                .andDo(document("/join/creation",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
                         requestFields(
-                                fieldWithPath("postId").description("모임 ID"),
+                                fieldWithPath("meetingId").description("모임 ID"),
                                 fieldWithPath("joinRequestMessage").description("가입 신청 메시지")
                         ),
                         responseFields(
@@ -98,7 +98,7 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
                                 fieldWithPath("response.joinRequestId").description("가입 신청 ID"),
-                                fieldWithPath("response.postId").description("모임 ID"),
+                                fieldWithPath("response.meetingId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response.nickname").description("모임 가입 신청자 닉네임"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
@@ -139,7 +139,7 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
                                 fieldWithPath("response.joinRequestId").description("가입 신청 ID"),
-                                fieldWithPath("response.postId").description("모임 ID"),
+                                fieldWithPath("response.meetingId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response.nickname").description("모임 가입 신청자 닉네임"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
@@ -151,10 +151,10 @@ public class JoinRequestControllerTest {
 
     @Test
     void 모임_가입_취소() throws Exception {
-        Long postId = 2L;
+        Long meetingId = 2L;
         given(joinRequestService.cancelJoinOfAssemble(anyLong())).willReturn(true);
 
-        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.put("/join/cancel/{postId}", postId)
+        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.put("/join/cancel/{meetingId}", meetingId)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
@@ -169,7 +169,7 @@ public class JoinRequestControllerTest {
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
                         pathParameters(
-                                parameterWithName("postId").description("게시글 ID")
+                                parameterWithName("meetingId").description("모임 ID")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("성공 여부"),
@@ -182,12 +182,12 @@ public class JoinRequestControllerTest {
 
     @Test
     void 모임_가입_신청_목록_조회() throws Exception {
-        Long postId = 1L;
+        Long meetingId = 1L;
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given(joinRequestService.getJoinRequests(anyLong()))
                 .willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
 
-        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/join/{postId}", postId)
+        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/join/{meetingId}", meetingId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(MultiValueMapConverter.convert(objectMapper, pageableConverter)));
@@ -197,12 +197,12 @@ public class JoinRequestControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
         perform
-                .andDo(document("/join/cancel",
+                .andDo(document("/join/list",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
                         pathParameters(
-                                parameterWithName("postId").description("게시글 ID")
+                                parameterWithName("meetingId").description("모임 ID")
                         ),
                         requestParameters(
                                 parameterWithName("size").description("페이지 별 수"),
@@ -214,7 +214,7 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
                                 fieldWithPath("response[0].joinRequestId").description("가입 신청 ID"),
-                                fieldWithPath("response[0].postId").description("모임 ID"),
+                                fieldWithPath("response[0].meetingId").description("모임 ID"),
                                 fieldWithPath("response[0].userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response[0].nickname").description("모임 가입 신청자 닉네임"),
                                 fieldWithPath("response[0].status").description("가입 신청 상태"),

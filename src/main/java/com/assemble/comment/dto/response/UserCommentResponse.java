@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public class UserCommentResponse {
 
     @ApiModelProperty(value = "모임 ID")
-    private Long postId;
+    private Long meetingId;
 
-    @ApiModelProperty(value = "모임 제목")
-    private String postTitle;
+    @ApiModelProperty(value = "모임 이름")
+    private String meetingName;
 
     @ApiModelProperty(value = "회원 ID")
     private Long userId;
@@ -38,8 +38,8 @@ public class UserCommentResponse {
 
     public UserCommentResponse(Comment comment) {
         this(
-                comment.getPost().getPostId(),
-                comment.getPost().getTitle().getValue(),
+                comment.getMeeting().getMeetingId(),
+                comment.getMeeting().getName().getValue(),
                 comment.getUser().getUserId(),
                 comment.getCommentId(),
                 comment.getContents(),

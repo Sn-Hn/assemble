@@ -84,14 +84,14 @@ class CommentControllerTest {
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
                         requestFields(
-                                fieldWithPath("postId").description("모임 ID"),
+                                fieldWithPath("meetingId").description("모임 ID"),
                                 fieldWithPath("contents").description("댓글 내용")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.postId").description("모임 ID"),
+                                fieldWithPath("response.meetingId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("댓글 작성자 ID"),
                                 fieldWithPath("response.commentId").description("댓글 ID"),
                                 fieldWithPath("response.contents").description("댓글 내용"),
@@ -133,7 +133,7 @@ class CommentControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.postId").description("모임 ID"),
+                                fieldWithPath("response.meetingId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("댓글 작성자 ID"),
                                 fieldWithPath("response.commentId").description("댓글 ID"),
                                 fieldWithPath("response.contents").description("댓글 내용"),
@@ -207,8 +207,8 @@ class CommentControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.content[0].postId").description("모임 ID"),
-                                fieldWithPath("response.content[0].postTitle").description("모임 제목"),
+                                fieldWithPath("response.content[0].meetingId").description("모임 ID"),
+                                fieldWithPath("response.content[0].meetingName").description("모임 이름"),
                                 fieldWithPath("response.content[0].userId").description("댓글 작성자 ID"),
                                 fieldWithPath("response.content[0].commentId").description("댓글 ID"),
                                 fieldWithPath("response.content[0].contents").description("댓글 내용"),

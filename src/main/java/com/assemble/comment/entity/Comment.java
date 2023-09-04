@@ -3,7 +3,7 @@ package com.assemble.comment.entity;
 import com.assemble.comment.dto.request.ModifiedCommentRequest;
 import com.assemble.commons.base.BaseDateEntity;
 import com.assemble.commons.converter.BooleanToYNConverter;
-import com.assemble.post.entity.Post;
+import com.assemble.meeting.entity.Meeting;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +24,8 @@ public class Comment extends BaseDateEntity {
     private Long commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID")
-    private Post post;
+    @JoinColumn(name = "MEETING_ID")
+    private Meeting meeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
@@ -42,8 +42,8 @@ public class Comment extends BaseDateEntity {
         this.commentId = commentId;
     }
 
-    public Comment(Long postId, Long userId, String contents) {
-        this(null, new Post(postId), new User(userId), contents, false);
+    public Comment(Long meetingId, Long userId, String contents) {
+        this(null, new Meeting(meetingId), new User(userId), contents, false);
     }
 
     public void modifyComment(ModifiedCommentRequest modifiedCommentRequest) {

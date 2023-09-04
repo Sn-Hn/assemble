@@ -1,6 +1,6 @@
 package com.assemble.event.publish;
 
-import com.assemble.post.entity.Post;
+import com.assemble.meeting.entity.Meeting;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostEvent {
 
-    private final Post post;
+    private final Meeting meeting;
 
 }

@@ -3,7 +3,7 @@ package com.assemble.join.entity;
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.commons.exception.UserBlockException;
 import com.assemble.join.dto.request.JoinRequestAnswer;
-import com.assemble.post.entity.Post;
+import com.assemble.meeting.entity.Meeting;
 import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -20,9 +20,9 @@ public class JoinRequest extends BaseUserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "postId")
+    @JoinColumn(name = "meetingId")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;
+    private Meeting meeting;
 
     @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,8 +38,8 @@ public class JoinRequest extends BaseUserEntity {
     protected JoinRequest() {
     }
 
-    public JoinRequest(Post post, User user, JoinRequestStatus status, String requestMessage, String rejectMessage) {
-        this.post = post;
+    public JoinRequest(Meeting meeting, User user, JoinRequestStatus status, String requestMessage, String rejectMessage) {
+        this.meeting = meeting;
         this.user = user;
         this.status = status;
         this.requestMessage = requestMessage;
@@ -85,7 +85,7 @@ public class JoinRequest extends BaseUserEntity {
     }
 
     private void validateAssembleCreator(Long userId) {
-        if (!this.post.getUser().getUserId().equals(userId)) {
+        if (!this.meeting.getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("모임 생성자만 접근할 수 있습니다.");
         }
     }

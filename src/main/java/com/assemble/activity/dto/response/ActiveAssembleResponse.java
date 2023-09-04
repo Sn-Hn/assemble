@@ -1,22 +1,19 @@
 package com.assemble.activity.dto.response;
 
-import com.assemble.comment.dto.response.CommentResponse;
 import com.assemble.file.dto.response.ProfileResponse;
-import com.assemble.post.entity.Post;
+import com.assemble.meeting.entity.Meeting;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
 public class ActiveAssembleResponse {
 
     @ApiModelProperty(value = "모임 ID")
-    private Long assembleId;
+    private Long meetingId;
 
     @ApiModelProperty(value = "모임 이름")
     private String name;
@@ -58,25 +55,25 @@ public class ActiveAssembleResponse {
     private boolean isLikeStatus;
 
     @ApiModelProperty(value = "모임 상태 (모집 중, 모집 완료)")
-    private String postStatus;
+    private String meetingStatus;
 
-    public ActiveAssembleResponse(Post post) {
+    public ActiveAssembleResponse(Meeting meeting) {
         this(
-                post.getPostId(),
-                post.getTitle().getValue(),
-                post.getContents().getValue(),
-                post.getUser().getUserId(),
-                post.getUser().getNickname(),
-                post.getUser().toProfile(),
-                post.getHits(),
-                post.getLikes(),
-                post.getPersonnelNumber(),
-                post.getExpectedPeriod(),
-                post.getComments().getComments().size(),
-                post.getCategory().getName(),
-                post.getCreatedDate(),
-                post.isLike(),
-                post.getPostStatus().toString()
+                meeting.getMeetingId(),
+                meeting.getName().getValue(),
+                meeting.getDescription().getValue(),
+                meeting.getUser().getUserId(),
+                meeting.getUser().getNickname(),
+                meeting.getUser().toProfile(),
+                meeting.getHits(),
+                meeting.getLikes(),
+                meeting.getPersonnelNumber(),
+                meeting.getExpectedPeriod(),
+                meeting.getComments().getComments().size(),
+                meeting.getCategory().getName(),
+                meeting.getCreatedDate(),
+                meeting.isLike(),
+                meeting.getMeetingStatus().toString()
         );
     }
 }

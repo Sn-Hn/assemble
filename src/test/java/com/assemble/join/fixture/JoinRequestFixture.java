@@ -4,13 +4,13 @@ import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.entity.JoinRequest;
-import com.assemble.post.entity.Post;
-import com.assemble.post.fixture.PostFixture;
+import com.assemble.meeting.entity.Meeting;
+import com.assemble.meeting.fixture.PostFixture;
 import com.assemble.user.entity.User;
 
 public class JoinRequestFixture {
     private static final Long joinRequestId = 1L;
-    private static final Long postId = 1L;
+    private static final Long meetingId = 1L;
     private static final Long userId = 2L;
     private static final String requestMessage = "가입 신청합니다 ! 받아주세요 ~";
     private static final String rejectMessage = "죄송합니다 ~";
@@ -29,7 +29,7 @@ public class JoinRequestFixture {
 
     public static JoinRequest 가입_처리_응답(JoinRequestStatus status, String message) {
         return new JoinRequest(
-                PostFixture.게시글(),
+                PostFixture.모임(),
                 new User(userId),
                 status,
                 null,
@@ -39,7 +39,7 @@ public class JoinRequestFixture {
 
     public static JoinRequest 차단된_회원() {
         return new JoinRequest(
-                new Post(postId),
+                new Meeting(meetingId),
                 new User(userId),
                 JoinRequestStatus.BLOCK,
                 null,
@@ -48,7 +48,7 @@ public class JoinRequestFixture {
     }
 
     public static JoinRequestDto 가입_신청() {
-        return new JoinRequestDto(postId, requestMessage);
+        return new JoinRequestDto(meetingId, requestMessage);
     }
 
     public static JoinRequestAnswer 가입_요청_승인() {

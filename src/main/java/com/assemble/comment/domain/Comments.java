@@ -12,7 +12,7 @@ import java.util.List;
 @Embeddable
 public class Comments {
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "meeting")
     private List<Comment> comments = new ArrayList<>();
 
     public void add(Comment comment) {

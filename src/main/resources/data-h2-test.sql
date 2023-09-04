@@ -43,7 +43,7 @@ VALUES (
             '프로젝트'
         );
 
-INSERT INTO post(user_id, post_title, post_contents, hits, likes, personnel_number, category_id, expected_period, is_deleted, post_status)
+INSERT INTO meeting(user_id, meeting_name, meeting_description, hits, likes, personnel_number, category_id, expected_period, is_deleted, meeting_status)
 VALUES (
            '1',
            '첫 번째 모임',
@@ -80,11 +80,11 @@ VALUES (
            'N',
            'PROGRESS'
        );
-INSERT INTO comment(post_id, user_id, contents, is_deleted, created_date, modified_date)
+INSERT INTO comment(meeting_id, user_id, contents, is_deleted, created_date, modified_date)
 VALUES (
            '1',
            '1',
-           '첫 번째 게시글의 첫 번째 댓글',
+           '첫 번째 모임의 첫 번째 댓글',
            'N',
            now(),
            now()
@@ -92,19 +92,19 @@ VALUES (
        (
            '1',
            '1',
-           '첫 번째 게시글의 두 번째 댓글',
+           '첫 번째 모임의 두 번째 댓글',
            'N',
            now(),
            now()
        );
 
-INSERT INTO likes(post_id, user_id)
+INSERT INTO likes(meeting_id, user_id)
 VALUES (
            '1',
            '2'
        );
 
-INSERT INTO join_request(post_id, user_id, status)
+INSERT INTO join_request(meeting_id, user_id, status)
 VALUES (
         '1',
         '2',
@@ -116,7 +116,7 @@ VALUES (
        'REQUEST'
        );
 
-INSERT INTO activity(post_id, user_id, status)
+INSERT INTO activity(meeting_id, user_id, status)
 VALUES (
         '3',
         '1',

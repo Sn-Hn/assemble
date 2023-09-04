@@ -4,8 +4,8 @@ import com.assemble.activity.domain.ActivityStatus;
 import com.assemble.activity.entity.Activity;
 import com.assemble.activity.entity.QActivity;
 import com.assemble.activity.repository.ActivityCustomRepository;
-import com.assemble.post.entity.Post;
-import com.assemble.post.entity.QPost;
+import com.assemble.meeting.entity.Meeting;
+import com.assemble.meeting.entity.QMeeting;
 import com.assemble.user.domain.UserStatus;
 import com.assemble.user.entity.QUser;
 import com.assemble.user.entity.User;
@@ -37,8 +37,8 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     }
 
     @Override
-    public List<Post> findAllByActiveAssembles(Long userId, Pageable pageable) {
-        return queryFactory.select(QActivity.activity.post)
+    public List<Meeting> findAllByActiveAssembles(Long userId, Pageable pageable) {
+        return queryFactory.select(QActivity.activity.meeting)
                 .from(QActivity.activity)
                 .innerJoin(QActivity.activity.user, QUser.user)
                 .where(QActivity.activity.user.userId.eq(userId),
@@ -51,24 +51,24 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     }
 
     @Override
-    public long countByUserOfAssemble(Long postId) {
+    public long countByUserOfAssemble(Long meetingId) {
         return queryFactory.select(QActivity.activity.count())
                 .from(QActivity.activity)
                 .innerJoin(QActivity.activity.user, QUser.user)
-                .where(QActivity.activity.post.postId.eq(postId),
+                .where(QActivity.activity.meeting.meetingId.eq(meetingId),
                         isNotWithdrawalAssemble(),
                         isNotWithdrawalUser())
                 .fetchOne();
     }
 
     @Override
-    public List<Activity> findAllByUserOfAssemble(Long postId, Pageable pageable) {
+    public List<Activity> findAllByUserOfAssemble(Long meetingId, Pageable pageable) {
         return queryFactory.selectFrom(QActivity.activity)
                 .innerJoin(QActivity.activity.user, QUser.user)
                 .fetchJoin()
-                .innerJoin(QActivity.activity.post, QPost.post)
+                .innerJoin(QActivity.activity.meeting, QMeeting.meeting)
                 .fetchJoin()
-                .where(QActivity.activity.post.postId.eq(postId),
+                .where(QActivity.activity.meeting.meetingId.eq(meetingId),
                         isNotWithdrawalAssemble(),
                         isNotWithdrawalUser())
                 .limit(pageable.getPageSize())
@@ -77,10 +77,10 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
                 .fetch()
                 .stream()
                 .map(join -> {
-                    Post post = join.getPost();
+                    Meeting meeting = join.getMeeting();
                     User user = join.getUser();
 
-                    if (post != null && user != null && post.getUser().getUserId().equals(user.getUserId())) {
+                    if (meeting != null && user != null && meeting.getUser().getUserId().equals(user.getUserId())) {
                         join.setIsHost(true);
                     }
 

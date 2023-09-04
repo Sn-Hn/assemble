@@ -6,8 +6,8 @@ import com.assemble.comment.entity.Comment;
 import com.assemble.comment.fixture.CommentFixture;
 import com.assemble.comment.repository.CommentRepository;
 import com.assemble.commons.base.UserContext;
-import com.assemble.post.entity.Post;
-import com.assemble.post.fixture.PostFixture;
+import com.assemble.meeting.entity.Meeting;
+import com.assemble.meeting.fixture.PostFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,11 +71,11 @@ class CommentServiceTest {
     void 댓글_삭제() {
         // given
         given(commentRepository.findById(any())).willReturn(Optional.of(CommentFixture.댓글_조회())).willReturn(null);
-        Post post = PostFixture.게시글();
-        given(userContext.getUserId()).willReturn(post.getUser().getUserId());
+        Meeting meeting = PostFixture.모임();
+        given(userContext.getUserId()).willReturn(meeting.getUser().getUserId());
 
         // when
-        boolean isDeletedComment = commentService.deleteComment(post.getPostId());
+        boolean isDeletedComment = commentService.deleteComment(meeting.getMeetingId());
 
         // then
         assertThat(isDeletedComment).isTrue();

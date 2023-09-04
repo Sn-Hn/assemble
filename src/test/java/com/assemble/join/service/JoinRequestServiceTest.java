@@ -9,9 +9,9 @@ import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.entity.JoinRequest;
 import com.assemble.join.fixture.JoinRequestFixture;
 import com.assemble.join.repository.JoinRequestRepository;
-import com.assemble.post.entity.Post;
-import com.assemble.post.fixture.PostFixture;
-import com.assemble.post.repository.PostRepository;
+import com.assemble.meeting.entity.Meeting;
+import com.assemble.meeting.fixture.PostFixture;
+import com.assemble.meeting.repository.MeetingRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ class JoinRequestServiceTest {
     private JoinRequestRepository joinRequestRepository;
 
     @Mock
-    private PostRepository postRepository;
+    private MeetingRepository meetingRepository;
 
     @Mock
     private UserContext userContext;
@@ -67,7 +67,7 @@ class JoinRequestServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(joinRequest.getPost().getPostId()).isEqualTo(joinRequestDto.getPostId()),
+                () -> assertThat(joinRequest.getMeeting().getMeetingId()).isEqualTo(joinRequestDto.getMeetingId()),
                 () -> assertThat(joinRequest.getUser().getUserId()).isEqualTo(userContext.getUserId()),
                 () -> assertThat(joinRequest.getStatus()).isEqualTo(JoinRequestStatus.REQUEST)
         );
@@ -86,7 +86,7 @@ class JoinRequestServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(joinRequest.getPost().getUser().getUserId()).isEqualTo(userContext.getUserId()),
+                () -> assertThat(joinRequest.getMeeting().getUser().getUserId()).isEqualTo(userContext.getUserId()),
                 () -> assertThat(joinRequest.getStatus().toString()).isEqualTo(status)
         );
 
@@ -106,7 +106,7 @@ class JoinRequestServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(joinRequest.getPost().getUser().getUserId()).isEqualTo(userContext.getUserId()),
+                () -> assertThat(joinRequest.getMeeting().getUser().getUserId()).isEqualTo(userContext.getUserId()),
                 () -> assertThat(joinRequest.getStatus().toString()).isEqualTo(status)
         );
 
@@ -132,12 +132,12 @@ class JoinRequestServiceTest {
     @Test
     void 정상_모임_가입_취소() {
         // given
-        Post post = PostFixture.게시글();
+        Meeting meeting = PostFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(2L);
 
         // when
-        boolean isCancel = joinRequestService.cancelJoinOfAssemble(post.getPostId());
+        boolean isCancel = joinRequestService.cancelJoinOfAssemble(meeting.getMeetingId());
 
         // then
         assertThat(isCancel).isTrue();
@@ -146,46 +146,46 @@ class JoinRequestServiceTest {
     @Test
     void 가입_취소_본인_아닌_경우_검증() {
         // given
-        Post post = PostFixture.게시글();
+        Meeting meeting = PostFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> joinRequestService.cancelJoinOfAssemble(post.getPostId()));
+                .isThrownBy(() -> joinRequestService.cancelJoinOfAssemble(meeting.getMeetingId()));
     }
 
     @Test
     void 가입_취소_시_신청_하지_않은_경우_검증() {
         // given
-        Post post = PostFixture.게시글();
+        Meeting meeting = PostFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.거절된_회원()));
         given(userContext.getUserId()).willReturn(2L);
 
         // when, then
         assertThatExceptionOfType(IllegalStateException.class)
-                .isThrownBy(() -> joinRequestService.cancelJoinOfAssemble(post.getPostId()));
+                .isThrownBy(() -> joinRequestService.cancelJoinOfAssemble(meeting.getMeetingId()));
     }
 
     @Test
     void 모임_가입_신청_조회() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        Post post = PostFixture.게시글();
-        Long postId = post.getPostId();
-        given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
+        Meeting meeting = PostFixture.모임();
+        Long meetingId = meeting.getMeetingId();
+        given(meetingRepository.findById(anyLong())).willReturn(Optional.of(meeting));
         given(joinRequestRepository.findAllByPostId(anyLong())).willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        List<JoinRequest> joinRequests = joinRequestService.getJoinRequests(postId);
+        List<JoinRequest> joinRequests = joinRequestService.getJoinRequests(meetingId);
 
         // then
         assertAll(
                 () -> assertThat(joinRequests).isNotEmpty(),
                 () -> assertThat(joinRequests.size()).isEqualTo(1),
-                () -> assertThat(joinRequests.stream().findFirst().get().getPost().getPostId()).isEqualTo(postId),
-                () -> assertThat(joinRequests.stream().findFirst().get().getPost().getUser().getUserId()).isEqualTo(post.getUser().getUserId())
+                () -> assertThat(joinRequests.stream().findFirst().get().getMeeting().getMeetingId()).isEqualTo(meetingId),
+                () -> assertThat(joinRequests.stream().findFirst().get().getMeeting().getUser().getUserId()).isEqualTo(meeting.getUser().getUserId())
         );
     }
 
@@ -193,14 +193,14 @@ class JoinRequestServiceTest {
     void 모임장_아니면_가입_신청_조회_불가능() {
         // given
         Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
-        Post post = PostFixture.게시글();
-        Long postId = post.getPostId();
-        given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
+        Meeting meeting = PostFixture.모임();
+        Long meetingId = meeting.getMeetingId();
+        given(meetingRepository.findById(anyLong())).willReturn(Optional.of(meeting));
         given(userContext.getUserId()).willReturn(2L);
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> joinRequestService.getJoinRequests(postId));
+                .isThrownBy(() -> joinRequestService.getJoinRequests(meetingId));
 
     }
 }

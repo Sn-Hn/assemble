@@ -5,7 +5,7 @@ import com.assemble.join.entity.JoinRequest;
 import java.util.List;
 
 public interface JoinRequestCustomRepository {
-    List<JoinRequest> findAllByPostId(Long postId);
+    List<JoinRequest> findAllByPostId(Long meetingId);
 
-    long countByPostId(Long postId);
+    long countByPostId(Long meetingId);
 }

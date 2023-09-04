@@ -2,8 +2,7 @@ package com.assemble.activity.fixture;
 
 import com.assemble.activity.domain.ActivityStatus;
 import com.assemble.activity.entity.Activity;
-import com.assemble.post.fixture.PostFixture;
-import com.assemble.user.entity.User;
+import com.assemble.meeting.fixture.PostFixture;
 import com.assemble.user.fixture.UserFixture;
 
 public class ActivityFixture {
@@ -18,7 +17,7 @@ public class ActivityFixture {
 
     private static Activity 특정_모임_활동_회원(ActivityStatus withdrawal) {
         return new Activity(
-                PostFixture.게시글(),
+                PostFixture.모임(),
                 UserFixture.회원(),
                 withdrawal
         );

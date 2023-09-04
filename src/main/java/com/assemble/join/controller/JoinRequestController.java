@@ -35,15 +35,15 @@ public class JoinRequestController {
     }
 
     @ApiOperation("모임 가입 취소")
-    @PutMapping("cancel/{postId}")
-    public ApiResult<Boolean> cancelJoin(@PathVariable Long postId) {
-        return ApiResult.ok(joinRequestService.cancelJoinOfAssemble(postId));
+    @PutMapping("cancel/{meetingId}")
+    public ApiResult<Boolean> cancelJoin(@PathVariable Long meetingId) {
+        return ApiResult.ok(joinRequestService.cancelJoinOfAssemble(meetingId));
     }
 
     @ApiOperation("모임 가입 신청 목록 조회")
-    @GetMapping("{postId}")
-    public ApiResult<List<JoinResponse>> getJoinRequests(@PathVariable Long postId) {
-        return ApiResult.ok(joinRequestService.getJoinRequests(postId)
+    @GetMapping("{meetingId}")
+    public ApiResult<List<JoinResponse>> getJoinRequests(@PathVariable Long meetingId) {
+        return ApiResult.ok(joinRequestService.getJoinRequests(meetingId)
                         .stream()
                         .map(JoinResponse::new)
                         .collect(Collectors.toUnmodifiableList()));

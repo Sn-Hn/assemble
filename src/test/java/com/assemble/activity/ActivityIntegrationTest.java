@@ -49,7 +49,7 @@ public class ActivityIntegrationTest {
                 .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
                 .log().all()
         .when()
-                .get("activity/assemble")
+                .get("activity/meeting")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
@@ -61,16 +61,16 @@ public class ActivityIntegrationTest {
     @Test
     void 모임에_활동_중인_회원_목록_조회() {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
-        Long postId = 1L;
+        Long meetingId = 1L;
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("postId", postId)
+                .pathParam("meetingId", meetingId)
                 .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
                 .log().all()
         .when()
-                .get("activity/user/{postId}")
+                .get("activity/user/{meetingId}")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
@@ -81,16 +81,16 @@ public class ActivityIntegrationTest {
 
     @Test
     void 모임_탈퇴() {
-        Long postId = 3L;
+        Long meetingId = 3L;
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("postId", postId)
+                .pathParam("meetingId", meetingId)
                 .log().all()
         .when()
-                .put("activity/withdrawal/{postId}")
+                .put("activity/withdrawal/{meetingId}")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

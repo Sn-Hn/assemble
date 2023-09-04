@@ -2,7 +2,7 @@ package com.assemble.activity.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.activity.domain.ActivityStatus;
-import com.assemble.post.entity.Post;
+import com.assemble.meeting.entity.Meeting;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +19,8 @@ public class Activity extends BaseUserEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID")
-    private Post post;
+    @JoinColumn(name = "MEETING_ID")
+    private Meeting meeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
@@ -34,8 +34,8 @@ public class Activity extends BaseUserEntity {
 
     protected Activity() {}
 
-    public Activity(Post post, User user, ActivityStatus status) {
-        this.post = post;
+    public Activity(Meeting meeting, User user, ActivityStatus status) {
+        this.meeting = meeting;
         this.user = user;
         this.status = status;
     }
@@ -50,7 +50,7 @@ public class Activity extends BaseUserEntity {
             throw new IllegalStateException("이미 탈퇴한 모임입니다.");
         }
 
-        if (this.post.getUser().getUserId().equals(userId)) {
+        if (this.meeting.getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("모임장은 탈퇴할 수 없습니다.");
         }
     }

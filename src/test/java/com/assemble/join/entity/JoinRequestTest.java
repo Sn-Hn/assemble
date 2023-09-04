@@ -69,7 +69,7 @@ class JoinRequestTest {
         // then
         assertAll(
                 () -> assertThat(joinRequest.getStatus()).isEqualTo(JoinRequestStatus.APPROVAL),
-                () -> assertThat(joinRequest.getPost().getUser().getUserId()).isEqualTo(user.getUserId())
+                () -> assertThat(joinRequest.getMeeting().getUser().getUserId()).isEqualTo(user.getUserId())
         );
     }
 

@@ -23,7 +23,7 @@ public class JoinRequestEventHandler {
         JoinRequest joinRequest = joinRequestEvent.getJoinRequest();
         log.info("JoinRequest id={}", joinRequest.getId());
 
-        Activity activity = new Activity(joinRequest.getPost(), new User(joinRequest.getUser().getUserId()), ActivityStatus.NORMAL);
+        Activity activity = new Activity(joinRequest.getMeeting(), new User(joinRequest.getUser().getUserId()), ActivityStatus.NORMAL);
 
         Activity savedActivity = activityRepository.save(activity);
         log.info("Saved Join id={}", savedActivity.getId());

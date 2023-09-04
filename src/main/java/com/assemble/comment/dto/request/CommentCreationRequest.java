@@ -12,9 +12,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class CommentCreationRequest {
 
-    @ApiModelProperty(value = "게시글(모임) ID", example = "0")
+    @ApiModelProperty(value = "모임(모임) ID", example = "0")
     @NotNull
-    private Long postId;
+    private Long meetingId;
 
     @ApiModelProperty(value = "댓글 내용")
     @NotEmpty
@@ -24,6 +24,6 @@ public class CommentCreationRequest {
     }
 
     public Comment toEntity(Long writerId) {
-        return new Comment(postId, writerId, contents);
+        return new Comment(meetingId, writerId, contents);
     }
 }

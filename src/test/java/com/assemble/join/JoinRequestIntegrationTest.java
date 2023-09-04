@@ -88,16 +88,16 @@ public class JoinRequestIntegrationTest {
 
     @Test
     void 모임_가입_신청_취소() {
-        Long postId = 2L;
+        Long meetingId = 2L;
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("postId", postId)
+                .pathParam("meetingId", meetingId)
                 .log().all()
         .when()
-                .put("join/cancel/{postId}")
+                .put("join/cancel/{meetingId}")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
@@ -108,17 +108,17 @@ public class JoinRequestIntegrationTest {
 
     @Test
     void 모임_가입_신청_목록_조회() {
-        Long postId = 1L;
+        Long meetingId = 1L;
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("postId", postId)
+                .pathParam("meetingId", meetingId)
                 .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
                 .log().all()
         .when()
-                .get("join/{postId}")
+                .get("join/{meetingId}")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

@@ -33,14 +33,14 @@ class ActivityRequestEventHandlerTest {
         // given
         JoinRequest joinRequest = JoinRequestFixture.승인된_회원();
         JoinRequestEvent event = new JoinRequestEvent(joinRequest);
-        given(activityRepository.save(any())).willReturn(new Activity(event.getJoinRequest().getPost(), event.getJoinRequest().getUser(), ActivityStatus.NORMAL));
+        given(activityRepository.save(any())).willReturn(new Activity(event.getJoinRequest().getMeeting(), event.getJoinRequest().getUser(), ActivityStatus.NORMAL));
 
         // when
         Activity activity = joinRequestEventHandler.doJoinRequestEvent(event);
 
         // then
         assertAll(
-                () -> assertThat(activity.getPost().getPostId()).isEqualTo(joinRequest.getPost().getPostId()),
+                () -> assertThat(activity.getMeeting().getMeetingId()).isEqualTo(joinRequest.getMeeting().getMeetingId()),
                 () -> assertThat(activity.getUser().getUserId()).isEqualTo(joinRequest.getUser().getUserId()),
                 () -> assertThat(activity.getStatus()).isEqualTo(ActivityStatus.NORMAL)
         );

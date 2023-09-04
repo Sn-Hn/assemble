@@ -8,7 +8,7 @@ import com.assemble.commons.converter.PageableConverter;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
-import com.assemble.post.fixture.PostFixture;
+import com.assemble.meeting.fixture.PostFixture;
 import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -71,9 +71,9 @@ class ActivityControllerTest {
     void 회원이_활동_중인_모임_목록_조회() throws Exception {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given(activityService.getActiveAssembles(any()))
-                .willReturn(new PageImpl<>(List.of(PostFixture.게시글())));
+                .willReturn(new PageImpl<>(List.of(PostFixture.모임())));
 
-        ResultActions perform = this.mockMvc.perform(get("/activity/assemble")
+        ResultActions perform = this.mockMvc.perform(get("/activity/meeting")
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(MultiValueMapConverter.convert(objectMapper, pageableConverter)));
@@ -84,7 +84,7 @@ class ActivityControllerTest {
                 .andExpect(jsonPath("$.response.content").isNotEmpty());
 
         perform
-                .andDo(document("/activity/assemble",
+                .andDo(document("/activity/list",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -97,7 +97,7 @@ class ActivityControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.content[0].assembleId").description("모임 ID"),
+                                fieldWithPath("response.content[0].meetingId").description("모임 ID"),
                                 fieldWithPath("response.content[0].name").description("모임 이름"),
                                 fieldWithPath("response.content[0].description").description("모임 설명"),
                                 fieldWithPath("response.content[0].categoryName").description("카테고리 이름"),
@@ -111,7 +111,7 @@ class ActivityControllerTest {
                                 fieldWithPath("response.content[0].personnelNumber").description("모집 인원"),
                                 fieldWithPath("response.content[0].expectedPeriod").description("예상 기간"),
                                 fieldWithPath("response.content[0].createdTime").description("모임 생성일"),
-                                fieldWithPath("response.content[0].postStatus").description("모임 상태 (모집 중, 모집 완료)"),
+                                fieldWithPath("response.content[0].meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
                                 fieldWithPath("response.pageable").description("pageable"),
                                 fieldWithPath("response.last").description("last"),
                                 fieldWithPath("response.totalPages").description("총 페이지 수"),
@@ -130,12 +130,12 @@ class ActivityControllerTest {
 
     @Test
     void 모임에_활동_중인_회원_목록_조회() throws Exception {
-        Long postId = 1L;
+        Long meetingId = 1L;
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given(activityService.getJoinUserOfAssemble(anyLong(), any()))
                 .willReturn(new PageImpl<>(List.of(ActivityFixture.특정_모임_활동_중인_회원())));
 
-        ResultActions perform = this.mockMvc.perform(RestDocumentationRequestBuilders.get("/activity/user/{postId}", postId)
+        ResultActions perform = this.mockMvc.perform(RestDocumentationRequestBuilders.get("/activity/user/{meetingId}", meetingId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(MultiValueMapConverter.convert(objectMapper, pageableConverter)));
@@ -159,7 +159,7 @@ class ActivityControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.content[0].assembleId").description("모임 ID"),
+                                fieldWithPath("response.content[0].meetingId").description("모임 ID"),
                                 fieldWithPath("response.content[0].userId").description("회원 ID"),
                                 fieldWithPath("response.content[0].nickname").description("회원 닉네임"),
                                 fieldWithPath("response.content[0].profile").description("회원 프로필"),
@@ -182,10 +182,10 @@ class ActivityControllerTest {
 
     @Test
     void 모임_탈퇴() throws Exception {
-        Long postId = 2L;
+        Long meetingId = 2L;
 
         given(activityService.withdrawJoinAssemble(anyLong())).willReturn(true);
-        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.put("/activity/withdrawal/{postId}", postId)
+        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.put("/activity/withdrawal/{meetingId}", meetingId)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
@@ -193,9 +193,9 @@ class ActivityControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/post/delete",
+        perform.andDo(document("/activity/withdrawal",
                 pathParameters(
-                        parameterWithName("postId").description("모임 Id")
+                        parameterWithName("meetingId").description("모임 Id")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),

@@ -16,8 +16,8 @@ public class ExclusionApis {
         apis.put("/signup", "POST");
         apis.put("/email/validation", "GET");
         apis.put("/nickname/validation", "GET");
-        apis.put("/post", "GET");
-        apis.put("/post/*", "GET");
+        apis.put("/meeting", "GET");
+        apis.put("/meeting/*", "GET");
         apis.put("/category", "GET");
         apis.put("/auth/token", "POST");
         apis.put("/user/validation", "GET");

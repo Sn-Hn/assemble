@@ -3,7 +3,7 @@ package com.assemble.join.repository.impl;
 import com.assemble.join.entity.JoinRequest;
 import com.assemble.join.entity.QJoinRequest;
 import com.assemble.join.repository.JoinRequestCustomRepository;
-import com.assemble.post.entity.QPost;
+import com.assemble.meeting.entity.QMeeting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
@@ -18,26 +18,26 @@ public class JoinRequestCustomRepositoryImpl implements JoinRequestCustomReposit
     }
 
     @Override
-    public List<JoinRequest> findAllByPostId(Long postId) {
+    public List<JoinRequest> findAllByPostId(Long meetingId) {
         return queryFactory.selectFrom(QJoinRequest.joinRequest)
-                .leftJoin(QPost.post)
-                .on(QJoinRequest.joinRequest.post.postId.eq(QPost.post.postId),
-                        QJoinRequest.joinRequest.post.isDeleted.isFalse())
+                .leftJoin(QMeeting.meeting)
+                .on(QJoinRequest.joinRequest.meeting.meetingId.eq(QMeeting.meeting.meetingId),
+                        QJoinRequest.joinRequest.meeting.isDeleted.isFalse())
                 .fetchJoin()
-                .where(QJoinRequest.joinRequest.post.postId.eq(postId))
+                .where(QJoinRequest.joinRequest.meeting.meetingId.eq(meetingId))
                 .orderBy(QJoinRequest.joinRequest.modifiedDate.desc())
                 .fetch();
     }
 
     @Override
-    public long countByPostId(Long postId) {
+    public long countByPostId(Long meetingId) {
         return queryFactory.select(QJoinRequest.joinRequest.count())
                 .from(QJoinRequest.joinRequest)
-                .leftJoin(QPost.post)
-                .on(QJoinRequest.joinRequest.post.postId.eq(QPost.post.postId),
-                        QPost.post.isDeleted.isFalse())
+                .leftJoin(QMeeting.meeting)
+                .on(QJoinRequest.joinRequest.meeting.meetingId.eq(QMeeting.meeting.meetingId),
+                        QMeeting.meeting.isDeleted.isFalse())
                 .fetchJoin()
-                .where(QPost.post.postId.eq(postId))
+                .where(QMeeting.meeting.meetingId.eq(meetingId))
                 .fetchOne();
     }
 }
