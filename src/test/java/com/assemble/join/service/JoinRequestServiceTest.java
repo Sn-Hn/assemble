@@ -174,7 +174,6 @@ class JoinRequestServiceTest {
         Post post = PostFixture.게시글();
         Long postId = post.getPostId();
         given(postRepository.findById(anyLong())).willReturn(Optional.of(post));
-        given(joinRequestRepository.countByPostId(anyLong())).willReturn(1L);
         given(joinRequestRepository.findAllByPostId(anyLong())).willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 

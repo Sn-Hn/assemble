@@ -71,7 +71,6 @@ public class JoinRequestService {
             throw new IllegalArgumentException("모임장이 아닙니다.");
         }
 
-        long count = joinRequestRepository.countByPostId(postId);
         return joinRequestRepository.findAllByPostId(postId);
     }
 }
