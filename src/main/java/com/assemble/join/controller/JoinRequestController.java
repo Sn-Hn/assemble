@@ -30,8 +30,8 @@ public class JoinRequestController {
 
     @ApiOperation("모임 가입 승인, 거절, 차단 ex) APPROVAL, REJECT, BLOCK")
     @PutMapping
-    public ApiResult<JoinResponse> responseJoin(@RequestBody @Valid JoinRequestAnswer joinRequestAnswer) {
-        return ApiResult.ok(new JoinResponse(joinRequestService.responseJoinFromAssemble(joinRequestAnswer)));
+    public ApiResult<JoinResponse> processJoinRequest(@RequestBody @Valid JoinRequestAnswer joinRequestAnswer) {
+        return ApiResult.ok(new JoinResponse(joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer)));
     }
 
     @ApiOperation("모임 가입 취소")
@@ -42,8 +42,8 @@ public class JoinRequestController {
 
     @ApiOperation("모임 가입 신청 목록 조회")
     @GetMapping("{meetingId}")
-    public ApiResult<List<JoinResponse>> getJoinRequests(@PathVariable Long meetingId) {
-        return ApiResult.ok(joinRequestService.getJoinRequests(meetingId)
+    public ApiResult<List<JoinResponse>> getJoinRequestsToMeeting(@PathVariable Long meetingId) {
+        return ApiResult.ok(joinRequestService.getJoinRequestsToMeeting(meetingId)
                         .stream()
                         .map(JoinResponse::new)
                         .collect(Collectors.toUnmodifiableList()));

@@ -112,7 +112,7 @@ public class JoinRequestControllerTest {
     @ValueSource(strings = {"APPROVAL", "REJECT", "BLOCK"})
     void 모임_가입_처리(String status) throws Exception {
         JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
-        given(joinRequestService.responseJoinFromAssemble(any())).willReturn(JoinRequestFixture.가입_처리_응답(JoinRequestStatus.valueOf(status), null));
+        given(joinRequestService.processJoinRequestFromAssemble(any())).willReturn(JoinRequestFixture.가입_처리_응답(JoinRequestStatus.valueOf(status)));
 
         ResultActions perform = mockMvc.perform(put("/join")
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -184,7 +184,7 @@ public class JoinRequestControllerTest {
     void 모임_가입_신청_목록_조회() throws Exception {
         Long meetingId = 1L;
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
-        given(joinRequestService.getJoinRequests(anyLong()))
+        given(joinRequestService.getJoinRequestsToMeeting(anyLong()))
                 .willReturn(List.of(JoinRequestFixture.정상_신청_회원()));
 
         ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/join/{meetingId}", meetingId)

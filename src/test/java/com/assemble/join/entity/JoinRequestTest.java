@@ -87,6 +87,29 @@ class JoinRequestTest {
     }
 
     @Test
+    void 이미_처리된_회원은_가입_요청_처리_안됨() {
+        // given
+        User user = new User(1L);
+        JoinRequest joinRequest = JoinRequestFixture.거절된_회원();
+        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_승인();
+
+        // when, then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> joinRequest.answerJoinRequest(joinRequestAnswer, user.getUserId()));
+    }
+
+    @Test
+    void 차단된_회원은_차단해제만_가능() {
+        // given
+        User user = new User(1L);
+        JoinRequest joinRequest = JoinRequestFixture.차단된_회원();
+
+        // when, then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> joinRequest.validateBlock(JoinRequestStatus.APPROVAL.toString()));
+    }
+
+    @Test
     void 정상_가입_신청_취소() {
         // given
         User user = new User(2L);

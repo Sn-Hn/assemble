@@ -33,23 +33,20 @@ public class JoinRequest extends BaseUserEntity {
 
     private String requestMessage;
 
-    private String rejectMessage;
-
     protected JoinRequest() {
     }
 
-    public JoinRequest(Meeting meeting, User user, JoinRequestStatus status, String requestMessage, String rejectMessage) {
+    public JoinRequest(Meeting meeting, User user, JoinRequestStatus status, String requestMessage) {
         this.meeting = meeting;
         this.user = user;
         this.status = status;
         this.requestMessage = requestMessage;
-        this.rejectMessage = rejectMessage;
     }
 
     public void answerJoinRequest(JoinRequestAnswer joinRequestAnswer, Long userId) {
         validateAssembleCreator(userId);
+        validateAlreadyAnswerJoinRequest();
         this.status = JoinRequestStatus.valueOf(joinRequestAnswer.getStatus());
-        this.rejectMessage = JoinRequestStatus.REJECT.toString().equals(joinRequestAnswer.getStatus()) ? joinRequestAnswer.getMessage() : null;
     }
 
     public void cancelJoinRequest(Long userId) {
@@ -60,6 +57,10 @@ public class JoinRequest extends BaseUserEntity {
 
     public boolean isApproval() {
         return JoinRequestStatus.APPROVAL.equals(this.status);
+    }
+
+    public void mapBlockToRequest() {
+        this.status = this.status == JoinRequestStatus.BLOCK ? JoinRequestStatus.REQUEST : this.status;
     }
 
     public void validateAlreadyJoinRequest() {
@@ -93,6 +94,18 @@ public class JoinRequest extends BaseUserEntity {
     private void validateEqualRequestUser(Long userId) {
         if (!getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("신청한 회원이 아닙니다.");
+        }
+    }
+
+    private void validateAlreadyAnswerJoinRequest() {
+        if (this.status.equals(JoinRequestStatus.APPROVAL) || this.status.equals(JoinRequestStatus.REJECT)) {
+            throw new IllegalStateException("이미 처리된 회원입니다.");
+        }
+    }
+
+    public void validateBlock(String updateStatus) {
+        if (this.status.equals(JoinRequestStatus.BLOCK) && !JoinRequestStatus.REJECT.toString().equals(updateStatus)) {
+            throw new IllegalStateException("차단된 회원입니다.");
         }
     }
 }

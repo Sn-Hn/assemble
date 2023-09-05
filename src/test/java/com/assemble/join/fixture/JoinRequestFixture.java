@@ -16,33 +16,26 @@ public class JoinRequestFixture {
     private static final String rejectMessage = "죄송합니다 ~";
 
     public static JoinRequest 정상_신청_회원() {
-        return 가입_처리_응답(JoinRequestStatus.REQUEST,null);
+        return 가입_처리_응답(JoinRequestStatus.REQUEST);
     }
 
     public static JoinRequest 승인된_회원() {
-        return 가입_처리_응답(JoinRequestStatus.APPROVAL, null);
+        return 가입_처리_응답(JoinRequestStatus.APPROVAL);
     }
 
     public static JoinRequest 거절된_회원() {
-        return 가입_처리_응답(JoinRequestStatus.REJECT, rejectMessage);
+        return 가입_처리_응답(JoinRequestStatus.REJECT);
     }
 
-    public static JoinRequest 가입_처리_응답(JoinRequestStatus status, String message) {
+    public static JoinRequest 차단된_회원() {
+        return 가입_처리_응답(JoinRequestStatus.BLOCK);
+    }
+
+    public static JoinRequest 가입_처리_응답(JoinRequestStatus status) {
         return new JoinRequest(
                 MeetingFixture.모임(),
                 new User(userId),
                 status,
-                null,
-                null
-        );
-    }
-
-    public static JoinRequest 차단된_회원() {
-        return new JoinRequest(
-                new Meeting(meetingId),
-                new User(userId),
-                JoinRequestStatus.BLOCK,
-                null,
                 null
         );
     }

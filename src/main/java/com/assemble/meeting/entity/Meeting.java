@@ -108,4 +108,12 @@ public class Meeting extends BaseUserEntity {
             throw new IllegalStateException("cannot cancel like");
         }
     }
+
+    public boolean isHost(Long userId) {
+        if (this.user.getUserId().equals(userId)) {
+            return true;
+        }
+
+        return false;
+    }
 }

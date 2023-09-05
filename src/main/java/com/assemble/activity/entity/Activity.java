@@ -58,4 +58,18 @@ public class Activity extends BaseUserEntity {
     public void setIsHost(boolean isHost) {
         this.isHost = isHost;
     }
+
+    public boolean isActivityUser(Long userId) {
+        if (this.user.getUserId().equals(userId)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void validateAlreadyActivityUser(Long userId) {
+        if (isActivityUser(userId)) {
+            throw new IllegalStateException("이미 가입한 회원입니다.");
+        }
+    }
 }

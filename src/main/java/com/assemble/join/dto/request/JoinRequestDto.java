@@ -30,8 +30,6 @@ public class JoinRequestDto {
                 new Meeting(meetingId),
                 new User(userId),
                 JoinRequestStatus.REQUEST,
-                joinRequestMessage,
-                null
-        );
+                joinRequestMessage);
     }
 }

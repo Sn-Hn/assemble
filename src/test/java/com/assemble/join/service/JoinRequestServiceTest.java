@@ -1,6 +1,10 @@
 package com.assemble.join.service;
 
+import com.assemble.activity.entity.Activity;
+import com.assemble.activity.fixture.ActivityFixture;
+import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
+import com.assemble.commons.exception.UserBlockException;
 import com.assemble.event.publish.JoinRequestEvent;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.join.domain.JoinRequestStatus;
@@ -54,13 +58,18 @@ class JoinRequestServiceTest {
     @Mock
     private ApplicationEventPublisher eventPublisher;
 
+    @Mock
+    private ActivityRepository activityRepository;
+
     @Test
     void 모임_가입_신청() {
         // given
         JoinRequestDto joinRequestDto = JoinRequestFixture.가입_신청();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.empty());
-        given(joinRequestRepository.save(any())).willReturn(JoinRequestFixture.정상_신청_회원());
-        given(userContext.getUserId()).willReturn(2L);
+        JoinRequest joinRequestUser = JoinRequestFixture.정상_신청_회원();
+        given(joinRequestRepository.save(any())).willReturn(joinRequestUser);
+        given(activityRepository.findByMeetingId(any())).willReturn(List.of());
+        given(userContext.getUserId()).willReturn(joinRequestUser.getUser().getUserId());
 
         // when
         JoinRequest joinRequest = joinRequestService.requestJoinToAssemble(joinRequestDto);
@@ -74,6 +83,59 @@ class JoinRequestServiceTest {
     }
 
     @Test
+    void 이미_가입_신청한_회원_모임_가입_신청_불가() {
+        // given
+        JoinRequestDto joinRequestDto = JoinRequestFixture.가입_신청();
+        JoinRequest joinRequest = JoinRequestFixture.정상_신청_회원();
+        given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(joinRequest));
+        given(userContext.getUserId()).willReturn(joinRequest.getUser().getUserId());
+
+        // when, then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> joinRequestService.requestJoinToAssemble(joinRequestDto));
+    }
+
+    @Test
+    void 이미_가입한_회원_모임_가입_신청_불가() {
+        // given
+        JoinRequestDto joinRequestDto = JoinRequestFixture.가입_신청();
+        given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.empty());
+        Activity activityUser = ActivityFixture.특정_모임_활동_중인_회원();
+        given(activityRepository.findByMeetingId(any())).willReturn(List.of(activityUser));
+        given(userContext.getUserId()).willReturn(activityUser.getUser().getUserId());
+
+        // when, then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> joinRequestService.requestJoinToAssemble(joinRequestDto));
+    }
+
+    @Test
+    void 이미_승인된_회원_모임_가입_신청_불가() {
+        // given
+        JoinRequestDto joinRequestDto = JoinRequestFixture.가입_신청();
+        JoinRequest joinRequest = JoinRequestFixture.승인된_회원();
+        given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(joinRequest));
+        given(userContext.getUserId()).willReturn(joinRequest.getUser().getUserId());
+
+        // when, then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> joinRequestService.requestJoinToAssemble(joinRequestDto));
+    }
+
+    @Test
+    void 차단된_회원_모임_가입_신청_불가() {
+        // given
+        JoinRequestDto joinRequestDto = JoinRequestFixture.가입_신청();
+        JoinRequest joinRequest = JoinRequestFixture.차단된_회원();
+        given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(joinRequest));
+        given(userContext.getUserId()).willReturn(joinRequest.getUser().getUserId());
+
+        // when, then
+        assertThatExceptionOfType(UserBlockException.class)
+                .isThrownBy(() -> joinRequestService.requestJoinToAssemble(joinRequestDto));
+    }
+
+    @Test
     void 모임_가입_승인_검증() {
         // given
         String status = "APPROVAL";
@@ -82,7 +144,7 @@ class JoinRequestServiceTest {
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        JoinRequest joinRequest = joinRequestService.responseJoinFromAssemble(joinRequestAnswer);
+        JoinRequest joinRequest = joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer);
 
         // then
         assertAll(
@@ -102,7 +164,7 @@ class JoinRequestServiceTest {
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        JoinRequest joinRequest = joinRequestService.responseJoinFromAssemble(joinRequestAnswer);
+        JoinRequest joinRequest = joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer);
 
         // then
         assertAll(
@@ -115,7 +177,7 @@ class JoinRequestServiceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"APPROVAL", "REJECT", "BLOCK"})
-    void 모임_생성자가_아니면_모임_가입_처리_안됨(String status) {
+    void 모임_생성자만_모임_가입_처리_가능(String status) {
         // given
         JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
         // 모임 생성자 UserId=1
@@ -125,8 +187,57 @@ class JoinRequestServiceTest {
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> joinRequestService.responseJoinFromAssemble(joinRequestAnswer));
+                .isThrownBy(() -> joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer));
 
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"APPROVAL", "REJECT"})
+    void 이미_처리된_회원은_처리_불가(String status) {
+        // given
+        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_승인();
+        // 모임 생성자 UserId=1
+        given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.가입_처리_응답(JoinRequestStatus.valueOf(status))));
+        // 로그인한 회원 UserId=1
+        given(userContext.getUserId()).willReturn(1L);
+
+        // when, then
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer));
+
+    }
+
+    @Test
+    void 차단된_회원은_차단해제만_가능() {
+        // given
+        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_거절();
+        given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.차단된_회원()));
+        given(userContext.getUserId()).willReturn(1L);
+
+        // when
+        JoinRequest joinRequest = joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer);
+
+        // then
+        assertAll(
+                () -> assertThat(joinRequest.getMeeting().getUser().getUserId()).isEqualTo(userContext.getUserId()),
+                () -> assertThat(joinRequest.getStatus()).isEqualTo(JoinRequestStatus.REJECT)
+        );
+
+        verify(eventPublisher, times(0)).publishEvent(any(JoinRequestEvent.class));
+    }
+
+    @Test
+    void 차단해제_성공() {
+        // given
+        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_거절();
+        given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.차단된_회원()));
+        given(userContext.getUserId()).willReturn(1L);
+
+        // when
+        JoinRequest joinRequest = joinRequestService.processJoinRequestFromAssemble(joinRequestAnswer);
+
+        // then
+        assertThat(joinRequest.getStatus()).isEqualTo(JoinRequestStatus.REJECT);
     }
 
     @Test
@@ -144,7 +255,7 @@ class JoinRequestServiceTest {
     }
 
     @Test
-    void 가입_취소_본인_아닌_경우_검증() {
+    void 가입_취소_본인_아닌_경우_실패() {
         // given
         Meeting meeting = MeetingFixture.모임();
         given(joinRequestRepository.findByAssembleIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
@@ -178,7 +289,7 @@ class JoinRequestServiceTest {
         given(userContext.getUserId()).willReturn(1L);
 
         // when
-        List<JoinRequest> joinRequests = joinRequestService.getJoinRequests(meetingId);
+        List<JoinRequest> joinRequests = joinRequestService.getJoinRequestsToMeeting(meetingId);
 
         // then
         assertAll(
@@ -200,7 +311,7 @@ class JoinRequestServiceTest {
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> joinRequestService.getJoinRequests(meetingId));
+                .isThrownBy(() -> joinRequestService.getJoinRequestsToMeeting(meetingId));
 
     }
 }

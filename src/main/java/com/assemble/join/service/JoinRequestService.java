@@ -1,5 +1,6 @@
 package com.assemble.join.service;
 
+import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.event.publish.JoinRequestEvent;
@@ -24,8 +25,8 @@ public class JoinRequestService {
     private final MeetingRepository meetingRepository;
     private final UserContext userContext;
     private final ApplicationEventPublisher eventPublisher;
+    private final ActivityRepository activityRepository;
 
-    // TODO: 2023-08-29 가입신청 시 이미 가입된 사람들(모임 생성자) 처리 -신한
     @Transactional
     public JoinRequest requestJoinToAssemble(JoinRequestDto joinRequestDto) {
         joinRequestRepository.findByAssembleIdAndUserId(joinRequestDto.getMeetingId(), userContext.getUserId())
@@ -34,16 +35,23 @@ public class JoinRequestService {
                     joinRequest.validateAnswerStatusOfJoinRequest();
                 });
 
+        activityRepository.findByMeetingId(joinRequestDto.getMeetingId())
+                .stream()
+                .filter(activity -> activity.isActivityUser(userContext.getUserId()))
+                .findAny()
+                .ifPresent(activity -> activity.validateAlreadyActivityUser(userContext.getUserId()));
+
         JoinRequest joinRequest = joinRequestDto.toEntity(userContext.getUserId());
 
         return joinRequestRepository.save(joinRequest);
     }
 
     @Transactional
-    public JoinRequest responseJoinFromAssemble(JoinRequestAnswer joinRequestAnswer) {
+    public JoinRequest processJoinRequestFromAssemble(JoinRequestAnswer joinRequestAnswer) {
         JoinRequest joinRequest = joinRequestRepository.findById(joinRequestAnswer.getJoinRequestId())
                 .orElseThrow(() -> new NotFoundException(JoinRequest.class, joinRequestAnswer.getJoinRequestId()));
 
+        joinRequest.validateBlock(joinRequestAnswer.getStatus());
         joinRequest.answerJoinRequest(joinRequestAnswer, userContext.getUserId());
         if (joinRequest.isApproval()) {
             eventPublisher.publishEvent(new JoinRequestEvent(joinRequest));
@@ -63,7 +71,7 @@ public class JoinRequestService {
     }
 
     @Transactional(readOnly = true)
-    public List<JoinRequest> getJoinRequests(Long meetingId) {
+    public List<JoinRequest> getJoinRequestsToMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new NotFoundException(Meeting.class, meetingId));
 

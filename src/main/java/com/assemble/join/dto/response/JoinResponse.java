@@ -40,8 +40,7 @@ public class JoinResponse {
                 joinRequest.getUser().getUserId(),
                 joinRequest.getUser().getNickname(),
                 joinRequest.getStatus().toString(),
-                JoinRequestStatus.REQUEST.equals(joinRequest.getStatus()) ?
-                joinRequest.getRequestMessage() : joinRequest.getRejectMessage(),
+                joinRequest.getRequestMessage(),
                 joinRequest.getCreatedDate()
         );
     }
