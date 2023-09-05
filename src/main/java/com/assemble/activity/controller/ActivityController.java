@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "모임 가입 Apis")
+@Api(tags = "활동 Apis")
 @RestController
 @RequiredArgsConstructor
 public class ActivityController {

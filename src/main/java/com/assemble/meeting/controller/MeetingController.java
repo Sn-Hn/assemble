@@ -32,7 +32,7 @@ public class MeetingController {
     public ApiResult<MeetingCreationResponse> createPost(@RequestBody @Valid MeetingCreationRequest meetingCreationRequest) {
         return ApiResult.ok(new MeetingCreationResponse(meetingService.createPost(meetingCreationRequest)), HttpStatus.CREATED);
     }
-    
+
     @ApiOperation(value = "모임 목록 조회")
     @GetMapping
     public ApiResult<Page<MeetingsResponse>> getMeetings(MeetingSearchRequest meetingSearchRequest,
