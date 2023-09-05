@@ -60,6 +60,9 @@ public class User extends BaseDateEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime changedPasswordDate;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     public User() {
     }
 
@@ -67,7 +70,7 @@ public class User extends BaseDateEntity {
         this.userId = userId;
     }
 
-    public User(Email email, Name name, String nickname, Password password, PhoneNumber phoneNumber, BirthDate birthDate) {
+    public User(Email email, Name name, String nickname, Password password, PhoneNumber phoneNumber, BirthDate birthDate, Gender gender) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -77,10 +80,12 @@ public class User extends BaseDateEntity {
         this.role = UserRole.USER;
         this.status = UserStatus.NORMAL;
         this.changedPasswordDate = LocalDateTime.now();
+        this.gender = gender;
     }
 
     public User(Email email, Password password) {
-        this(email, null, null, password, null, null);
+        this.email = email;
+        this.password = password;
     }
 
     public static User createUser(SignupRequest signupRequest) {
@@ -90,7 +95,8 @@ public class User extends BaseDateEntity {
                 signupRequest.getNickname(),
                 new Password(signupRequest.getPassword()),
                 new PhoneNumber(signupRequest.getPhoneNumber()),
-                new BirthDate(signupRequest.getBirthDate())
+                new BirthDate(signupRequest.getBirthDate()),
+                Gender.valueOf(signupRequest.getGender())
         );
     }
 

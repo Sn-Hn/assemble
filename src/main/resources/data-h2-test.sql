@@ -1,4 +1,4 @@
-INSERT INTO users(user_name, email, password, phone_number, role, status, nickname, birth_date, created_date, modified_date)
+INSERT INTO users(user_name, email, password, phone_number, role, status, nickname, birth_date, gender, created_date, modified_date)
 VALUES (
            'tester00',
            'test00@gmail.com',
@@ -8,11 +8,11 @@ VALUES (
            'NORMAL',
            'test01',
            '20000101',
+            'MAN',
            now(),
-           now()); /* password1! */
+           now()), /* password1! */
 
-INSERT INTO users(user_name, email, password, phone_number, role, status, nickname, birth_date, created_date, modified_date)
-VALUES ('tester01',
+('tester01',
         'test01@gmail.com',
         '$2a$10$StGFrD9mIqLFRBaBsvVDuusb54PQMonzjtc/3DbNKJNXAcvY7M.Ey',
         '01000000000',
@@ -20,11 +20,11 @@ VALUES ('tester01',
         'NORMAL',
         'test02',
         '20000101',
+        'MAN',
         now(),
-        now()); /* password2! */
+        now()), /* password2! */
 
-INSERT INTO users(user_name, email, password, phone_number, role, status, nickname, birth_date, created_date, modified_date)
-VALUES ('tester02',
+('tester02',
         'test02@gmail.com',
         '$2a$10$8ALIty0h4ebK4HIPVpWDRu7/1cP8CIs9odtGiybmBajNv3qenfid6',
         '01000000000',
@@ -32,6 +32,7 @@ VALUES ('tester02',
         'NORMAL',
         'test03',
         '20000101',
+        'MAN',
         now(),
         now()); /* password3! */
 

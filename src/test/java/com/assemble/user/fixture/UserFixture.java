@@ -32,13 +32,14 @@ public class UserFixture {
     private static final String modifiedNickname = "수정된 닉네임";
     private static final String modifiedPhoneNumber = "01012341234";
     private static final String modifiedBirthDate = "20000101";
+    private static final String man = "MAN";
 
     public static SignupRequest 회원가입_정상_신청_회원() {
-        return new SignupRequest(email, name, nickname, phoneNumber, password, birthDate);
+        return new SignupRequest(email, name, nickname, phoneNumber, password, birthDate, man);
     }
 
     public static SignupRequest 회원가입_정상_신청_두번째_회원() {
-        return new SignupRequest(secondEmail, name, secondNickname, phoneNumber, password, birthDate);
+        return new SignupRequest(secondEmail, name, secondNickname, phoneNumber, password, birthDate, man);
     }
 
     public static LoginRequest 로그인_시도_회원() {
@@ -65,7 +66,8 @@ public class UserFixture {
                 UserRole.USER,
                 UserStatus.NORMAL,
                 new UserImages(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                Gender.MAN
         );
     }
 
@@ -81,7 +83,8 @@ public class UserFixture {
                 UserRole.ADMIN,
                 UserStatus.NORMAL,
                 new UserImages(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                Gender.MAN
         );
     }
 
@@ -97,7 +100,8 @@ public class UserFixture {
                 UserRole.USER,
                 UserStatus.NORMAL,
                 new UserImages(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                Gender.MAN
         );
     }
 

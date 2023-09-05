@@ -34,6 +34,9 @@ public class UserInfoResponse {
     @ApiModelProperty(value = "프로필 이미지")
     private ProfileResponse profile;
 
+    @ApiModelProperty(value = "성별")
+    private String gender;
+
     public UserInfoResponse(User user) {
         this (
                 user.getUserId(),
@@ -43,7 +46,8 @@ public class UserInfoResponse {
                 user.getNickname(),
                 user.getName().getValue(),
                 user.getBirthDate().getValue(),
-                user.toProfile()
+                user.toProfile(),
+                user.getGender().toString()
         );
     }
 }

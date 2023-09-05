@@ -33,6 +33,9 @@ public class SignupResponse {
     @ApiModelProperty(value = "회원 역할")
     private String role;
 
+    @ApiModelProperty(value = "회원 성별")
+    private String gender;
+
     public static SignupResponse from(User user) {
         return new SignupResponse(
                 user.getUserId(),
@@ -40,7 +43,8 @@ public class SignupResponse {
                 user.getName().getValue(),
                 user.getNickname(),
                 user.getPhoneNumber().getValue(),
-                user.getRole().toString()
+                user.getRole().toString(),
+                user.getGender().toString()
         );
     }
 }

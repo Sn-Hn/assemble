@@ -95,7 +95,8 @@ public class UserControllerTest {
                         parameterWithName("nickname").description("닉네임"),
                         parameterWithName("phoneNumber").description("핸드폰 번호"),
                         parameterWithName("password").description("비밀번호"),
-                        parameterWithName("birthDate").description("생년월일")
+                        parameterWithName("birthDate").description("생년월일"),
+                        parameterWithName("gender").description("성별")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
@@ -106,7 +107,8 @@ public class UserControllerTest {
                         fieldWithPath("response.name").description("이름"),
                         fieldWithPath("response.nickname").description("닉네임"),
                         fieldWithPath("response.phoneNumber").description("핸드폰번호"),
-                        fieldWithPath("response.role").description("역할")
+                        fieldWithPath("response.role").description("역할"),
+                        fieldWithPath("response.gender").description("성별")
                 ))
         );
     }
@@ -143,7 +145,8 @@ public class UserControllerTest {
                         fieldWithPath("response.phoneNumber").description("핸드폰번호"),
                         fieldWithPath("response.role").description("역할"),
                         fieldWithPath("response.profile").description("프로필 사진"),
-                        fieldWithPath("response.birthDate").description("생년월일")
+                        fieldWithPath("response.birthDate").description("생년월일"),
+                        fieldWithPath("response.gender").description("성별")
                 ))
         );
     }
@@ -210,7 +213,8 @@ public class UserControllerTest {
                         fieldWithPath("response.phoneNumber").description("핸드폰번호"),
                         fieldWithPath("response.role").description("역할"),
                         fieldWithPath("response.profile").description("프로필 사진"),
-                        fieldWithPath("response.birthDate").description("생년월일")
+                        fieldWithPath("response.birthDate").description("생년월일"),
+                        fieldWithPath("response.gender").description("성별")
                 ))
         );
     }

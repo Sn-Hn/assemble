@@ -41,6 +41,10 @@ public class SignupRequest {
     @NotEmpty
     private String birthDate;
 
+    @ApiModelProperty(value = "성별", required = true)
+    @NotEmpty
+    private String gender;
+
     private SignupRequest() {
     }
 
@@ -55,7 +59,9 @@ public class SignupRequest {
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", password='" + password +
+                ", password='" + password + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", gender='" + gender + '\'' +
                 '}';
     }
 }
