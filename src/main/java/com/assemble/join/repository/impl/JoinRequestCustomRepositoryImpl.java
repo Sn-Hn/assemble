@@ -5,9 +5,11 @@ import com.assemble.join.entity.QJoinRequest;
 import com.assemble.join.repository.JoinRequestCustomRepository;
 import com.assemble.meeting.entity.QMeeting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JoinRequestCustomRepositoryImpl implements JoinRequestCustomRepository {
 
@@ -39,5 +41,15 @@ public class JoinRequestCustomRepositoryImpl implements JoinRequestCustomReposit
                 .fetchJoin()
                 .where(QMeeting.meeting.meetingId.eq(meetingId))
                 .fetchOne();
+    }
+
+    @Override
+    public List<JoinRequest> findAllByUserId(Long userId, Pageable pageable) {
+        return queryFactory.selectFrom(QJoinRequest.joinRequest)
+                .where(QJoinRequest.joinRequest.user.userId.eq(userId))
+                .orderBy(QJoinRequest.joinRequest.modifiedDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
     }
 }

@@ -12,10 +12,14 @@ import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,7 +55,6 @@ public class JoinRequestService {
         JoinRequest joinRequest = joinRequestRepository.findById(joinRequestAnswer.getJoinRequestId())
                 .orElseThrow(() -> new NotFoundException(JoinRequest.class, joinRequestAnswer.getJoinRequestId()));
 
-        joinRequest.validateBlock(joinRequestAnswer.getStatus());
         joinRequest.answerJoinRequest(joinRequestAnswer, userContext.getUserId());
         if (joinRequest.isApproval()) {
             eventPublisher.publishEvent(new JoinRequestEvent(joinRequest));
@@ -80,5 +83,18 @@ public class JoinRequestService {
         }
 
         return joinRequestRepository.findAllByMeetingId(meetingId);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<JoinRequest> getMyJoinRequests(Pageable pageable) {
+        long count = joinRequestRepository.countByUserId(userContext.getUserId());
+        List<JoinRequest> joinRequests = joinRequestRepository.findAllByUserId(userContext.getUserId(), pageable)
+                .stream().map(joinRequest -> {
+                    joinRequest.mapBlockToRequest();
+                    return joinRequest;
+                })
+                .collect(Collectors.toUnmodifiableList());
+
+        return new PageImpl<>(joinRequests, pageable, count);
     }
 }

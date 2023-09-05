@@ -8,6 +8,8 @@ import com.assemble.join.service.JoinRequestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,5 +49,12 @@ public class JoinRequestController {
                         .stream()
                         .map(JoinResponse::new)
                         .collect(Collectors.toUnmodifiableList()));
+    }
+
+    @ApiOperation("내가 가입 신청한 모임 조회")
+    @GetMapping
+    public ApiResult<Page<JoinResponse>> getJoinRequests(Pageable pageable) {
+        return ApiResult.ok(joinRequestService.getMyJoinRequests(pageable)
+                .map(JoinResponse::new));
     }
 }

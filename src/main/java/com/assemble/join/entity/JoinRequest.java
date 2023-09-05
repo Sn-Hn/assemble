@@ -46,6 +46,7 @@ public class JoinRequest extends BaseUserEntity {
     public void answerJoinRequest(JoinRequestAnswer joinRequestAnswer, Long userId) {
         validateAssembleCreator(userId);
         validateAlreadyAnswerJoinRequest();
+        validateBlock(joinRequestAnswer.getStatus());
         this.status = JoinRequestStatus.valueOf(joinRequestAnswer.getStatus());
     }
 

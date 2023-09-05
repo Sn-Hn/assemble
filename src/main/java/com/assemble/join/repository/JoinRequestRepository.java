@@ -16,4 +16,7 @@ public interface JoinRequestRepository extends JpaRepository<JoinRequest, Long>,
             "ORDER BY joinRequest.modified_date desc " +
             "LIMIT 1", nativeQuery = true)
     Optional<JoinRequest> findByAssembleIdAndUserId(@Param("meetingId") Long meetingId, @Param("userId") Long userId);
+
+    @Query(value = "SELECT count(joinRequest) FROM JoinRequest joinRequest WHERE joinRequest.user.userId = :userId")
+    long countByUserId(@Param("userId") Long userId);
 }

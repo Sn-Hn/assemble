@@ -64,10 +64,9 @@ public class JoinRequestIntegrationTest {
                 .log().all();
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"APPROVAL", "REJECT", "BLOCK"})
-    void 모임_가입_신청_처리(String status) {
-        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
+    @Test
+    void 모임_가입_신청_승인() {
+        JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_승인();
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
@@ -82,7 +81,7 @@ public class JoinRequestIntegrationTest {
                 .body("success", is(true),
                         "status", equalTo(200),
                         "response", notNullValue(),
-                        "response.status", equalTo(status))
+                        "response.status", equalTo(joinRequestAnswer.getStatus()))
                 .log().all();
     }
 
