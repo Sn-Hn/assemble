@@ -1,7 +1,7 @@
 package com.assemble.event.handler;
 
 import com.assemble.commons.base.UserContext;
-import com.assemble.event.publish.PostEvent;
+import com.assemble.event.publish.MeetingEvent;
 import com.assemble.activity.domain.ActivityStatus;
 import com.assemble.activity.entity.Activity;
 import com.assemble.activity.repository.ActivityRepository;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PostEventHandler {
+public class MeetingEventHandler {
 
     private final ActivityRepository activityRepository;
     private final UserContext userContext;
 
     @EventListener
-    public Activity doPostEvent(PostEvent meetingEvent) {
+    public Activity doPostEvent(MeetingEvent meetingEvent) {
         Meeting meeting = meetingEvent.getMeeting();
         log.info("Post id={}", meeting.getMeetingId());
 

@@ -1,7 +1,7 @@
 package com.assemble.event.handler;
 
 import com.assemble.commons.base.UserContext;
-import com.assemble.event.publish.PostEvent;
+import com.assemble.event.publish.MeetingEvent;
 import com.assemble.activity.domain.ActivityStatus;
 import com.assemble.activity.entity.Activity;
 import com.assemble.activity.repository.ActivityRepository;
@@ -25,7 +25,7 @@ import static org.mockito.BDDMockito.given;
 class MeetingEventHandlerTest {
 
     @InjectMocks
-    private PostEventHandler postEventHandler;
+    private MeetingEventHandler meetingEventHandler;
 
     @Mock
     private ActivityRepository activityRepository;
@@ -38,12 +38,12 @@ class MeetingEventHandlerTest {
         // given
         Meeting meeting = MeetingFixture.모임();
         Long userId = 1L;
-        PostEvent postEvent = new PostEvent(meeting);
+        MeetingEvent meetingEvent = new MeetingEvent(meeting);
         given(userContext.getUserId()).willReturn(userId);
         given(activityRepository.save(any())).willReturn(new Activity(meeting, new User(userId), ActivityStatus.NORMAL));
 
         // when
-        Activity activity = postEventHandler.doPostEvent(postEvent);
+        Activity activity = meetingEventHandler.doPostEvent(meetingEvent);
 
         // then
         assertAll(

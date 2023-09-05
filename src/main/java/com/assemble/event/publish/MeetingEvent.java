@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PostEvent {
+public class MeetingEvent {
 
     private final Meeting meeting;
 

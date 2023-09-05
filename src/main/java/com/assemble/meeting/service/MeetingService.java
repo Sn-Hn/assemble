@@ -2,7 +2,7 @@ package com.assemble.meeting.service;
 
 import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
-import com.assemble.event.publish.PostEvent;
+import com.assemble.event.publish.MeetingEvent;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
@@ -36,7 +36,7 @@ public class MeetingService {
         Meeting meeting = meetingCreationRequest.toEntity(userContext.getUserId());
 
         Meeting savedMeeting = meetingRepository.save(meeting);
-        eventPublisher.publishEvent(new PostEvent(meeting));
+        eventPublisher.publishEvent(new MeetingEvent(meeting));
 
         return savedMeeting;
     }

@@ -1,7 +1,7 @@
 package com.assemble.meeting.service;
 
 import com.assemble.commons.base.UserContext;
-import com.assemble.event.publish.PostEvent;
+import com.assemble.event.publish.MeetingEvent;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
@@ -64,7 +64,7 @@ class MeetingServiceTest {
                 () -> assertThat(response.getUser().getUserId()).isEqualTo(userContext.getUserId())
         );
 
-        verify(eventPublisher, times(1)).publishEvent(any(PostEvent.class));
+        verify(eventPublisher, times(1)).publishEvent(any(MeetingEvent.class));
     }
 
     @Test
