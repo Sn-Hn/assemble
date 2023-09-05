@@ -125,4 +125,23 @@ public class JoinRequestIntegrationTest {
                         "response", notNullValue())
                 .log().all();
     }
+
+    @Test
+    void 가입_신청한_모임_조회() {
+        PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
+                .log().all()
+        .when()
+                .get("join")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "status", equalTo(200),
+                        "response", notNullValue())
+                .log().all();
+    }
 }

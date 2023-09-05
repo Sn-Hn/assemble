@@ -25,6 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -303,7 +304,6 @@ class JoinRequestServiceTest {
     @Test
     void 모임장_아니면_가입_신청_조회_불가능() {
         // given
-        Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
         Meeting meeting = MeetingFixture.모임();
         Long meetingId = meeting.getMeetingId();
         given(meetingRepository.findById(anyLong())).willReturn(Optional.of(meeting));
@@ -312,6 +312,32 @@ class JoinRequestServiceTest {
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> joinRequestService.getJoinRequestsToMeeting(meetingId));
+    }
 
+    // 차단된 신청은 계속 신청으로 남아있음 (차단된 것을 알지 못함)
+    @Test
+    void 내가_신청한_모임_조회() {
+        // given
+        Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
+        given(userContext.getUserId()).willReturn(1L);
+        given(joinRequestRepository.countByUserId(anyLong())).willReturn(1L);
+        List<JoinRequest> joinRequests = List.of(
+                JoinRequestFixture.정상_신청_회원(),
+                JoinRequestFixture.승인된_회원(),
+                JoinRequestFixture.거절된_회원(),
+                JoinRequestFixture.차단된_회원());
+        given(joinRequestRepository.findAllByUserId(anyLong(), any())).willReturn(joinRequests);
+
+        // when
+        Page<JoinRequest> myJoinRequests = joinRequestService.getMyJoinRequests(pageable);
+
+        // then
+        assertAll(
+                () -> assertThat(myJoinRequests.getTotalElements()).isEqualTo(4),
+                () -> assertThat(myJoinRequests.get()
+                        .filter(joinRequest -> joinRequest.getStatus() == JoinRequestStatus.BLOCK)
+                        .findAny()
+                        .isPresent()).isFalse()
+        );
     }
 }
