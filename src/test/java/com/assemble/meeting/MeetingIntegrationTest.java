@@ -27,7 +27,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-@DisplayName("Post Integration Test")
+@DisplayName("Meeting Integration Test")
 @CustomIntegrationTest
 public class MeetingIntegrationTest {
 

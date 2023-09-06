@@ -20,9 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
@@ -133,18 +135,14 @@ public class UserIntegrationTest {
     }
 
     @Test
-    void 회원정보_수정() throws FileNotFoundException {
+    void 회원정보_수정() {
         ModifiedUserRequest modifiedUserRequest = UserFixture.회원정보_수정();
-        File file = FileFixture.File_생성();
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecFromWithdrawUser(jwtService))
-                .config(config)
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(modifiedUserRequest, Map.class))
-                .multiPart("profileImage", file)
-                .urlEncodingEnabled(true)
                 .log().all()
         .when()
                 .put("user")
@@ -185,6 +183,28 @@ public class UserIntegrationTest {
                 .log().all()
         .when()
                 .put("user/password")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response", is(true))
+                .log().all();
+    }
+
+    @Test
+    void 프로필_이미지_변경() throws IOException {
+        File file = FileFixture.File_생성();
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .config(config)
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("profileImage", file)
+                .urlEncodingEnabled(true)
+                .log().all()
+        .when()
+                .put("user/profile")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

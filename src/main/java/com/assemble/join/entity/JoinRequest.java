@@ -60,6 +60,10 @@ public class JoinRequest extends BaseUserEntity {
         return JoinRequestStatus.APPROVAL.equals(this.status);
     }
 
+    public boolean isRequestAndBlock() {
+        return JoinRequestStatus.REQUEST.equals(this.status) || JoinRequestStatus.BLOCK.equals(this.status);
+    }
+
     public void mapBlockToRequest() {
         this.status = this.status == JoinRequestStatus.BLOCK ? JoinRequestStatus.REQUEST : this.status;
     }
@@ -108,5 +112,13 @@ public class JoinRequest extends BaseUserEntity {
         if (this.status.equals(JoinRequestStatus.BLOCK) && !JoinRequestStatus.REJECT.toString().equals(updateStatus)) {
             throw new IllegalStateException("차단된 회원입니다.");
         }
+    }
+
+    public boolean isRequestUser(Long userId) {
+        if (isRequestAndBlock() && this.user.getUserId().equals(userId)) {
+            return true;
+        }
+
+        return false;
     }
 }

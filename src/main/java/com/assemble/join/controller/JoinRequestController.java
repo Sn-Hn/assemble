@@ -4,6 +4,7 @@ import com.assemble.commons.response.ApiResult;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.dto.response.JoinResponse;
+import com.assemble.join.dto.response.MyJoinResponse;
 import com.assemble.join.service.JoinRequestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +27,8 @@ public class JoinRequestController {
 
     @ApiOperation("모임 가입 신청")
     @PostMapping
-    public ApiResult<JoinResponse> requestJoin(@RequestBody @Valid JoinRequestDto joinRequestDto) {
-        return ApiResult.ok(new JoinResponse(joinRequestService.requestJoinToAssemble(joinRequestDto)));
+    public ApiResult<MyJoinResponse> requestJoin(@RequestBody @Valid JoinRequestDto joinRequestDto) {
+        return ApiResult.ok(new MyJoinResponse(joinRequestService.requestJoinToAssemble(joinRequestDto)));
     }
 
     @ApiOperation("모임 가입 승인, 거절, 차단 ex) APPROVAL, REJECT, BLOCK")
@@ -53,8 +54,8 @@ public class JoinRequestController {
 
     @ApiOperation("내가 가입 신청한 모임 조회")
     @GetMapping
-    public ApiResult<Page<JoinResponse>> getJoinRequests(Pageable pageable) {
+    public ApiResult<Page<MyJoinResponse>> getJoinRequests(Pageable pageable) {
         return ApiResult.ok(joinRequestService.getMyJoinRequests(pageable)
-                .map(JoinResponse::new));
+                .map(MyJoinResponse::new));
     }
 }

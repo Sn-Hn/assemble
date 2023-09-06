@@ -3,6 +3,7 @@ package com.assemble.meeting.fixture;
 import com.assemble.activity.domain.Activities;
 import com.assemble.category.entity.Category;
 import com.assemble.comment.domain.Comments;
+import com.assemble.join.domain.JoinRequests;
 import com.assemble.meeting.domain.*;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
@@ -93,6 +94,7 @@ public class MeetingFixture {
                 false,
                 false,
                 MeetingStatus.PROGRESS,
+                new JoinRequests(),
                 new Activities(),
                 주소()
         );

@@ -25,4 +25,18 @@ public class AuthenticationUtils {
         SecurityContext securityContext = new SecurityContextImpl(authentication);
         SecurityContextHolder.setContext(securityContext);
     }
+
+    public static Long getUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || authentication.getPrincipal() == null || "anonymousUser".equals(authentication.getPrincipal())) {
+            return null;
+        }
+
+        if (authentication.getPrincipal() instanceof Long) {
+            return (Long) authentication.getPrincipal();
+        }
+
+        return null;
+    }
 }

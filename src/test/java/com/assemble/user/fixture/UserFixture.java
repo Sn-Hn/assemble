@@ -4,6 +4,7 @@ import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.*;
 import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.user.entity.User;
+import com.assemble.user.entity.UserImage;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

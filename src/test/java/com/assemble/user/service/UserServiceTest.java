@@ -1,12 +1,15 @@
 package com.assemble.user.service;
 
 import com.assemble.commons.base.UserContext;
+import com.assemble.file.entity.AttachedFile;
+import com.assemble.file.fixture.FileFixture;
 import com.assemble.file.service.FileService;
 import com.assemble.user.dto.request.ChangePasswordRequest;
 import com.assemble.user.dto.request.FindEmailRequest;
 import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
+import com.assemble.user.entity.UserImage;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.repository.UserRepository;
 import org.junit.jupiter.api.*;
@@ -155,5 +158,20 @@ class UserServiceTest {
                 () -> assertThat(successChangePassword).isTrue(),
                 () -> assertThat(passwordEncoder.matches(changePasswordRequest.getPassword(), user.getPassword().getValue())).isTrue()
         );
+    }
+
+    @Test
+    void 회원_프로필_삭제() {
+        // given
+        User user = UserFixture.회원();
+        AttachedFile attachedFile = FileFixture.첨부파일_생성();
+        user.getProfiles().add(new UserImage(user, attachedFile));
+        given(userRepository.findById(any())).willReturn(Optional.of(user));
+
+        // then
+        userService.removeUserProfile();
+
+        // when
+        assertThat(user.getProfiles().getValues().size()).isEqualTo(0);
     }
 }

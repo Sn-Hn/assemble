@@ -69,7 +69,7 @@ public class Activity extends BaseUserEntity {
 
     public void validateAlreadyActivityUser(Long userId) {
         if (isActivityUser(userId)) {
-            throw new IllegalStateException("이미 가입한 회원입니다.");
+            throw new IllegalStateException("이미 활동 중인 회원입니다.");
         }
     }
 }

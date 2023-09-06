@@ -19,6 +19,7 @@ public class FileFixture {
     private static final String name = "";
     private static final long size = 100L;
     private static final String savedName = "";
+    private static final String profileImage = "profileImage";
 
     public static File File_생성() throws FileNotFoundException {
         return ResourceUtils.getFile(DEFAULT_PROFILE_PATH);
@@ -26,12 +27,12 @@ public class FileFixture {
 
     public static MultipartFile MultipartFile_생성() throws IOException {
         File file = File_생성();
-        return new MockMultipartFile(file.getName(), file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
+        return new MockMultipartFile(profileImage, file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
     }
 
     public static MockMultipartFile MockMultipartFile_생성() throws IOException {
         File file = File_생성();
-        return new MockMultipartFile(file.getName(), file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
+        return new MockMultipartFile(profileImage, file.getName(), MediaType.MULTIPART_FORM_DATA_VALUE, new FileInputStream(file));
     }
 
     public static AttachedFile 첨부파일_생성() {

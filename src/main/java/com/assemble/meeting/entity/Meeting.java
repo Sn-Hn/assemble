@@ -7,6 +7,7 @@ import com.assemble.comment.domain.Comments;
 import com.assemble.commons.converter.BooleanToYNConverter;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.file.entity.AttachedFile;
+import com.assemble.join.domain.JoinRequests;
 import com.assemble.meeting.domain.*;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.user.entity.User;
@@ -63,6 +64,9 @@ public class Meeting extends BaseUserEntity {
 
     @Enumerated(EnumType.STRING)
     private MeetingStatus meetingStatus;
+
+    @Embedded
+    private JoinRequests joinRequests = new JoinRequests();
 
     @Embedded
     private Activities activities = new Activities();

@@ -3,6 +3,7 @@ package com.assemble.meeting.dto.response;
 import com.assemble.comment.dto.response.CommentResponse;
 import com.assemble.file.dto.response.ProfileResponse;
 import com.assemble.meeting.entity.Meeting;
+import com.assemble.util.AuthenticationUtils;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,6 +70,12 @@ public class MeetingResponse {
     @ApiModelProperty(value = "상세 주소")
     private String detailAddress;
 
+    @ApiModelProperty(value = "활동 여부")
+    private boolean isActivity;
+
+    @ApiModelProperty(value = "가입 신청 여부")
+    private boolean isJoinRequest;
+
     public MeetingResponse(Meeting meeting) {
         this(
                 meeting.getMeetingId(),
@@ -90,7 +97,9 @@ public class MeetingResponse {
                 meeting.getMeetingStatus().toString(),
                 meeting.getActivities().getValues().size(),
                 meeting.getAddress().getRoadName(),
-                meeting.getAddress().getDetail()
+                meeting.getAddress().getDetail(),
+                meeting.getActivities().isActivityUser(AuthenticationUtils.getUserId()),
+                meeting.getJoinRequests().isJoinRequestUser(AuthenticationUtils.getUserId())
         );
     }
 }

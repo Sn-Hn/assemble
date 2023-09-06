@@ -23,7 +23,6 @@ public class FileService {
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
 
-    @Async
     @Transactional
     public void uploadFile(MultipartFile file, Long userId) {
         if (!existFile(file)) {

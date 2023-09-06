@@ -207,7 +207,9 @@ class MeetingControllerTest {
                         fieldWithPath("response.meetingProfileImages").description("모임 프로필 사진 목록"),
                         fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
                         fieldWithPath("response.roadNameAddress").description("도로명 주소"),
-                        fieldWithPath("response.detailAddress").description("상세 주소")
+                        fieldWithPath("response.detailAddress").description("상세 주소"),
+                        fieldWithPath("response.activity").description("활동 여부"),
+                        fieldWithPath("response.joinRequest").description("가입 신청 여부")
                 ))
         );
     }
@@ -263,7 +265,9 @@ class MeetingControllerTest {
                         fieldWithPath("response.meetingProfileImages").description("모임 프로필 사진 목록"),
                         fieldWithPath("response.meetingStatus").description("모임 상태 (모집 중, 모집 완료)"),
                         fieldWithPath("response.roadNameAddress").description("도로명 주소"),
-                        fieldWithPath("response.detailAddress").description("상세 주소")
+                        fieldWithPath("response.detailAddress").description("상세 주소"),
+                        fieldWithPath("response.activity").description("활동 여부"),
+                        fieldWithPath("response.joinRequest").description("가입 신청 여부")
                 ))
         );
     }

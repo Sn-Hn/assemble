@@ -15,11 +15,14 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Api(tags = "회원 Apis")
 @RestController
@@ -29,6 +32,7 @@ public class UserController {
 
     private final UserService userService;
     private final FileService fileService;
+    private final DelegatingSecurityContextAsyncTaskExecutor executor;
 
     @ApiOperation(value = "회원가입")
     @PostMapping(value = "signup")
@@ -40,8 +44,14 @@ public class UserController {
 
         AuthenticationUtils.setSecurityContextToUser(user.getUserId());
 
-        CustomMultipartFile.from(profileImage)
-                .ifPresent(file -> fileService.uploadFile(file, user.getUserId()));
+        Optional<CustomMultipartFile> profile = CustomMultipartFile.from(profileImage);
+        CompletableFuture.runAsync(() -> profile.ifPresent(file -> fileService.uploadFile(file, user.getUserId())), executor)
+                .exceptionally(e -> {
+                    log.warn("fail file upload!!!");
+                    log.warn("FileUploadException={}", e.getMessage(), e);
+                    return null;
+                });
+
         return ApiResult.ok(SignupResponse.from(user), HttpStatus.CREATED);
     }
 
@@ -60,13 +70,22 @@ public class UserController {
     @ApiOperation(value = "회원 정보 수정")
     @PutMapping("user")
     public ApiResult<UserInfoResponse> modifyUser(
-            @Valid ModifiedUserRequest modifiedUserRequest,
-            @RequestPart(required = false)MultipartFile profileImage) throws IOException {
+            @Valid ModifiedUserRequest modifiedUserRequest) {
 
         User user = userService.modifyUserInfo(modifiedUserRequest);
-        CustomMultipartFile.from(profileImage)
-                .ifPresent(file -> fileService.uploadFile(file, user.getUserId()));
+
         return ApiResult.ok(new UserInfoResponse(user));
+    }
+
+    @ApiOperation(value = "프로필 이미지 변경")
+    @PutMapping("user/profile")
+    public ApiResult<Boolean> changeUserProfile(@RequestPart(required = false) MultipartFile profileImage) throws IOException {
+        userService.removeUserProfile();
+
+        CustomMultipartFile.from(profileImage)
+                .ifPresent(file -> fileService.uploadFile(file, AuthenticationUtils.getUserId()));
+
+        return ApiResult.ok(true);
     }
 
     @ApiOperation(value = "이메일 찾기")

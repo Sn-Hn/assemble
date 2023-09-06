@@ -4,9 +4,8 @@ import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.entity.JoinRequest;
-import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.fixture.MeetingFixture;
-import com.assemble.user.entity.User;
+import com.assemble.user.fixture.UserFixture;
 
 public class JoinRequestFixture {
     private static final Long joinRequestId = 1L;
@@ -34,7 +33,7 @@ public class JoinRequestFixture {
     public static JoinRequest 가입_처리_응답(JoinRequestStatus status) {
         return new JoinRequest(
                 MeetingFixture.모임(),
-                new User(userId),
+                UserFixture.관리자(),
                 status,
                 null
         );

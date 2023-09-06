@@ -1,6 +1,8 @@
 package com.assemble.user.controller;
 
 import com.assemble.commons.TokenFixture;
+import com.assemble.commons.config.SecurityConfig;
+import com.assemble.commons.config.TaskExecutorConfig;
 import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
@@ -17,23 +19,33 @@ import com.assemble.util.MultiValueMapConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.request.RequestPartDescriptor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -50,6 +62,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtFilter.class)
         })
 @AutoConfigureRestDocs
+@Import({SecurityConfig.class, TaskExecutorConfig.class})
 @WithMockUser
 public class UserControllerTest {
 
@@ -67,6 +80,9 @@ public class UserControllerTest {
 
     @MockBean
     private TokenInformationInterceptor tokenInformationInterceptor;
+
+    @Autowired
+    private DelegatingSecurityContextAsyncTaskExecutor delegatingSecurityContextAsyncTaskExecutor;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -185,7 +201,7 @@ public class UserControllerTest {
         given(userService.modifyUserInfo(any())).willReturn(user);
 
         ResultActions perform = mockMvc.perform(multipart(HttpMethod.PUT, "/user")
-                .file(FileFixture.MockMultipartFile_생성())
+                .header("Authorization", TokenFixture.AccessToken_생성())
                 .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .queryParams(MultiValueMapConverter.convert(objectMapper, modifiedUserRequest)));
@@ -196,6 +212,9 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
         perform.andDo(document("/user/update",
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer AccessToken")
+                ),
                 requestParameters(
                         parameterWithName("name").description("이름"),
                         parameterWithName("nickname").description("닉네임"),
@@ -269,6 +288,35 @@ public class UserControllerTest {
                 requestFields(
                         fieldWithPath("email").description("이메일"),
                         fieldWithPath("password").description("변경할 비밀번호")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response").description("비밀번호 변경 여부")
+                ))
+        );
+    }
+
+    @Test
+    void 프로필_이미지_변경() throws Exception {
+        MockMultipartFile mockMultipartFile = FileFixture.MockMultipartFile_생성();
+        ResultActions perform = mockMvc.perform(multipart(HttpMethod.PUT, "/user/profile")
+                .file(mockMultipartFile)
+                .header("Authorization", TokenFixture.AccessToken_생성())
+                .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response").value(true));
+
+        perform.andDo(document("/user/profile/change",
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer AccessToken")
+                ),
+                requestParts(
+                        partWithName("profileImage").description("프로필 이미지")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),

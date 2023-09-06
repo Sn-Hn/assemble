@@ -13,6 +13,7 @@ import com.assemble.user.dto.request.ChangePasswordRequest;
 import com.assemble.user.dto.request.SignupRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
+import com.assemble.util.AuthenticationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final ValidationService validationService;
-
     private final UserContext userContext;
-
-    private final FileRepository fileRepository;
 
     @Transactional
     public User signup(SignupRequest signupRequest) {
@@ -67,7 +63,6 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(User.class, userContext.getUserId()));
 
         user.modifyInfo(modifiedUserRequest);
-        user.getProfiles().clear();
 
         return user;
     }
@@ -89,5 +84,13 @@ public class UserService {
         user.changePassword(password);
 
         return true;
+    }
+
+    @Transactional
+    public void removeUserProfile() {
+        User user = userRepository.findById(AuthenticationUtils.getUserId())
+                .orElseThrow(() -> new NotFoundException(User.class, AuthenticationUtils.getUserId()));
+
+        user.getProfiles().clear();
     }
 }

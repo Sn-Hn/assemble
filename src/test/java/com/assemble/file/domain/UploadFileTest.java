@@ -47,7 +47,7 @@ class UploadFileTest {
         AttachedFile file = uploadFile.upload(multipartFile);
 
         // then
-        assertThat(file.getName()).isEqualTo(multipartFile.getName());
+        assertThat(file.getName()).isEqualTo(multipartFile.getOriginalFilename());
     }
 
 }

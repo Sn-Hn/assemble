@@ -142,9 +142,11 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("response.meetingId").description("모임 ID"),
                                 fieldWithPath("response.userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response.nickname").description("모임 가입 신청자 닉네임"),
+                                fieldWithPath("response.profile").description("모임 가입 신청자 프로필 이미지"),
                                 fieldWithPath("response.status").description("가입 신청 상태"),
                                 fieldWithPath("response.message").description("가입 신청 메시지"),
-                                fieldWithPath("response.createdDate").description("가입 신청일")
+                                fieldWithPath("response.createdDate").description("가입 신청일"),
+                                fieldWithPath("response.gender").description("성별")
                         )
                 ));
     }
@@ -217,9 +219,11 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("response[0].meetingId").description("모임 ID"),
                                 fieldWithPath("response[0].userId").description("모임 가입 신청자 ID"),
                                 fieldWithPath("response[0].nickname").description("모임 가입 신청자 닉네임"),
+                                fieldWithPath("response[0].profile").description("모임 가입 신청자 프로필 이미지"),
                                 fieldWithPath("response[0].status").description("가입 신청 상태"),
                                 fieldWithPath("response[0].message").description("가입 신청 메시지"),
-                                fieldWithPath("response[0].createdDate").description("가입 신청일")
+                                fieldWithPath("response[0].createdDate").description("가입 신청일"),
+                                fieldWithPath("response[0].gender").description("성별")
                         )
                 ));
     }

@@ -18,4 +18,11 @@ public class Activities {
     public void add(Activity activity) {
         this.values.add(activity);
     }
+
+    public boolean isActivityUser(Long userId) {
+        return this.values.stream()
+                .filter(activity -> activity.isActivityUser(userId))
+                .findAny()
+                .isPresent();
+    }
 }
