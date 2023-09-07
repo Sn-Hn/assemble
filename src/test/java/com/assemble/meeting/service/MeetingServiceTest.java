@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-@DisplayName("PostService")
+@DisplayName("MeetingService")
 @ExtendWith(MockitoExtension.class)
 class MeetingServiceTest {
 

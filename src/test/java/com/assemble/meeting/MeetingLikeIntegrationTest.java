@@ -23,7 +23,7 @@ import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@DisplayName("Post Like Integration Test")
+@DisplayName("Meeting Like Integration Test")
 @CustomIntegrationTest
 public class MeetingLikeIntegrationTest {
 

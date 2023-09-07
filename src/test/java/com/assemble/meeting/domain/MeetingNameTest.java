@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("Title")
+@DisplayName("Meeting Name")
 class MeetingNameTest {
 
     @Test

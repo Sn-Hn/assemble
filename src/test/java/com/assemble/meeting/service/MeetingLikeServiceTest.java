@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 
-@DisplayName("PostLikeService")
+@DisplayName("MeetingLikeService")
 @ExtendWith(MockitoExtension.class)
 class MeetingLikeServiceTest {
 
