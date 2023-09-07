@@ -42,13 +42,13 @@ public class Meeting extends BaseUserEntity {
     private User user;
 
     @ColumnDefault("0")
-    private Long hits;
+    private Long hits = 0L;
 
     @ColumnDefault("0")
-    private Long likes;
+    private Long likes = 0L;
 
     @Embedded
-    private Comments comments;
+    private Comments comments = new Comments();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;

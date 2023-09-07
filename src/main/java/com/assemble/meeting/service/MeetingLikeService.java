@@ -27,15 +27,15 @@ public class MeetingLikeService {
 
     @Transactional
     public boolean likePost(MeetingLikeRequest meetingLikeRequest) {
+        Meeting meeting = meetingRepository.findById(meetingLikeRequest.getMeetingId())
+                .orElseThrow(() -> new NotFoundException(Meeting.class, meetingLikeRequest.getMeetingId()));
+
         Likes meetingLike = meetingLikeRequest.toEntity(userContext.getUserId());
         if (isAleadyLikeByUser(meetingLikeRequest.getMeetingId())) {
             throw new IllegalArgumentException("this meeting is already like");
         }
 
         meetingLikeRepository.save(meetingLike);
-
-        Meeting meeting = meetingRepository.findById(meetingLikeRequest.getMeetingId())
-                .orElseThrow(() -> new NotFoundException(Meeting.class, meetingLikeRequest.getMeetingId()));
 
         meetingRepository.increaseLikes(meeting.getMeetingId());
 
