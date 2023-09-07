@@ -3,14 +3,12 @@ package com.assemble.file.entity;
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.commons.converter.BooleanToYNConverter;
 import com.assemble.file.dto.response.ProfileResponse;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode
 @Entity
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
