@@ -88,7 +88,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.email").value(loginRequest.getEmail()));
 
-        perform.andDo(document("/authentication",
+        perform.andDo(document("authentication",
                 requestFields(
                         fieldWithPath("email").description("이메일"),
                         fieldWithPath("password").description("비밀번호")
@@ -125,7 +125,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
-        perform.andDo(document("/auth/token",
+        perform.andDo(document("auth/token",
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
@@ -148,7 +148,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isEmpty());
 
-        perform.andDo(document("/logout",
+        perform.andDo(document("logout",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),

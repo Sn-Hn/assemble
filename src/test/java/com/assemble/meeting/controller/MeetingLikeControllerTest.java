@@ -76,7 +76,7 @@ class MeetingLikeControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/meeting/like",
+        perform.andDo(document("meeting/like",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -107,7 +107,7 @@ class MeetingLikeControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/meeting/like/cancel",
+        perform.andDo(document("meeting/like/cancel",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -138,7 +138,7 @@ class MeetingLikeControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
-        perform.andDo(document("/meeting/like",
+        perform.andDo(document("meeting/like",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),

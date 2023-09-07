@@ -85,7 +85,7 @@ public class JoinRequestControllerTest {
                 .andExpect(jsonPath("$.response.status").value(JoinRequestStatus.REQUEST.toString()));
 
         perform
-                .andDo(document("/join/creation",
+                .andDo(document("join/creation",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -125,7 +125,7 @@ public class JoinRequestControllerTest {
                 .andExpect(jsonPath("$.response.status").value(status));
 
         perform
-                .andDo(document("/join/answer",
+                .andDo(document("join/answer",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -166,7 +166,7 @@ public class JoinRequestControllerTest {
                 .andExpect(jsonPath("$.response").value(true));
 
         perform
-                .andDo(document("/join/cancel",
+                .andDo(document("join/cancel",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -199,7 +199,7 @@ public class JoinRequestControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
         perform
-                .andDo(document("/join/list",
+                .andDo(document("join/list",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -244,7 +244,7 @@ public class JoinRequestControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
         perform
-                .andDo(document("/join/my/list",
+                .andDo(document("join/my/list",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),

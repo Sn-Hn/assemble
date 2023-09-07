@@ -104,7 +104,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
-        perform.andDo(document("/signup",
+        perform.andDo(document("signup",
                 requestParameters(
                         parameterWithName("email").description("이메일"),
                         parameterWithName("name").description("이름"),
@@ -143,7 +143,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
-        perform.andDo(document("/user/detail",
+        perform.andDo(document("user/detail",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -180,7 +180,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/user/withdrawal",
+        perform.andDo(document("user/withdrawal",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -211,7 +211,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.userId").value(user.getUserId()));
 
-        perform.andDo(document("/user/update",
+        perform.andDo(document("user/update",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -254,7 +254,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.name").value(user.getName().getValue()));
 
-        perform.andDo(document("/user/email/find",
+        perform.andDo(document("user/email/find",
                 requestParameters(
                         parameterWithName("name").description("이름"),
                         parameterWithName("phoneNumber").description("핸드폰 번호")
@@ -284,7 +284,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/user/password/change",
+        perform.andDo(document("user/password/change",
                 requestFields(
                         fieldWithPath("email").description("이메일"),
                         fieldWithPath("password").description("변경할 비밀번호")
@@ -311,7 +311,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/user/profile/change",
+        perform.andDo(document("user/profile/change",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),

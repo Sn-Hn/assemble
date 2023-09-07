@@ -84,7 +84,7 @@ class ActivityControllerTest {
                 .andExpect(jsonPath("$.response.content").isNotEmpty());
 
         perform
-                .andDo(document("/activity/list",
+                .andDo(document("activity/list",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -145,7 +145,7 @@ class ActivityControllerTest {
                 .andExpect(jsonPath("$.response.content").isNotEmpty());
 
         perform
-                .andDo(document("/activity/user",
+                .andDo(document("activity/user",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -192,7 +192,7 @@ class ActivityControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/activity/withdrawal",
+        perform.andDo(document("activity/withdrawal",
                 pathParameters(
                         parameterWithName("meetingId").description("모임 Id")
                 ),

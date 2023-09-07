@@ -73,7 +73,7 @@ public class ValidationControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(false));
 
-        perform.andDo(document("/email/validation",
+        perform.andDo(document("email/validation",
                 requestParameters(
                         parameterWithName("email").description("이메일")
                 ),
@@ -99,7 +99,7 @@ public class ValidationControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(false));
 
-        perform.andDo(document("/nickname/validation",
+        perform.andDo(document("nickname/validation",
                 requestParameters(
                         parameterWithName("nickname").description("닉네임")
                 ),
@@ -127,7 +127,7 @@ public class ValidationControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/user/validation",
+        perform.andDo(document("user/validation",
                 requestParameters(
                         parameterWithName("email").description("이메일"),
                         parameterWithName("name").description("이름"),

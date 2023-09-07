@@ -79,7 +79,7 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.response.contents").value(commentCreationRequest.getContents()));
 
         perform
-                .andDo(document("/comment/creation",
+                .andDo(document("comment/creation",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -121,7 +121,7 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.response.contents").value(modifiedCommentRequest.getContents()));
 
         perform
-                .andDo(document("/comment/modification",
+                .andDo(document("comment/modification",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -159,7 +159,7 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.response").value(true));
 
         perform
-                .andDo(document("/comment/delete",
+                .andDo(document("comment/delete",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),
@@ -191,7 +191,7 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.response.content[0].userId").value(userId));
 
         perform
-                .andDo(document("/comment/user",
+                .andDo(document("comment/user",
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer AccessToken")
                         ),

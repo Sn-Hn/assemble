@@ -82,7 +82,7 @@ class MeetingControllerTest {
                 .andExpect(jsonPath("$.response.name").value(meetingCreationRequest.getName()))
                 .andExpect(jsonPath("$.response.description").value(meetingCreationRequest.getDescription()));
 
-        perform.andDo(document("/meeting/creation",
+        perform.andDo(document("meeting/creation",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -128,7 +128,7 @@ class MeetingControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
-        perform.andDo(document("/meeting/list",
+        perform.andDo(document("meeting/list",
                 requestParameters(
                         parameterWithName("searchQuery").description("검색어 ex) 제목"),
                         parameterWithName("searchBy").description("검색할 주제 ex) name, writer, description"),
@@ -182,7 +182,7 @@ class MeetingControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.meetingId").value(meetingId));
 
-        perform.andDo(document("/meeting/detail",
+        perform.andDo(document("meeting/detail",
                 pathParameters(
                         parameterWithName("meetingId").description("모임 Id")
                 ),
@@ -233,7 +233,7 @@ class MeetingControllerTest {
                 .andExpect(jsonPath("$.response.name").value(modifiedMeetingRequest.getName()))
                 .andExpect(jsonPath("$.response.description").value(modifiedMeetingRequest.getDescription()));
 
-        perform.andDo(document("/meeting/modification",
+        perform.andDo(document("meeting/modification",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
@@ -285,7 +285,7 @@ class MeetingControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").value(true));
 
-        perform.andDo(document("/meeting/delete",
+        perform.andDo(document("meeting/delete",
                 pathParameters(
                         parameterWithName("meetingId").description("모임 Id")
                 ),
@@ -314,7 +314,7 @@ class MeetingControllerTest {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.response.content[0].writerId").value(userId));
 
-        perform.andDo(document("/meeting/user",
+        perform.andDo(document("meeting/user",
                 pathParameters(
                         parameterWithName("userId").description("특정 회원 ID")
                 ),
