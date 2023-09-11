@@ -44,7 +44,8 @@ public class ValidationService {
     public boolean checkUser(ValidationUserRequest validationUserRequest) {
         userRepository.findByEmail(new Email(validationUserRequest.getEmail()))
                 .filter(user -> user.getName().getValue().equals(validationUserRequest.getName()) &&
-                        user.getPhoneNumber().getValue().equals(validationUserRequest.getPhoneNumber()))
+                        user.getPhoneNumber().getValue().equals(validationUserRequest.getPhoneNumber()) &&
+                        user.getBirthDate().getValue().equals(validationUserRequest.getBirthDate()))
                 .orElseThrow(() -> new NotFoundException(User.class, validationUserRequest));
 
         return true;

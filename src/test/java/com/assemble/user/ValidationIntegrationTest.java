@@ -128,7 +128,7 @@ public class ValidationIntegrationTest {
 
     @Test
     void 계정_확인() {
-        ValidationUserRequest validationUserRequest = new ValidationUserRequest("test00@gmail.com", "tester00", "01000000000");
+        ValidationUserRequest validationUserRequest = new ValidationUserRequest("test00@gmail.com", "tester00", "01000000000", "20000101");
         given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)

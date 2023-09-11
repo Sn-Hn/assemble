@@ -18,4 +18,9 @@ public class FindEmailRequest {
     @NotEmpty
     @Pattern(regexp = "^[0-9]{9,11}+$")
     private String phoneNumber;
+
+    @ApiModelProperty(value = "생년월일", required = true)
+    @NotEmpty
+    @Pattern(regexp = "^[0-9]{8}+$")
+    private String birthDate;
 }

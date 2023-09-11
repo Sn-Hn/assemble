@@ -242,7 +242,7 @@ public class UserControllerTest {
     void 이메일_찾기() throws Exception {
         FindEmailRequest findEmailRequest = UserFixture.이메일_찾기_요청();
         User user = UserFixture.회원();
-        given(userService.findEmailByUser(any())).willReturn(user);
+        given(userService.findEmailByUsers(any())).willReturn(List.of(user));
 
         ResultActions perform = mockMvc.perform(get("/user/email")
                 .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
@@ -252,20 +252,21 @@ public class UserControllerTest {
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.name").value(user.getName().getValue()));
+                .andExpect(jsonPath("$.response[0].name").value(user.getName().getValue()));
 
         perform.andDo(document("user/email/find",
                 requestParameters(
                         parameterWithName("name").description("이름"),
-                        parameterWithName("phoneNumber").description("핸드폰 번호")
+                        parameterWithName("phoneNumber").description("핸드폰 번호"),
+                        parameterWithName("birthDate").description("생년월일")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response.userId").description("회원 ID"),
-                        fieldWithPath("response.email").description("이메일"),
-                        fieldWithPath("response.name").description("이름")
+                        fieldWithPath("response[].userId").description("회원 ID"),
+                        fieldWithPath("response[].email").description("이메일"),
+                        fieldWithPath("response[].name").description("이름")
                 ))
         );
     }

@@ -3,10 +3,7 @@ package com.assemble.user.service;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.file.repository.FileRepository;
-import com.assemble.user.domain.Email;
-import com.assemble.user.domain.Name;
-import com.assemble.user.domain.Password;
-import com.assemble.user.domain.PhoneNumber;
+import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.FindEmailRequest;
 import com.assemble.user.dto.request.ModifiedUserRequest;
 import com.assemble.user.dto.request.ChangePasswordRequest;
@@ -18,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,9 +67,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findEmailByUser(FindEmailRequest findEmailRequest) {
-        return userRepository.findByNameAndPhoneNumber(new Name(findEmailRequest.getName()), new PhoneNumber(findEmailRequest.getPhoneNumber()))
-                .orElseThrow(() -> new IllegalArgumentException("정보와 일치하는 사용자가 존재하지 않습니다."));
+    public List<User> findEmailByUsers(FindEmailRequest findEmailRequest) {
+        return userRepository.findByNameAndPhoneNumber(
+                        new Name(findEmailRequest.getName()),
+                        new PhoneNumber(findEmailRequest.getPhoneNumber()),
+                        new BirthDate(findEmailRequest.getBirthDate()));
     }
 
     // TODO: 2023-08-29 3차 개발 -> 이메일 인증 추가 -신한

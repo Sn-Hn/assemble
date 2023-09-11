@@ -19,6 +19,6 @@ public class FindEmailResponse {
     private String email;
 
     public FindEmailResponse(User user) {
-        this (user.getUserId(), user.getName().getValue(), user.getPhoneNumber().getValue());
+        this (user.getUserId(), user.getName().getValue(), user.getEmail().getValue());
     }
 }

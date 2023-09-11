@@ -25,10 +25,16 @@ public class ValidationUserRequest {
     @Pattern(regexp = "^[0-9]{9,11}+$")
     private String phoneNumber;
 
+    @ApiModelProperty(value = "생년월일", required = true)
+    @NotEmpty
+    @Pattern(regexp = "^[0-9]{8}+$")
+    private String birthDate;
+
     @Override
     public String toString() {
         return "email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'';
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", birthDate='" + birthDate + '\'';
     }
 }

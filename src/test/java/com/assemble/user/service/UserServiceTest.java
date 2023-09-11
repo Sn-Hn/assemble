@@ -22,6 +22,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -120,14 +121,15 @@ class UserServiceTest {
     void 아이디_찾기() {
         // given
         FindEmailRequest findEmailRequest = UserFixture.이메일_찾기_요청();
-        given(userRepository.findByNameAndPhoneNumber(any(), any())).willReturn(Optional.of(UserFixture.회원()));
+        given(userRepository.findByNameAndPhoneNumber(any(), any(), any())).willReturn(List.of(UserFixture.회원()));
 
         // when
-        User user = userService.findEmailByUser(findEmailRequest);
+        List<User> users = userService.findEmailByUsers(findEmailRequest);
+        User user = users.stream().findAny().get();
 
         // then
         assertAll(
-                () -> assertThat(user).isNotNull(),
+                () -> assertThat(users).isNotNull(),
                 () -> assertThat(user.getName().getValue()).isEqualTo(findEmailRequest.getName()),
                 () -> assertThat(user.getPhoneNumber().getValue()).isEqualTo(findEmailRequest.getPhoneNumber())
         );
@@ -136,11 +138,11 @@ class UserServiceTest {
     @Test
     void 아이디_찾기_실패() {
         // given
-        FindEmailRequest failFindEmailRequest = new FindEmailRequest("test@test.com", "test");
+        FindEmailRequest failFindEmailRequest = new FindEmailRequest("test@test.com", "test", "20000101");
 
         // when, then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> userService.findEmailByUser(failFindEmailRequest));
+                .isThrownBy(() -> userService.findEmailByUsers(failFindEmailRequest));
     }
 
     @Test

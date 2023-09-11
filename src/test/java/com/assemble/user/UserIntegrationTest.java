@@ -156,7 +156,7 @@ public class UserIntegrationTest {
 
     @Test
     void 이메일_찾기() {
-        FindEmailRequest findEmailRequest = new FindEmailRequest("tester01", "01000000000");
+        FindEmailRequest findEmailRequest = new FindEmailRequest("tester01", "01000000000", "20000101");
         given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -168,7 +168,7 @@ public class UserIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response.name", equalTo(findEmailRequest.getName()))
+                        "response[0].name", equalTo(findEmailRequest.getName()))
                 .log().all();
     }
 

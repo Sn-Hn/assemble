@@ -127,7 +127,7 @@ public class UserFixture {
     }
 
     public static FindEmailRequest 이메일_찾기_요청() {
-        return new FindEmailRequest(name, phoneNumber);
+        return new FindEmailRequest(name, phoneNumber, birthDate);
     }
 
     public static ChangePasswordRequest 비밀번호_변경_요청() {
@@ -135,10 +135,10 @@ public class UserFixture {
     }
 
     public static ValidationUserRequest 정상_본인_확인_요청() {
-        return new ValidationUserRequest(email, name, phoneNumber);
+        return new ValidationUserRequest(email, name, phoneNumber, birthDate);
     }
 
     public static ValidationUserRequest 비정상_본인_확인_요청() {
-        return new ValidationUserRequest(email, "wrongName", phoneNumber);
+        return new ValidationUserRequest(email, "wrongName", phoneNumber, birthDate);
     }
 }

@@ -21,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Api(tags = "회원 Apis")
 @RestController
@@ -90,8 +92,11 @@ public class UserController {
 
     @ApiOperation(value = "이메일 찾기")
     @GetMapping("user/email")
-    public ApiResult<FindEmailResponse> findEmail(@Valid FindEmailRequest findEmailRequest) {
-        return ApiResult.ok(new FindEmailResponse(userService.findEmailByUser(findEmailRequest)));
+    public ApiResult<List<FindEmailResponse>> findEmail(@Valid FindEmailRequest findEmailRequest) {
+        return ApiResult.ok(userService.findEmailByUsers(findEmailRequest)
+                .stream()
+                .map(FindEmailResponse::new)
+                .collect(Collectors.toUnmodifiableList()));
     }
 
     @ApiOperation(value = "비밀번호 변경")

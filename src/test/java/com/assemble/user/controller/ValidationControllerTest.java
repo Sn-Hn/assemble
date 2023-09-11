@@ -114,7 +114,7 @@ public class ValidationControllerTest {
 
     @Test
     void 계정_확인() throws Exception {
-        ValidationUserRequest validationUserRequest = new ValidationUserRequest("test@test.com", "test", "01000000000");
+        ValidationUserRequest validationUserRequest = new ValidationUserRequest("test@test.com", "test", "01000000000", "19951128");
         User user = UserFixture.회원();
         given(validationService.checkUser(any())).willReturn(true);
 
@@ -131,7 +131,8 @@ public class ValidationControllerTest {
                 requestParameters(
                         parameterWithName("email").description("이메일"),
                         parameterWithName("name").description("이름"),
-                        parameterWithName("phoneNumber").description("핸드폰 번호")
+                        parameterWithName("phoneNumber").description("핸드폰 번호"),
+                        parameterWithName("birthDate").description("생년월일")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
