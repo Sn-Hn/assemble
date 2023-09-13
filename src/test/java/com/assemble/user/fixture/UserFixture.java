@@ -141,4 +141,8 @@ public class UserFixture {
     public static ValidationUserRequest 비정상_본인_확인_요청() {
         return new ValidationUserRequest(email, "wrongName", phoneNumber, birthDate);
     }
+
+    public static ValidationPasswordRequest 정상_비밀번호_확인_요청() {
+        return new ValidationPasswordRequest(password);
+    }
 }

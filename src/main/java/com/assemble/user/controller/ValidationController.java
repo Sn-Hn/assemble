@@ -4,12 +4,12 @@ import com.assemble.commons.response.ApiResult;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
 import com.assemble.user.dto.request.ValidationUserRequest;
+import com.assemble.user.dto.response.PasswordChangeToken;
 import com.assemble.user.service.ValidationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -33,11 +33,9 @@ public class ValidationController {
         return ApiResult.ok(validationService.isDuplicationNickname(nicknameRequest.getNickname()));
     }
 
-    // TODO: 2023-08-28 3차 개발 기간에 Email 검증 추가 예정 -신한
-    @ApiOperation(value = "비밀번호 변경 전 계정 확인 (추후 이메일 검증 추가)")
+    @ApiOperation(value = "비밀번호 찾기 전 계정 확인 (로그인 전)")
     @GetMapping("user/validation")
-    public ApiResult<Boolean> validateUser(@Valid ValidationUserRequest validationUserRequest) {
-        return ApiResult.ok(validationService.checkUser(validationUserRequest));
+    public ApiResult<PasswordChangeToken> validateUser(@Valid ValidationUserRequest validationUserRequest) {
+        return ApiResult.ok(new PasswordChangeToken(validationService.checkUser(validationUserRequest)));
     }
-
 }

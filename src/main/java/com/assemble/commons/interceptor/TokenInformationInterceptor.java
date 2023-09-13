@@ -32,7 +32,7 @@ public class TokenInformationInterceptor implements HandlerInterceptor {
             return HandlerInterceptor.super.preHandle(request, response, handler);
         }
 
-        Long userId = NumberUtils.parseNumber(jwtProvider.getUserId(accessTokenFromHeader), Long.class);
+        Long userId = NumberUtils.parseNumber(jwtProvider.getSubject(accessTokenFromHeader), Long.class);
         String email = jwtProvider.getEmail(accessTokenFromHeader);
         userContext.setUserId(userId);
         userContext.setEmail(email);

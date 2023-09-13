@@ -23,8 +23,7 @@ import org.springframework.http.MediaType;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 @DisplayName("Validation Integration Test")
 @CustomIntegrationTest
@@ -141,7 +140,7 @@ public class ValidationIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),
                         "error", equalTo(null),
-                        "response", is(true))
+                        "response.token", notNullValue())
                 .log().all();
     }
 }

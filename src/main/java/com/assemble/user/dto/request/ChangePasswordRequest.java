@@ -14,10 +14,9 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChangePasswordRequest {
 
-    @ApiModelProperty(value = "이메일", required = true)
+    @ApiModelProperty(value = "비밀번호 변경 토큰", required = true)
     @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
-    private String email;
+    private String token;
 
     @ApiModelProperty(value = "비밀번호", required = true)
     @NotEmpty

@@ -43,6 +43,15 @@ public class JwtProvider {
         return createToken(claims, refreshTokenExpireTime);
     }
 
+    public String createChangePasswordToken(String email) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("typ", "changePassword");
+
+        long tokenExpiredTime = Duration.ofMinutes(5).toMillis();
+
+        return createToken(claims, tokenExpiredTime);
+    }
+
     private String createToken(Claims claims, long expireTime) {
         Date now = new Date();
 
@@ -53,7 +62,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getUserId(String token) {
+    public String getSubject(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 

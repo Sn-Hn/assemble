@@ -1,6 +1,7 @@
 package com.assemble.user;
 
 import com.assemble.annotation.CustomIntegrationTest;
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.auth.service.JwtService;
 import com.assemble.file.fixture.FileFixture;
 import com.assemble.mock.RestAssuredSpecificationSpy;
@@ -44,6 +45,9 @@ public class UserIntegrationTest {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @BeforeEach
     void setUp() {
@@ -174,7 +178,8 @@ public class UserIntegrationTest {
 
     @Test
     void 비밀번호_변경() {
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("test00@gmail.com", "password2@");
+        String token = jwtProvider.createChangePasswordToken("test00@gmail.com");
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(token, "password2@");
         given()
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)

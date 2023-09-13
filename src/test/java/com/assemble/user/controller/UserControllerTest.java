@@ -287,7 +287,7 @@ public class UserControllerTest {
 
         perform.andDo(document("user/password/change",
                 requestFields(
-                        fieldWithPath("email").description("이메일"),
+                        fieldWithPath("token").description("비밀번호 변경 토큰"),
                         fieldWithPath("password").description("변경할 비밀번호")
                 ),
                 responseFields(

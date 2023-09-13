@@ -1,5 +1,6 @@
 package com.assemble.user.service;
 
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.user.dto.request.ValidationUserRequest;
 import com.assemble.user.entity.User;
@@ -10,13 +11,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +33,12 @@ public class ValidationServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private JwtProvider jwtProvider;
+
+    @Spy
+    private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Test
     void 이메일_중복_아님() {
@@ -90,13 +101,15 @@ public class ValidationServiceTest {
         // given
         ValidationUserRequest validationUserRequest = UserFixture.정상_본인_확인_요청();
         User user = UserFixture.회원();
+        String changePasswordToken = "changePasswordToken";
         given(userRepository.findByEmail(any())).willReturn(Optional.of(user));
+        given(jwtProvider.createChangePasswordToken(validationUserRequest.getEmail())).willReturn(changePasswordToken);
 
         // when
-        boolean checkedUser = validationService.checkUser(validationUserRequest);
+        String token = validationService.checkUser(validationUserRequest);
 
         // then
-        assertThat(checkedUser).isTrue();
+        assertThat(token).isEqualTo(changePasswordToken);
     }
 
     @Test
@@ -110,4 +123,5 @@ public class ValidationServiceTest {
         assertThatExceptionOfType(NotFoundException.class)
                 .isThrownBy(() -> validationService.checkUser(validationUserRequest));
     }
+
 }

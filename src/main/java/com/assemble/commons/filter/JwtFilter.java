@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
             throw new UnauthorizedException("Unauthorization", "Invalid Access Token !");
         }
 
-        log.info("Request UserId={}, Email={}", jwtProvider.getUserId(accessToken), jwtProvider.getEmail(accessToken));
+        log.info("Request UserId={}, Email={}", jwtProvider.getSubject(accessToken), jwtProvider.getEmail(accessToken));
 
         filterChain.doFilter(request, response);
     }

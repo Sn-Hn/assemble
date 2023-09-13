@@ -116,7 +116,8 @@ public class ValidationControllerTest {
     void 계정_확인() throws Exception {
         ValidationUserRequest validationUserRequest = new ValidationUserRequest("test@test.com", "test", "01000000000", "19951128");
         User user = UserFixture.회원();
-        given(validationService.checkUser(any())).willReturn(true);
+        String token = "passwordChangeToken";
+        given(validationService.checkUser(any())).willReturn(token);
 
         ResultActions perform = mockMvc.perform(get("/user/validation")
                 .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
@@ -125,7 +126,7 @@ public class ValidationControllerTest {
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.response").value(true));
+                .andExpect(jsonPath("$.response.token").value(token));
 
         perform.andDo(document("user/validation",
                 requestParameters(
@@ -138,7 +139,7 @@ public class ValidationControllerTest {
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response").description("계정 확인")
+                        fieldWithPath("response.token").description("비민번호 변경 토큰")
                 ))
         );
     }

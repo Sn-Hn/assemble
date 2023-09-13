@@ -1,8 +1,8 @@
 package com.assemble.user.service;
 
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
-import com.assemble.file.repository.FileRepository;
 import com.assemble.user.domain.*;
 import com.assemble.user.dto.request.FindEmailRequest;
 import com.assemble.user.dto.request.ModifiedUserRequest;
@@ -26,6 +26,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final ValidationService validationService;
     private final UserContext userContext;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public User signup(SignupRequest signupRequest) {
@@ -74,10 +75,10 @@ public class UserService {
                         new BirthDate(findEmailRequest.getBirthDate()));
     }
 
-    // TODO: 2023-08-29 3차 개발 -> 이메일 인증 추가 -신한
     @Transactional
     public boolean changePasswordByUser(ChangePasswordRequest changePasswordRequest) {
-        User user = userRepository.findByEmail(new Email(changePasswordRequest.getEmail()))
+        String email = jwtProvider.getSubject(changePasswordRequest.getToken());
+        User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new IllegalArgumentException("정보와 일치하는 사용자가 존재하지 않습니다."));
 
         Password password = new Password(passwordEncoder.encode(changePasswordRequest.getPassword()));

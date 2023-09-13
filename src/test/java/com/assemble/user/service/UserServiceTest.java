@@ -1,5 +1,6 @@
 package com.assemble.user.service;
 
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.base.UserContext;
 import com.assemble.file.entity.AttachedFile;
 import com.assemble.file.fixture.FileFixture;
@@ -50,6 +51,9 @@ class UserServiceTest {
 
     @Mock
     private UserContext userContext;
+
+    @Mock
+    private JwtProvider jwtProvider;
 
     @Test
     void 회원가입_성공() {
@@ -150,6 +154,7 @@ class UserServiceTest {
         // given
         ChangePasswordRequest changePasswordRequest = UserFixture.비밀번호_변경_요청();
         User user = UserFixture.회원();
+        given(jwtProvider.getSubject(anyString())).willReturn(user.getEmail().getValue());
         given(userRepository.findByEmail(any())).willReturn(Optional.of(user));
 
         // when

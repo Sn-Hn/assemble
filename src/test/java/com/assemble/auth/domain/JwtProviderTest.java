@@ -52,7 +52,7 @@ class JwtProviderTest {
         String email = "test00@gmail.com";
         String accessToken = jwtProvider.createAccessToken(id, email);
 
-        String userId = jwtProvider.getUserId(accessToken);
+        String userId = jwtProvider.getSubject(accessToken);
 
         assertThat(userId).isEqualTo(id.toString());
     }

@@ -1,12 +1,13 @@
 package com.assemble.user.service;
 
+import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.user.domain.Email;
 import com.assemble.user.dto.request.ValidationUserRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.cdi.Eager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ValidationService {
 
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public boolean isDuplicationEmail(String emailRequest) {
@@ -41,13 +44,13 @@ public class ValidationService {
         }
     }
 
-    public boolean checkUser(ValidationUserRequest validationUserRequest) {
-        userRepository.findByEmail(new Email(validationUserRequest.getEmail()))
+    public String checkUser(ValidationUserRequest validationUserRequest) {
+        User normalUser = userRepository.findByEmail(new Email(validationUserRequest.getEmail()))
                 .filter(user -> user.getName().getValue().equals(validationUserRequest.getName()) &&
                         user.getPhoneNumber().getValue().equals(validationUserRequest.getPhoneNumber()) &&
                         user.getBirthDate().getValue().equals(validationUserRequest.getBirthDate()))
                 .orElseThrow(() -> new NotFoundException(User.class, validationUserRequest));
 
-        return true;
+        return jwtProvider.createChangePasswordToken(normalUser.getEmail().getValue());
     }
 }

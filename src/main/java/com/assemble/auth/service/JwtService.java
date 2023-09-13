@@ -40,7 +40,7 @@ public class JwtService {
         validateToken(refreshToken);
 
         return jwtProvider.createAccessToken(
-                NumberUtils.parseNumber(jwtProvider.getUserId(refreshToken), Long.class),
+                NumberUtils.parseNumber(jwtProvider.getSubject(refreshToken), Long.class),
                 jwtProvider.getEmail(refreshToken)
         );
     }
