@@ -40,7 +40,7 @@ include::{snippets}/nickname/validation/response-fields.adoc[]
 include::{snippets}/nickname/validation/response-body.adoc[]
 
 === 계정 확인
-GET /user/validation +
+POST /user/validation +
 계정 정보를 확인합니다.
 
 ==== REQUEST
@@ -49,9 +49,32 @@ include::{snippets}/user/validation/http-request.adoc[]
 include::{snippets}/user/validation/httpie-request.adoc[]
 include::{snippets}/user/validation/request-parameters.adoc[]
 
+===== example
+include::{snippets}/user/validation/request-body.adoc[]
+
 ==== RESPONSE
 include::{snippets}/user/validation/http-response.adoc[]
 include::{snippets}/user/validation/response-fields.adoc[]
 
 ===== example
 include::{snippets}/user/validation/response-body.adoc[]
+
+=== 비밀번호 확인
+POST /password/validation +
+계정 정보를 확인합니다.
+
+==== REQUEST
+include::{snippets}/password/validation/curl-request.adoc[]
+include::{snippets}/password/validation/http-request.adoc[]
+include::{snippets}/password/validation/httpie-request.adoc[]
+include::{snippets}/password/validation/request-parameters.adoc[]
+
+===== example
+include::{snippets}/password/validation/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/password/validation/http-response.adoc[]
+include::{snippets}/password/validation/response-fields.adoc[]
+
+===== example
+include::{snippets}/password/validation/response-body.adoc[]
