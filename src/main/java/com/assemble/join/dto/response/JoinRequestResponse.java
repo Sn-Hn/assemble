@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class MyJoinResponse {
+public class JoinRequestResponse {
     @ApiModelProperty(value = "가입 요청 ID")
     private Long joinRequestId;
 
@@ -31,10 +31,7 @@ public class MyJoinResponse {
     @ApiModelProperty(value = "가입 요청 일시")
     private LocalDateTime createdDate;
 
-    @ApiModelProperty(value = "모임 이름")
-    private String meetingName;
-
-    public MyJoinResponse(JoinRequest joinRequest) {
+    public JoinRequestResponse(JoinRequest joinRequest) {
         this(
                 joinRequest.getId(),
                 joinRequest.getMeeting().getMeetingId(),
@@ -42,8 +39,7 @@ public class MyJoinResponse {
                 joinRequest.getUser().getNickname(),
                 joinRequest.getStatus().toString(),
                 joinRequest.getRequestMessage(),
-                joinRequest.getCreatedDate(),
-                joinRequest.getMeeting().getName().getValue()
+                joinRequest.getCreatedDate()
         );
     }
 }

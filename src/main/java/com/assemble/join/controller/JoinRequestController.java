@@ -4,6 +4,7 @@ import com.assemble.commons.response.ApiResult;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.dto.response.JoinResponse;
+import com.assemble.join.dto.response.JoinRequestResponse;
 import com.assemble.join.dto.response.MyJoinResponse;
 import com.assemble.join.service.JoinRequestService;
 import io.swagger.annotations.Api;
@@ -27,8 +28,8 @@ public class JoinRequestController {
 
     @ApiOperation("모임 가입 신청")
     @PostMapping
-    public ApiResult<MyJoinResponse> requestJoin(@RequestBody @Valid JoinRequestDto joinRequestDto) {
-        return ApiResult.ok(new MyJoinResponse(joinRequestService.requestJoinToAssemble(joinRequestDto)));
+    public ApiResult<JoinRequestResponse> requestJoin(@RequestBody @Valid JoinRequestDto joinRequestDto) {
+        return ApiResult.ok(new JoinRequestResponse(joinRequestService.requestJoinToAssemble(joinRequestDto)));
     }
 
     @ApiOperation("모임 가입 승인, 거절, 차단 ex) APPROVAL, REJECT, BLOCK")

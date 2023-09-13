@@ -121,6 +121,11 @@ VALUES (
        '2',
        '1',
        'REQUEST'
+       ),
+       (
+       '3',
+       '1',
+       'REQUEST'
        );
 
 INSERT INTO activity(meeting_id, user_id, status)

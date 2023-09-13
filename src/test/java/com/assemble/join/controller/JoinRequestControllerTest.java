@@ -264,6 +264,7 @@ public class JoinRequestControllerTest {
                                 fieldWithPath("response.content[0].status").description("가입 신청 상태"),
                                 fieldWithPath("response.content[0].message").description("가입 신청 메시지"),
                                 fieldWithPath("response.content[0].createdDate").description("가입 신청일"),
+                                fieldWithPath("response.content[0].meetingName").description("모임 이름"),
                                 fieldWithPath("response.pageable").description("pageable"),
                                 fieldWithPath("response.last").description("last"),
                                 fieldWithPath("response.totalPages").description("총 페이지 수"),

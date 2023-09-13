@@ -130,7 +130,7 @@ public class JoinRequestIntegrationTest {
     void 가입_신청한_모임_조회() {
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         given()
-                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecAdmin(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(objectMapper.convertValue(pageableConverter, Map.class))

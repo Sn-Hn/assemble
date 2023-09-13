@@ -99,3 +99,25 @@ include::{snippets}/join/list/response-fields.adoc[]
 
 ===== example
 include::{snippets}/join/list/response-body.adoc[]
+
+=== 가입 신청 목록
+GET /join/{meetingId} +
+특정 모임의 가입 신청 목록을 조회합니다.
+
+[WARNING]
+====
+모임장만 조회가 가능합니다.
+====
+
+==== REQUEST
+include::{snippets}/join/my/list/curl-request.adoc[]
+include::{snippets}/join/my/list/http-request.adoc[]
+include::{snippets}/join/my/list/httpie-request.adoc[]
+include::{snippets}/join/my/list/request-headers.adoc[]
+
+==== RESPONSE
+include::{snippets}/join/my/list/http-response.adoc[]
+include::{snippets}/join/my/list/response-fields.adoc[]
+
+===== example
+include::{snippets}/join/my/list/response-body.adoc[]
