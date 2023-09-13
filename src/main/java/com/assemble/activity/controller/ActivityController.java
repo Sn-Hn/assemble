@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Api(tags = "활동 Apis")
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +33,11 @@ public class ActivityController {
 
     @ApiOperation("모임에서 활동 중인 회원 조회")
     @GetMapping("activity/user/{meetingId}")
-    public ApiResult<Page<ActivityUserResponse>> getJoinUser(@PathVariable Long meetingId, Pageable pageable) {
-        return ApiResult.ok(activityService.getJoinUserOfAssemble(meetingId, pageable)
-                .map(ActivityUserResponse::new));
+    public ApiResult<List<ActivityUserResponse>> getJoinUser(@PathVariable Long meetingId) {
+        return ApiResult.ok(activityService.getJoinUserOfAssemble(meetingId)
+                        .stream()
+                        .map(ActivityUserResponse::new)
+                        .collect(Collectors.toUnmodifiableList()));
     }
 
     @ApiOperation("활동 중인 모임 탈퇴")

@@ -62,7 +62,7 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     }
 
     @Override
-    public List<Activity> findAllByUserOfAssemble(Long meetingId, Pageable pageable) {
+    public List<Activity> findAllByUserOfAssemble(Long meetingId) {
         return queryFactory.selectFrom(QActivity.activity)
                 .innerJoin(QActivity.activity.user, QUser.user)
                 .fetchJoin()
@@ -71,8 +71,6 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
                 .where(QActivity.activity.meeting.meetingId.eq(meetingId),
                         isNotWithdrawalAssemble(),
                         isNotWithdrawalUser())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
                 .orderBy(QActivity.activity.user.nickname.asc())
                 .fetch()
                 .stream()

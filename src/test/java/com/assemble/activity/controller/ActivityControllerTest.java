@@ -131,8 +131,8 @@ class ActivityControllerTest {
     void 모임에_활동_중인_회원_목록_조회() throws Exception {
         Long meetingId = 1L;
         PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
-        given(activityService.getJoinUserOfAssemble(anyLong(), any()))
-                .willReturn(new PageImpl<>(List.of(ActivityFixture.특정_모임_활동_중인_회원())));
+        given(activityService.getJoinUserOfAssemble(anyLong()))
+                .willReturn(List.of(ActivityFixture.특정_모임_활동_중인_회원()));
 
         ResultActions perform = this.mockMvc.perform(RestDocumentationRequestBuilders.get("/activity/user/{meetingId}", meetingId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
@@ -141,8 +141,7 @@ class ActivityControllerTest {
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.response").isNotEmpty())
-                .andExpect(jsonPath("$.response.content").isNotEmpty());
+                .andExpect(jsonPath("$.response").isNotEmpty());
 
         perform
                 .andDo(document("activity/user",
@@ -158,23 +157,11 @@ class ActivityControllerTest {
                                 fieldWithPath("success").description("성공 여부"),
                                 fieldWithPath("status").description("상태값"),
                                 fieldWithPath("error").description("에러 내용"),
-                                fieldWithPath("response.content[0].meetingId").description("모임 ID"),
-                                fieldWithPath("response.content[0].userId").description("회원 ID"),
-                                fieldWithPath("response.content[0].nickname").description("회원 닉네임"),
-                                fieldWithPath("response.content[0].profile").description("회원 프로필"),
-                                fieldWithPath("response.content[0].host").description("모임장 여부"),
-                                fieldWithPath("response.pageable").description("pageable"),
-                                fieldWithPath("response.last").description("last"),
-                                fieldWithPath("response.totalPages").description("총 페이지 수"),
-                                fieldWithPath("response.totalElements").description("총 개수"),
-                                fieldWithPath("response.size").description("size"),
-                                fieldWithPath("response.number").description("number"),
-                                fieldWithPath("response.sort.empty").description("sort.empty"),
-                                fieldWithPath("response.sort.sorted").description("sort.sorted"),
-                                fieldWithPath("response.sort.unsorted").description("sort.unsorted"),
-                                fieldWithPath("response.numberOfElements").description("numberOfElements"),
-                                fieldWithPath("response.first").description("first"),
-                                fieldWithPath("response.empty").description("empty")
+                                fieldWithPath("response[].meetingId").description("모임 ID"),
+                                fieldWithPath("response[].userId").description("회원 ID"),
+                                fieldWithPath("response[].nickname").description("회원 닉네임"),
+                                fieldWithPath("response[].profile").description("회원 프로필"),
+                                fieldWithPath("response[].host").description("모임장 여부")
                         )
                 ));
     }

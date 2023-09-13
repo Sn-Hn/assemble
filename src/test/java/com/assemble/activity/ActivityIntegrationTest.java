@@ -60,14 +60,12 @@ public class ActivityIntegrationTest {
 
     @Test
     void 모임에_활동_중인_회원_목록_조회() {
-        PageableConverter pageableConverter = PageableFixture.pageableConverter_생성();
         Long meetingId = 1L;
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("meetingId", meetingId)
-                .queryParams(objectMapper.convertValue(pageableConverter, Map.class))
                 .log().all()
         .when()
                 .get("activity/user/{meetingId}")

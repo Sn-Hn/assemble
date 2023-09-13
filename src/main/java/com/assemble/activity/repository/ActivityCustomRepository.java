@@ -13,5 +13,5 @@ public interface ActivityCustomRepository {
 
     long countByUserOfAssemble(Long meetingId);
 
-    List<Activity> findAllByUserOfAssemble(Long meetingId, Pageable pageable);
+    List<Activity> findAllByUserOfAssemble(Long meetingId);
 }

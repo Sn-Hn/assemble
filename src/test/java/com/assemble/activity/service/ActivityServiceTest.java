@@ -63,18 +63,16 @@ class ActivityServiceTest {
     void 모임에_활동_중인_회원_목록_조회() {
         // given
         Activity activity = ActivityFixture.특정_모임_활동_중인_회원();
-        Pageable pageable = PageableFixture.pageable_생성_기본_정렬();
         Long meetingId = activity.getMeeting().getMeetingId();
-        given(activityRepository.countByUserOfAssemble(anyLong())).willReturn(1L);
-        given(activityRepository.findAllByUserOfAssemble(anyLong(), any())).willReturn(List.of(activity));
+        given(activityRepository.findAllByUserOfAssemble(anyLong())).willReturn(List.of(activity));
 
         // when
-        Page<Activity> activities = activityService.getJoinUserOfAssemble(meetingId, pageable);
+        List<Activity> activities = activityService.getJoinUserOfAssemble(meetingId);
 
         // then
         assertAll(
                 () -> assertThat(activities).isNotEmpty(),
-                () -> assertThat(activities.get().findAny().get().getMeeting().getMeetingId()).isEqualTo(meetingId)
+                () -> assertThat(activities.stream().findAny().get().getMeeting().getMeetingId()).isEqualTo(meetingId)
         );
     }
     

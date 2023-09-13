@@ -30,11 +30,8 @@ public class ActivityService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Activity> getJoinUserOfAssemble(Long meetingId, Pageable pageable) {
-        long count = activityRepository.countByUserOfAssemble(meetingId);
-        List<Activity> userOfAssemble = activityRepository.findAllByUserOfAssemble(meetingId, pageable);
-
-        return new PageImpl<>(userOfAssemble, pageable, count);
+    public List<Activity> getJoinUserOfAssemble(Long meetingId) {
+        return activityRepository.findAllByUserOfAssemble(meetingId);
     }
 
     @Transactional
