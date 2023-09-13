@@ -1,8 +1,11 @@
 package com.assemble.user;
 
 import com.assemble.annotation.CustomIntegrationTest;
+import com.assemble.auth.service.JwtService;
+import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.user.dto.request.EmailRequest;
 import com.assemble.user.dto.request.NicknameRequest;
+import com.assemble.user.dto.request.ValidationPasswordRequest;
 import com.assemble.user.dto.request.ValidationUserRequest;
 import com.assemble.user.fixture.UserFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +39,9 @@ public class ValidationIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private JwtService jwtService;
 
     @BeforeEach
     void setUp() {
@@ -132,10 +138,30 @@ public class ValidationIntegrationTest {
                 .basePath(basePath)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParams(objectMapper.convertValue(validationUserRequest, Map.class))
+                .body(validationUserRequest)
                 .log().all()
         .when()
-                .get("user/validation")
+                .post("user/validation")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("success", is(true),
+                        "error", equalTo(null),
+                        "response.token", notNullValue())
+                .log().all();
+    }
+
+    @Test
+    void 비밀번호_확인() {
+        ValidationPasswordRequest validationPasswordRequest = new ValidationPasswordRequest("password2!");
+        given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpecAdmin(jwtService))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(validationPasswordRequest)
+                .log().all()
+        .when()
+                .post("password/validation")
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("success", is(true),

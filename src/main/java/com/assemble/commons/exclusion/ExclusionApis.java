@@ -20,7 +20,7 @@ public class ExclusionApis {
         apis.put("/meeting/*", "GET");
         apis.put("/category", "GET");
         apis.put("/auth/token", "POST");
-        apis.put("/user/validation", "GET");
+        apis.put("/user/validation", "POST");
         apis.put("/user/email", "GET");
         apis.put("/user/password", "PUT");
 

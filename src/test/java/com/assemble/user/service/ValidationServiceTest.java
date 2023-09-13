@@ -2,10 +2,12 @@ package com.assemble.user.service;
 
 import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.exception.NotFoundException;
+import com.assemble.user.dto.request.ValidationPasswordRequest;
 import com.assemble.user.dto.request.ValidationUserRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.repository.UserRepository;
+import com.assemble.util.AuthenticationUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -124,4 +126,20 @@ public class ValidationServiceTest {
                 .isThrownBy(() -> validationService.checkUser(validationUserRequest));
     }
 
+    @Test
+    void 비밀번호_변경_전_비밀번호_확인_정상() {
+        // given
+        ValidationPasswordRequest validationPasswordRequest = UserFixture.정상_비밀번호_확인_요청();
+        User user = UserFixture.회원();
+        String changePasswordToken = "changePasswordToken";
+        AuthenticationUtils.setSecurityContextToUser(1L);
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        given(jwtProvider.createChangePasswordToken(any())).willReturn(changePasswordToken);
+
+        // when
+        String token = validationService.checkPassword(validationPasswordRequest);
+
+        // then
+        assertThat(token).isEqualTo(changePasswordToken);
+    }
 }

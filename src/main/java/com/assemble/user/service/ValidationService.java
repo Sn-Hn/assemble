@@ -3,9 +3,11 @@ package com.assemble.user.service;
 import com.assemble.auth.domain.JwtProvider;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.user.domain.Email;
+import com.assemble.user.dto.request.ValidationPasswordRequest;
 import com.assemble.user.dto.request.ValidationUserRequest;
 import com.assemble.user.entity.User;
 import com.assemble.user.repository.UserRepository;
+import com.assemble.util.AuthenticationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,18 @@ public class ValidationService {
                 .orElseThrow(() -> new NotFoundException(User.class, validationUserRequest));
 
         return jwtProvider.createChangePasswordToken(normalUser.getEmail().getValue());
+    }
+
+    public String checkPassword(ValidationPasswordRequest validationUserRequest) {
+        Long userId = AuthenticationUtils.getUserId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(User.class, userId));
+
+        if (!passwordEncoder.matches(validationUserRequest.getPassword(), user.getPassword().getValue())) {
+            throw new IllegalArgumentException("비밀번호를 잘못 입력했습니다.");
+        }
+
+        return jwtProvider.createChangePasswordToken(user.getEmail().getValue());
     }
 }

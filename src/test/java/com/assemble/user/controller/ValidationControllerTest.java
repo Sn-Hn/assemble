@@ -1,12 +1,10 @@
 package com.assemble.user.controller;
 
+import com.assemble.commons.TokenFixture;
 import com.assemble.commons.config.WebMvcConfig;
 import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
-import com.assemble.user.dto.request.EmailRequest;
-import com.assemble.user.dto.request.FindEmailRequest;
-import com.assemble.user.dto.request.NicknameRequest;
-import com.assemble.user.dto.request.ValidationUserRequest;
+import com.assemble.user.dto.request.*;
 import com.assemble.user.entity.User;
 import com.assemble.user.fixture.UserFixture;
 import com.assemble.user.service.ValidationService;
@@ -29,11 +27,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -119,21 +117,51 @@ public class ValidationControllerTest {
         String token = "passwordChangeToken";
         given(validationService.checkUser(any())).willReturn(token);
 
-        ResultActions perform = mockMvc.perform(get("/user/validation")
+        ResultActions perform = mockMvc.perform(post("/user/validation")
                 .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParams(MultiValueMapConverter.convert(objectMapper, validationUserRequest)));
+                .content(objectMapper.writeValueAsString(validationUserRequest)));
 
         perform.andDo(print())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response.token").value(token));
 
         perform.andDo(document("user/validation",
-                requestParameters(
-                        parameterWithName("email").description("이메일"),
-                        parameterWithName("name").description("이름"),
-                        parameterWithName("phoneNumber").description("핸드폰 번호"),
-                        parameterWithName("birthDate").description("생년월일")
+                requestFields(
+                        fieldWithPath("email").description("이메일"),
+                        fieldWithPath("name").description("이름"),
+                        fieldWithPath("phoneNumber").description("핸드폰 번호"),
+                        fieldWithPath("birthDate").description("생년월일")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response.token").description("비민번호 변경 토큰")
+                ))
+        );
+    }
+
+    @Test
+    void 비밀번호_확인() throws Exception {
+        ValidationPasswordRequest validationPasswordRequest = new ValidationPasswordRequest("password1!");
+        User user = UserFixture.회원();
+        String token = "passwordChangeToken";
+        given(validationService.checkPassword(any())).willReturn(token);
+
+        ResultActions perform = mockMvc.perform(post("/password/validation")
+                .header("Authorization", TokenFixture.AccessToken_생성())
+                .with(SecurityMockMvcRequestPostProcessors.csrf().asHeader())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(validationPasswordRequest)));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response.token").value(token));
+
+        perform.andDo(document("password/validation",
+                requestFields(
+                        fieldWithPath("password").description("비밀번호 확인")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
