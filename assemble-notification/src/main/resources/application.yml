@@ -1,0 +1,14 @@
+server:
+  servlet:
+    context-path: /assemble
+  port: 8091
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  data:
+    web:
+      pageable:
+        default-page-size: 12
+        one-indexed-parameters: true
+        max-page-size: 100
