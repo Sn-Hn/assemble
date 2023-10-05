@@ -1,3 +1,6 @@
 [submodule "assemble-api/auth"]
 	path = assemble-api/auth
 	url = https://github.com/Sn-Hn/assemble-sub-security.git
+[submodule "assemble-notification/auth"]
+	path = assemble-notification/auth
+	url = https://github.com/Sn-Hn/assemble-notification-sub-security.git
