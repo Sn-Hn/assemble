@@ -41,7 +41,7 @@ out/
 ### setting ###
 **/application-*.yml
 **/environment/
-!**/application-test.yml
+#!**/application-test.yml
 
 /BOOT-INF/
 /src/main/resources/static/docs/

@@ -35,6 +35,10 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
     implementation 'com.google.firebase:firebase-admin:9.1.1'
 
+    // SQS
+    implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.3.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-aws-autoconfigure:2.2.3.RELEASE'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
@@ -85,3 +89,22 @@ tasks{
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
+
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
+// 리소스 디렉토리 추가
+sourceSets {
+    main.java.srcDir querydslDir
+    main {
+        resources {
+            srcDirs "src/main/resources", "src/main/environment/${profile}"
+        }
+    }
+}
+
+task copyPrivate(type: Copy) {
+    copy {
+        from "./auth/${profile}"
+        include "*.yml"
+        into "src/main/environment/${profile}"
+    }
+}
