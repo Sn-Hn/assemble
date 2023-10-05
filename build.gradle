@@ -1,127 +1,53 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.12'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'java'
+    id 'org.springframework.boot' version '2.7.12'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
-group = 'com'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
-
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-    from "build/docs/asciidoc"
-    into "src/main/resources/static/docs"
-}
-
-asciidoctor {
-    dependsOn test
-    inputs.dir snippetsDir
-
-    baseDirFollowsSourceFile()
-}
-
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
-bootJar {
-    dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
-}
-
-build {
-    dependsOn copyDocument
-}
+group = 'com.assemble'
+version = '1.0-SNAPSHOT'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springframework.boot:spring-boot-starter-validation:'
-    implementation "io.springfox:springfox-boot-starter:3.0.0"
-    implementation 'commons-io:commons-io:2.11.0'
-	implementation "com.querydsl:querydsl-jpa:5.0.0"
-	implementation "com.querydsl:querydsl-apt:5.0.0"
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-
-    compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'io.rest-assured:rest-assured'
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
-def querydslDir = "$buildDir/generated/querydsl"
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
+test {
+    useJUnitPlatform()
 }
 
-ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
-// 리소스 디렉토리 추가
-sourceSets {
-    main.java.srcDir querydslDir
-    main {
-        resources {
-            srcDirs "src/main/resources", "src/main/environment/${profile}"
-        }
+subprojects {
+    group 'com'
+    version '0.0.1'
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+    apply plugin: 'org.asciidoctor.jvm.convert'
+
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
     }
 }
 
-task copyPrivate(type: Copy) {
-    copy {
-        from "./auth/${profile}"
-        include "*.yml"
-        into "src/main/environment/${profile}"
-    }
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
 }
 
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
-tasks{
-    processResources{
-        duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+project(':assemble-notification') {
+    dependencies {
+        compile project(':assemble-api')
     }
 }
