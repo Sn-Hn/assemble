@@ -68,7 +68,7 @@ class JoinRequestServiceTest {
     @Mock
     private ActivityRepository activityRepository;
 
-    @Mock
+    @Spy
     private MessageSource messageSource;
 
     @Mock
