@@ -12,3 +12,7 @@ spring:
         default-page-size: 12
         one-indexed-parameters: true
         max-page-size: 100
+  config:
+    import:
+      - classpath:application-database.yml
+      - classpath:application-value.yml

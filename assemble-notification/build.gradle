@@ -58,16 +58,6 @@ querydsl {
     querydslSourcesDir = querydslDir
 }
 
-// 리소스 디렉토리 추가
-sourceSets {
-    main.java.srcDir querydslDir
-    main {
-        resources {
-            srcDirs "src/main/resources"
-        }
-    }
-}
-
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
 }
@@ -104,7 +94,7 @@ sourceSets {
 task copyPrivate(type: Copy) {
     copy {
         from "./auth/${profile}"
-        include "*.yml"
+//        include "*.yml"
         into "src/main/environment/${profile}"
     }
 }
