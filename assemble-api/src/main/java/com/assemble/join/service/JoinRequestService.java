@@ -4,13 +4,19 @@ import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.event.publish.JoinRequestEvent;
+import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.entity.JoinRequest;
 import com.assemble.join.repository.JoinRequestRepository;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.repository.MeetingRepository;
+import com.assemble.noti.event.NotificationEvent;
+import com.assemble.user.entity.User;
+import com.assemble.user.repository.UserRepository;
+import com.assemble.util.MessageUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,15 +27,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class JoinRequestService {
 
+    private final String JOIN_REQUEST_MESSAGE = "web.notification.message.join.request";
+    private final String JOIN_APPROVAL_MESSAGE = "web.notification.message.join.approval";
+    private final String JOIN_REJECT_MESSAGE = "web.notification.message.join.reject";
+
     private final JoinRequestRepository joinRequestRepository;
     private final MeetingRepository meetingRepository;
+    private final UserRepository userRepository;
     private final UserContext userContext;
-    private final ApplicationEventPublisher eventPublisher;
     private final ActivityRepository activityRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final NotificationEvent notificationEvent;
 
     @Transactional
     public JoinRequest requestJoinToAssemble(JoinRequestDto joinRequestDto) {
@@ -47,7 +60,22 @@ public class JoinRequestService {
 
         JoinRequest joinRequest = joinRequestDto.toEntity(userContext.getUserId());
 
-        return joinRequestRepository.save(joinRequest);
+        JoinRequest savedJoinRequest = joinRequestRepository.save(joinRequest);
+
+        User user = userRepository.findById(userContext.getUserId())
+                .orElseThrow(() -> new NotFoundException(User.class, userContext.getUserId()));
+        Meeting meeting = meetingRepository.findById(joinRequestDto.getMeetingId())
+                .orElseThrow(() -> new NotFoundException(Meeting.class, joinRequestDto.getMeetingId()));
+
+        String message = MessageUtils.getMessage(JOIN_REQUEST_MESSAGE,
+                user.getNickname(), meeting.getName().getValue());
+
+        notificationEvent.publish(
+                savedJoinRequest.getUser().getUserId(),
+                message,
+                joinRequestDto.getFcmToken());
+
+        return savedJoinRequest;
     }
 
     @Transactional
@@ -56,9 +84,17 @@ public class JoinRequestService {
                 .orElseThrow(() -> new NotFoundException(JoinRequest.class, joinRequestAnswer.getJoinRequestId()));
 
         joinRequest.answerJoinRequest(joinRequestAnswer, userContext.getUserId());
+
         if (joinRequest.isApproval()) {
             eventPublisher.publishEvent(new JoinRequestEvent(joinRequest));
         }
+
+        String message = getJoinRequestMessage(joinRequest);
+
+        notificationEvent.publish(
+                joinRequest.getUser().getUserId(),
+                message,
+                joinRequestAnswer.getFcmToken());
 
         return joinRequest;
     }
@@ -96,5 +132,14 @@ public class JoinRequestService {
                 .collect(Collectors.toUnmodifiableList());
 
         return new PageImpl<>(joinRequests, pageable, count);
+    }
+
+    private String getJoinRequestMessage(JoinRequest joinRequest) {
+        if (JoinRequestStatus.APPROVAL.equals(joinRequest.getStatus())) {
+            return MessageUtils.getMessage(JOIN_APPROVAL_MESSAGE, joinRequest.getMeeting().getName().getValue());
+        } else if (JoinRequestStatus.REJECT.equals(joinRequest.getStatus())) {
+            return MessageUtils.getMessage(JOIN_REJECT_MESSAGE, joinRequest.getMeeting().getName().getValue());
+        }
+        return null;
     }
 }

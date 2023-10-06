@@ -2,14 +2,19 @@ package com.assemble.join.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.commons.exception.UserBlockException;
+import com.assemble.event.publish.JoinRequestEvent;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @AllArgsConstructor
 @Getter

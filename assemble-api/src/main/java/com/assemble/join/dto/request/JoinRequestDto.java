@@ -25,6 +25,9 @@ public class JoinRequestDto {
     @NotNull
     private String joinRequestMessage;
 
+    @ApiModelProperty(value = "FCM Token")
+    private String fcmToken;
+
     public JoinRequest toEntity(Long userId) {
         return new JoinRequest(
                 new Meeting(meetingId),
