@@ -27,6 +27,12 @@ public class NotificationEvent {
         queueMessagingTemplate.convertAndSend(QUEUE_NAME, sendMessage);
     }
 
+    public void publish(Long userId, String message, String fcmToken, Object... args) {
+        WebNotificationRequest webNotificationRequest =
+                new WebNotificationRequest(String.valueOf(userId), MessageUtils.getMessage(message, args), fcmToken);
+        queueMessagingTemplate.convertAndSend(QUEUE_NAME, webNotificationRequest);
+    }
+
     public void publish(Long userId, String message, String fcmToken) {
         WebNotificationRequest webNotificationRequest =
                 new WebNotificationRequest(String.valueOf(userId), message, fcmToken);

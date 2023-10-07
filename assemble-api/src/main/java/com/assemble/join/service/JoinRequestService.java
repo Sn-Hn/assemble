@@ -67,13 +67,11 @@ public class JoinRequestService {
         Meeting meeting = meetingRepository.findById(joinRequestDto.getMeetingId())
                 .orElseThrow(() -> new NotFoundException(Meeting.class, joinRequestDto.getMeetingId()));
 
-        String message = MessageUtils.getMessage(JOIN_REQUEST_MESSAGE,
-                user.getNickname(), meeting.getName().getValue());
-
         notificationEvent.publish(
                 savedJoinRequest.getUser().getUserId(),
-                message,
-                joinRequestDto.getFcmToken());
+                JOIN_REQUEST_MESSAGE,
+                joinRequestDto.getFcmToken(),
+                user.getNickname(), meeting.getName().getValue());
 
         return savedJoinRequest;
     }
@@ -94,7 +92,8 @@ public class JoinRequestService {
         notificationEvent.publish(
                 joinRequest.getUser().getUserId(),
                 message,
-                joinRequestAnswer.getFcmToken());
+                joinRequestAnswer.getFcmToken(),
+                joinRequest.getMeeting().getName().getValue());
 
         return joinRequest;
     }
@@ -136,9 +135,9 @@ public class JoinRequestService {
 
     private String getJoinRequestMessage(JoinRequest joinRequest) {
         if (JoinRequestStatus.APPROVAL.equals(joinRequest.getStatus())) {
-            return MessageUtils.getMessage(JOIN_APPROVAL_MESSAGE, joinRequest.getMeeting().getName().getValue());
+            return JOIN_APPROVAL_MESSAGE;
         } else if (JoinRequestStatus.REJECT.equals(joinRequest.getStatus())) {
-            return MessageUtils.getMessage(JOIN_REJECT_MESSAGE, joinRequest.getMeeting().getName().getValue());
+            return JOIN_REJECT_MESSAGE;
         }
         return null;
     }

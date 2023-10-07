@@ -27,15 +27,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,9 +64,6 @@ class JoinRequestServiceTest {
 
     @Mock
     private ActivityRepository activityRepository;
-
-    @Spy
-    private MessageSource messageSource;
 
     @Mock
     private NotificationEvent notificationEvent;
@@ -159,7 +153,6 @@ class JoinRequestServiceTest {
         // given
         String status = "APPROVAL";
         JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
-        MessageUtils messageUtils = new MessageUtils(messageSource);
         given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
@@ -173,7 +166,7 @@ class JoinRequestServiceTest {
         );
 
         verify(eventPublisher, times(1)).publishEvent(any(JoinRequestEvent.class));
-        verify(notificationEvent, times(1)).publish(anyLong(), any(), any());
+        verify(notificationEvent, times(1)).publish(anyLong(), any(), any(), any());
     }
 
     @ParameterizedTest
@@ -181,7 +174,6 @@ class JoinRequestServiceTest {
     void 모임_가입_처리_검증(String status) {
         // given
         JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_처리(status, null);
-        MessageUtils messageUtils = new MessageUtils(messageSource);
         given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.정상_신청_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
@@ -233,7 +225,6 @@ class JoinRequestServiceTest {
     void 차단된_회원은_차단해제만_가능() {
         // given
         JoinRequestAnswer joinRequestAnswer = JoinRequestFixture.가입_요청_거절();
-        MessageUtils messageUtils = new MessageUtils(messageSource);
         given(joinRequestRepository.findById(anyLong())).willReturn(Optional.of(JoinRequestFixture.차단된_회원()));
         given(userContext.getUserId()).willReturn(1L);
 
