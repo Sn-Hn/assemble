@@ -31,6 +31,8 @@ public class AuthService {
             throw new UnauthenticationException();
         }
 
+        user.registerFcmToken(loginRequest.getFcmToken());
+
         return user;
     }
 }

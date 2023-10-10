@@ -63,6 +63,8 @@ public class User extends BaseDateEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    private String fcmToken;
+
     public User() {
     }
 
@@ -70,7 +72,8 @@ public class User extends BaseDateEntity {
         this.userId = userId;
     }
 
-    public User(Email email, Name name, String nickname, Password password, PhoneNumber phoneNumber, BirthDate birthDate, Gender gender) {
+    public User(Email email, Name name, String nickname, Password password,
+                PhoneNumber phoneNumber, BirthDate birthDate, Gender gender) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -136,5 +139,9 @@ public class User extends BaseDateEntity {
         }
 
         return false;
+    }
+
+    public void registerFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

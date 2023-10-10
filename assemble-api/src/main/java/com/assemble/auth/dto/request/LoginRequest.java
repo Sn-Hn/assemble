@@ -23,6 +23,9 @@ public class LoginRequest {
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$")
     private String password;
 
+    @ApiModelProperty(value = "Fcm Token", required = true)
+    private String fcmToken;
+
     private LoginRequest() {
 
     }
