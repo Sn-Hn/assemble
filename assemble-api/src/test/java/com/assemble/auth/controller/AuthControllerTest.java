@@ -91,7 +91,8 @@ class AuthControllerTest {
         perform.andDo(document("authentication",
                 requestFields(
                         fieldWithPath("email").description("이메일"),
-                        fieldWithPath("password").description("비밀번호")
+                        fieldWithPath("password").description("비밀번호"),
+                        fieldWithPath("fcmToken").description("Fcm Token")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
