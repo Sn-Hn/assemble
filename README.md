@@ -17,6 +17,8 @@
 `Java 11`  
 `Spring Boot 2.7.x`  
 `JPA 2.7.x`  
+`MySQL 8.0.x`  
+`AWS`  
 
 ## 개발 기간
 - 2023-06-12 ~ 진행 중
