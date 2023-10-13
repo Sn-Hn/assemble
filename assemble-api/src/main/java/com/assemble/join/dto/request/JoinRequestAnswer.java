@@ -14,6 +14,4 @@ public class JoinRequestAnswer {
     private String status;
 
     private String message;
-
-    private String fcmToken;
 }

@@ -8,13 +8,6 @@ import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.user.fixture.UserFixture;
 
 public class JoinRequestFixture {
-    private static final Long joinRequestId = 1L;
-    private static final Long meetingId = 1L;
-    private static final Long userId = 2L;
-    private static final String requestMessage = "가입 신청합니다 ! 받아주세요 ~";
-    private static final String rejectMessage = "죄송합니다 ~";
-    private static final String fcmToken = "fcm token";
-
     public static JoinRequest 정상_신청_회원() {
         return 가입_처리_응답(JoinRequestStatus.REQUEST);
     }
@@ -41,7 +34,7 @@ public class JoinRequestFixture {
     }
 
     public static JoinRequestDto 가입_신청() {
-        return new JoinRequestDto(meetingId, requestMessage, fcmToken);
+        return new JoinRequestDto(meetingId, requestMessage);
     }
 
     public static JoinRequestAnswer 가입_요청_승인() {
@@ -57,6 +50,11 @@ public class JoinRequestFixture {
     }
 
     public static JoinRequestAnswer 가입_요청_처리(String status, String message) {
-        return new JoinRequestAnswer(joinRequestId, status, message, fcmToken);
+        return new JoinRequestAnswer(joinRequestId, status, message);
     }
+    private static final Long joinRequestId = 1L;
+    private static final Long meetingId = 1L;
+    private static final Long userId = 2L;
+    private static final String requestMessage = "가입 신청합니다 ! 받아주세요 ~";
+    private static final String rejectMessage = "죄송합니다 ~";
 }

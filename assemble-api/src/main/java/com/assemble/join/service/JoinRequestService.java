@@ -70,7 +70,7 @@ public class JoinRequestService {
         notificationEvent.publish(
                 savedJoinRequest.getUser().getUserId(),
                 JOIN_REQUEST_MESSAGE,
-                joinRequestDto.getFcmToken(),
+                meeting.getUser().getFcmToken(),
                 user.getNickname(), meeting.getName().getValue());
 
         return savedJoinRequest;
@@ -92,7 +92,7 @@ public class JoinRequestService {
         notificationEvent.publish(
                 joinRequest.getUser().getUserId(),
                 message,
-                joinRequestAnswer.getFcmToken(),
+                joinRequest.getUser().getFcmToken(),
                 joinRequest.getMeeting().getName().getValue());
 
         return joinRequest;

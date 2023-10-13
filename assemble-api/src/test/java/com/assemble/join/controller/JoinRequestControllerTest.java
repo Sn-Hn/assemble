@@ -91,8 +91,7 @@ public class JoinRequestControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("meetingId").description("모임 ID"),
-                                fieldWithPath("joinRequestMessage").description("가입 신청 메시지"),
-                                fieldWithPath("fcmToken").description("FCM Token")
+                                fieldWithPath("joinRequestMessage").description("가입 신청 메시지")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("성공 여부"),
@@ -133,8 +132,7 @@ public class JoinRequestControllerTest {
                         requestFields(
                                 fieldWithPath("joinRequestId").description("모임 가입 신청 ID"),
                                 fieldWithPath("status").description("가입 신청 응답 상태"),
-                                fieldWithPath("message").description("가입 신청 거절 메시지"),
-                                fieldWithPath("fcmToken").description("FCM Token")
+                                fieldWithPath("message").description("가입 신청 거절 메시지")
                         ),
                         responseFields(
                                 fieldWithPath("success").description("성공 여부"),
