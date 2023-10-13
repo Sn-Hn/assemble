@@ -16,24 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MeetingFixture {
-    private static final Long meetingId = 1L;
-    private static final String name = "스터디 모집";
-    private static final String modifiedTitle = "스터디 모집 1명 (수정)";
-    private static final String description = "스터디 모집합니다.";
-    private static final String modifiedContents = "스터디 2명 모집합니다. (수정)";
-    private static final Long categoryId = 1L;
-    private static final String writerNickname = "개발자";
-    private static final Long writer = 1L;
-    private static final Long hits = 2L;
-    private static final Long likeCount = 2L;
-    private static final String searchByTitle = "name";
-    private static final String searchQueryTitle = "모임";
-    private static final String searchByContents = "description";
-    private static final String searchQueryContents = "설명";
-    private static final Long searchQueryUserId = 1L;
-    private static final String searchByWriter = "writer";
-    private static final String categoryName = "카테고리 이름";
-    private static final String address = "서울특별시 강남구";
 
     public static MeetingCreationRequest 모임_작성_사진_X() {
         return new MeetingCreationRequest(
@@ -114,4 +96,24 @@ public class MeetingFixture {
     public static Address 주소() {
         return new Address("0000");
     }
+
+    private static final Long meetingId = 1L;
+    private static final String name = "스터디 모집";
+    private static final String modifiedTitle = "스터디 모집 1명 (수정)";
+    private static final String description = "스터디 모집합니다.";
+    private static final String modifiedContents = "스터디 2명 모집합니다. (수정)";
+    private static final Long categoryId = 1L;
+    private static final String writerNickname = "개발자";
+    private static final Long writer = 1L;
+    private static final Long hits = 2L;
+    private static final Long likeCount = 2L;
+    private static final String searchByTitle = "name";
+    private static final String searchQueryTitle = "모임";
+    private static final String searchByContents = "description";
+    private static final String searchQueryContents = "설명";
+    private static final Long searchQueryUserId = 1L;
+    private static final String searchByWriter = "writer";
+    private static final String categoryName = "카테고리 이름";
+    private static final String address = "서울특별시 강남구";
+
 }

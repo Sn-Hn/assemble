@@ -12,14 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class FileFixture {
-    private static final String DEFAULT_PROFILE_PATH = "classpath:defaultProfile.jpg";
-    private static final Long fileId = 1L;
-    private static final String path = "";
-    private static final String fullPath = "";
-    private static final String name = "";
-    private static final long size = 100L;
-    private static final String savedName = "";
-    private static final String profileImage = "profileImage";
 
     public static File File_생성() throws FileNotFoundException {
         return ResourceUtils.getFile(DEFAULT_PROFILE_PATH);
@@ -38,4 +30,13 @@ public class FileFixture {
     public static AttachedFile 첨부파일_생성() {
         return new AttachedFile(fileId, path, fullPath, name, size, savedName);
     }
+
+    private static final String DEFAULT_PROFILE_PATH = "classpath:defaultProfile.jpg";
+    private static final Long fileId = 1L;
+    private static final String path = "";
+    private static final String fullPath = "";
+    private static final String name = "";
+    private static final long size = 100L;
+    private static final String savedName = "";
+    private static final String profileImage = "profileImage";
 }
