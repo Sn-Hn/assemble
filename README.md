@@ -2,7 +2,8 @@
 목적에 상관없이 다양한 모임을 만들고 참여할 수 있는 웹 애플리케이션입니다.
 
 ## 아키텍처
-![assemble](https://github.com/Sn-Hn/assemble/assets/40006670/5a884010-eaf5-44b4-9997-ef62f2bf1fc9)
+![assemble](https://github.com/Sn-Hn/assemble/assets/40006670/97048f8e-7c4c-4e43-b067-2a3ce903cf2d)
+
 
 ## 기술 스택
 <img src="https://img.shields.io/badge/Java-3776AB?style=for-the-badge&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
