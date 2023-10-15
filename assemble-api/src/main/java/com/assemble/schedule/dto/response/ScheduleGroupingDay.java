@@ -11,8 +11,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SchedulesResponse {
+public class ScheduleGroupingDay {
 
-    @ApiModelProperty(value = "특정 연월 일정 목록")
-    private List<ScheduleGroupingDay> schedules;
+    @ApiModelProperty(value = "특정 연월의 일")
+    private int day;
+
+    @ApiModelProperty(value = "해당 연월일의 일정 목록")
+    private List<ScheduleSimpleResponse> schedulesOfMonth;
 }

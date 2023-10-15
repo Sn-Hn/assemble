@@ -3,11 +3,12 @@ package com.assemble.schedule.service;
 import com.assemble.commons.exception.NotFoundException;
 import com.assemble.schedule.dto.request.ModifiedScheduleRequest;
 import com.assemble.schedule.dto.request.ScheduleCreationRequest;
-import com.assemble.schedule.dto.request.ScheduleYearAndMonth;
+import com.assemble.schedule.dto.request.ScheduleYearAndMonthRequest;
 import com.assemble.schedule.entity.Schedule;
 import com.assemble.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,20 +18,24 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
+    @Transactional
     public Schedule registerSchdule(ScheduleCreationRequest scheduleCreationRequest) {
         Schedule schedule = scheduleCreationRequest.toEntity();
         return scheduleRepository.save(schedule);
     }
 
-    public List<Schedule> getSchedulesByYearAndMonth(ScheduleYearAndMonth scheduleYearAndMonth) {
-        return scheduleRepository.findAllByYearAndMonth(scheduleYearAndMonth.getYearAndMonth());
+    @Transactional(readOnly = true)
+    public List<Schedule> findSchedulesByYearAndMonth(ScheduleYearAndMonthRequest scheduleYearAndMonthRequest) {
+        return scheduleRepository.findAllByYearAndMonth(scheduleYearAndMonthRequest.getYearAndMonth());
     }
 
-    public Schedule getSchedule(Long scheduleId) {
+    @Transactional(readOnly = true)
+    public Schedule findScheduleById(Long scheduleId) {
         return scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundException(Schedule.class, scheduleId));
     }
 
+    @Transactional
     public Schedule modifySchedule(ModifiedScheduleRequest modifiedScheduleRequest) {
         Schedule schedule = scheduleRepository.findById(modifiedScheduleRequest.getId())
                 .orElseThrow(() -> new NotFoundException(Schedule.class, modifiedScheduleRequest.getId()));
@@ -40,6 +45,7 @@ public class ScheduleService {
         return schedule;
     }
 
+    @Transactional
     public boolean deleteSchedule(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);
 

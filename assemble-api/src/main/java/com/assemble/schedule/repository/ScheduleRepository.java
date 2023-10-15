@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    @Query(value = "SELECT schedule.* FROM Schedule schedule WHERE Date_Format(schedule.date, '%Y-%m') = :yearAndMonth",
+    @Query(value = "SELECT schedule.* FROM Schedule schedule WHERE schedule.date like :yearAndMonth%",
             nativeQuery = true)
     List<Schedule> findAllByYearAndMonth(@Param("yearAndMonth") String yearAndMonth);
 }
