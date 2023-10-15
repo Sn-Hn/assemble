@@ -191,7 +191,7 @@ class ScheduleControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.response").isNotEmpty());
 
-        perform.andDo(document("schedule/creation",
+        perform.andDo(document("schedule/modification",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
                 ),
