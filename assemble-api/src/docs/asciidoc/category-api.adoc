@@ -45,7 +45,7 @@ include::{snippets}/category/creation/response-fields.adoc[]
 include::{snippets}/category/creation/response-body.adoc[]
 
 === 카테고리 수정
-PATCH /category +
+PUT /category +
 카테고리를 수정합니다.
 
 ==== REQUEST

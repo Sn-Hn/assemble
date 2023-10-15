@@ -28,7 +28,7 @@ include::{snippets}/comment/creation/response-fields.adoc[]
 include::{snippets}/comment/creation/response-body.adoc[]
 
 === 댓글 수정
-PATCH /comment +
+PUT /comment +
 댓글을 수정합니다.
 
 ==== REQUEST

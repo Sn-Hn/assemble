@@ -62,7 +62,7 @@ include::{snippets}/meeting/detail/response-fields.adoc[]
 include::{snippets}/meeting/detail/response-body.adoc[]
 
 === 모임(모임) 수정
-PATCH /meeting +
+PUT /meeting +
 모임을 수정합니다.
 
 ==== REQUEST
