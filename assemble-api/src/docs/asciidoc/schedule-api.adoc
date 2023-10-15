@@ -1,0 +1,100 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+== 모임 일정 (Schedule)
+모임 일정에 관련된 기능을 제공합니다.
+
+일정 목록 조회, 상세 조회, 등록, 수정, 삭제
+
+=== 일정 목록 조회 (특정 연월)
+GET /schedule +
+일정 목록을 조회합니다.
+
+특정 연월을 대상으로 조회합니다. ex) 2023-10
+
+==== REQUEST
+include::{snippets}/schedule/list/curl-request.adoc[]
+include::{snippets}/schedule/list/http-request.adoc[]
+include::{snippets}/schedule/list/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/schedule/list/http-response.adoc[]
+include::{snippets}/schedule/list/response-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/list/response-body.adoc[]
+
+=== 일정 상세 조회
+GET /schedule/{scheduleId} +
+모임 일정 상세를 조회합니다.
+
+==== REQUEST
+include::{snippets}/schedule/detail/curl-request.adoc[]
+include::{snippets}/schedule/detail/http-request.adoc[]
+include::{snippets}/schedule/detail/httpie-request.adoc[]
+include::{snippets}/schedule/detail/path-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/schedule/detail/http-response.adoc[]
+include::{snippets}/schedule/detail/response-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/detail/response-body.adoc[]
+
+=== 일정 등록
+POST /schedule +
+일정를 등록합니다.
+
+==== REQUEST
+include::{snippets}/schedule/creation/curl-request.adoc[]
+include::{snippets}/schedule/creation/http-request.adoc[]
+include::{snippets}/schedule/creation/httpie-request.adoc[]
+include::{snippets}/schedule/creation/request-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/creation/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/schedule/creation/http-response.adoc[]
+include::{snippets}/schedule/creation/response-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/creation/response-body.adoc[]
+
+=== 일정 수정
+PUT /schedule +
+일정를 수정합니다.
+
+==== REQUEST
+include::{snippets}/schedule/modification/curl-request.adoc[]
+include::{snippets}/schedule/modification/http-request.adoc[]
+include::{snippets}/schedule/modification/httpie-request.adoc[]
+include::{snippets}/schedule/modification/request-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/modification/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/schedule/modification/http-response.adoc[]
+include::{snippets}/schedule/modification/response-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/modification/response-body.adoc[]
+
+=== 일정 삭제
+DELETE /schedule/{commentId} +
+일정를 삭제합니다.
+
+==== REQUEST
+include::{snippets}/schedule/delete/curl-request.adoc[]
+include::{snippets}/schedule/delete/http-request.adoc[]
+include::{snippets}/schedule/delete/httpie-request.adoc[]
+include::{snippets}/schedule/delete/path-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/schedule/delete/http-response.adoc[]
+include::{snippets}/schedule/delete/response-fields.adoc[]
+
+===== example
+include::{snippets}/schedule/delete/response-body.adoc[]
