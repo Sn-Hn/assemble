@@ -47,7 +47,6 @@ POST /user/validation +
 include::{snippets}/user/validation/curl-request.adoc[]
 include::{snippets}/user/validation/http-request.adoc[]
 include::{snippets}/user/validation/httpie-request.adoc[]
-include::{snippets}/user/validation/request-parameters.adoc[]
 
 ===== example
 include::{snippets}/user/validation/request-body.adoc[]
@@ -67,7 +66,6 @@ POST /password/validation +
 include::{snippets}/password/validation/curl-request.adoc[]
 include::{snippets}/password/validation/http-request.adoc[]
 include::{snippets}/password/validation/httpie-request.adoc[]
-include::{snippets}/password/validation/request-parameters.adoc[]
 
 ===== example
 include::{snippets}/password/validation/request-body.adoc[]
