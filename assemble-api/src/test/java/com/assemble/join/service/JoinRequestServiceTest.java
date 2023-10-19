@@ -5,7 +5,9 @@ import com.assemble.activity.fixture.ActivityFixture;
 import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.UserBlockException;
+import com.assemble.event.publish.JoinProcessSendNotificationEvent;
 import com.assemble.event.publish.JoinRequestEvent;
+import com.assemble.event.publish.JoinRequestSendNotificationEvent;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.join.domain.JoinRequestStatus;
 import com.assemble.join.dto.request.JoinRequestAnswer;
@@ -16,10 +18,6 @@ import com.assemble.join.repository.JoinRequestRepository;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.meeting.repository.MeetingRepository;
-import com.assemble.noti.event.NotificationEvent;
-import com.assemble.user.fixture.UserFixture;
-import com.assemble.user.repository.UserRepository;
-import com.assemble.util.MessageUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,12 +63,6 @@ class JoinRequestServiceTest {
     @Mock
     private ActivityRepository activityRepository;
 
-    @Mock
-    private NotificationEvent notificationEvent;
-
-    @Mock
-    private UserRepository userRepository;
-
     @Test
     void 모임_가입_신청() {
         // given
@@ -80,8 +72,6 @@ class JoinRequestServiceTest {
         given(joinRequestRepository.save(any())).willReturn(joinRequestUser);
         given(activityRepository.findByMeetingId(any())).willReturn(List.of());
         given(userContext.getUserId()).willReturn(joinRequestUser.getUser().getUserId());
-        given(userRepository.findById(anyLong())).willReturn(Optional.of(UserFixture.회원()));
-        given(meetingRepository.findById(anyLong())).willReturn(Optional.of(MeetingFixture.모임()));
 
 
         // when
@@ -93,6 +83,8 @@ class JoinRequestServiceTest {
                 () -> assertThat(joinRequest.getUser().getUserId()).isEqualTo(userContext.getUserId()),
                 () -> assertThat(joinRequest.getStatus()).isEqualTo(JoinRequestStatus.REQUEST)
         );
+
+        verify(eventPublisher, times(1)).publishEvent(any(JoinRequestSendNotificationEvent.class));
     }
 
     @Test
@@ -166,7 +158,8 @@ class JoinRequestServiceTest {
         );
 
         verify(eventPublisher, times(1)).publishEvent(any(JoinRequestEvent.class));
-        verify(notificationEvent, times(1)).publish(anyLong(), any(), any(), any());
+        verify(eventPublisher, times(1)).publishEvent(any(JoinProcessSendNotificationEvent.class));
+
     }
 
     @ParameterizedTest
@@ -187,6 +180,11 @@ class JoinRequestServiceTest {
         );
 
         verify(eventPublisher, times(0)).publishEvent(any(JoinRequestEvent.class));
+        if (status.equals("REJECT")) {
+            verify(eventPublisher, times(1)).publishEvent(any(JoinProcessSendNotificationEvent.class));
+        } else {
+            verify(eventPublisher, times(0)).publishEvent(any(JoinProcessSendNotificationEvent.class));
+        }
     }
 
     @ParameterizedTest
