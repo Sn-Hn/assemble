@@ -35,9 +35,9 @@ class MeetingRepositoryTest {
         // when
         long count = meetingRepository.count();
         List<Meeting> allMeetingBySearches = meetingRepository.findAllBySearch(meetingSearchRequest, myUserId, pageable);
-        Page<Meeting> posts = new PageImpl<>(allMeetingBySearches, pageable, count);
+        Page<Meeting> meetings = new PageImpl<>(allMeetingBySearches, pageable, count);
 
-        Meeting searchMeeting = posts.get().filter(post -> post.getName().getValue().contains(meetingSearchRequest.getSearchQuery()))
+        Meeting searchMeeting = meetings.get().filter(meeting -> meeting.getName().getValue().contains(meetingSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
         // then
@@ -58,8 +58,8 @@ class MeetingRepositoryTest {
         // when
         long count = meetingRepository.count();
         List<Meeting> allMeetingBySearches = meetingRepository.findAllBySearch(meetingSearchRequest, myUserId, pageable);
-        Page<Meeting> posts = new PageImpl<>(allMeetingBySearches, pageable, count);
-        Meeting searchMeeting = posts.get().filter(post -> post.getDescription().getValue().contains(meetingSearchRequest.getSearchQuery()))
+        Page<Meeting> meetings = new PageImpl<>(allMeetingBySearches, pageable, count);
+        Meeting searchMeeting = meetings.get().filter(meeting -> meeting.getDescription().getValue().contains(meetingSearchRequest.getSearchQuery()))
                 .findFirst().orElseThrow();
 
         // then
@@ -80,8 +80,8 @@ class MeetingRepositoryTest {
         // when
         long count = meetingRepository.count();
         List<Meeting> allMeetingBySearches = meetingRepository.findAllBySearch(meetingSearchRequest, userId, pageable);
-        Page<Meeting> posts = new PageImpl<>(allMeetingBySearches, pageable, count);
-        Meeting searchMeeting = posts.get().filter(post -> post.getUser().getUserId().equals(Long.valueOf(meetingSearchRequest.getSearchQuery())))
+        Page<Meeting> meetings = new PageImpl<>(allMeetingBySearches, pageable, count);
+        Meeting searchMeeting = meetings.get().filter(meeting -> meeting.getUser().getUserId().equals(Long.valueOf(meetingSearchRequest.getSearchQuery())))
                 .findFirst().orElseThrow();
 
         // then
