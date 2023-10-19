@@ -2,7 +2,7 @@ package com.assemble.noti.event;
 
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.assemble.noti.dto.WebNotificationRequest;
+import com.assemble.noti.dto.WebNotificationSendRequest;
 import com.assemble.util.MessageUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
@@ -11,14 +11,14 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NotificationEvent {
+public class NotificationPublishEvent {
 
     @Value("${cloud.aws.sqs.queue-name}")
     private String QUEUE_NAME;
 
     private final QueueMessagingTemplate queueMessagingTemplate;
 
-    public NotificationEvent(AmazonSQS amazonSQS) {
+    public NotificationPublishEvent(AmazonSQS amazonSQS) {
         this.queueMessagingTemplate = new QueueMessagingTemplate((AmazonSQSAsync) amazonSQS);
     }
 
@@ -28,14 +28,18 @@ public class NotificationEvent {
     }
 
     public void publish(Long userId, String message, String fcmToken, Object... args) {
-        WebNotificationRequest webNotificationRequest =
-                new WebNotificationRequest(String.valueOf(userId), MessageUtils.getMessage(message, args), fcmToken);
-        queueMessagingTemplate.convertAndSend(QUEUE_NAME, webNotificationRequest);
+        WebNotificationSendRequest webNotificationSendRequest =
+                new WebNotificationSendRequest(String.valueOf(userId), MessageUtils.getMessage(message, args), fcmToken);
+        publish(webNotificationSendRequest);
     }
 
-    public void publish(Long userId, String message, String fcmToken) {
-        WebNotificationRequest webNotificationRequest =
-                new WebNotificationRequest(String.valueOf(userId), message, fcmToken);
-        queueMessagingTemplate.convertAndSend(QUEUE_NAME, webNotificationRequest);
+    public void publish(Long userId, String fcmToken, String message) {
+        WebNotificationSendRequest webNotificationSendRequest =
+                new WebNotificationSendRequest(String.valueOf(userId), message, fcmToken);
+        publish(webNotificationSendRequest);
+    }
+
+    public void publish(WebNotificationSendRequest webNotificationSendRequest) {
+        queueMessagingTemplate.convertAndSend(QUEUE_NAME, webNotificationSendRequest);
     }
 }

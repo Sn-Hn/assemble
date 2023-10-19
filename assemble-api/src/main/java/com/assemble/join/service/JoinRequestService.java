@@ -3,18 +3,15 @@ package com.assemble.join.service;
 import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.commons.exception.NotFoundException;
+import com.assemble.event.publish.JoinProcessSendNotificationEvent;
 import com.assemble.event.publish.JoinRequestEvent;
-import com.assemble.join.domain.JoinRequestStatus;
+import com.assemble.event.publish.JoinRequestSendNotificationEvent;
 import com.assemble.join.dto.request.JoinRequestAnswer;
 import com.assemble.join.dto.request.JoinRequestDto;
 import com.assemble.join.entity.JoinRequest;
 import com.assemble.join.repository.JoinRequestRepository;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.repository.MeetingRepository;
-import com.assemble.noti.event.NotificationEvent;
-import com.assemble.user.entity.User;
-import com.assemble.user.repository.UserRepository;
-import com.assemble.util.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,17 +29,11 @@ import java.util.stream.Collectors;
 @Service
 public class JoinRequestService {
 
-    private final String JOIN_REQUEST_MESSAGE = "web.notification.message.join.request";
-    private final String JOIN_APPROVAL_MESSAGE = "web.notification.message.join.approval";
-    private final String JOIN_REJECT_MESSAGE = "web.notification.message.join.reject";
-
     private final JoinRequestRepository joinRequestRepository;
     private final MeetingRepository meetingRepository;
-    private final UserRepository userRepository;
     private final UserContext userContext;
     private final ActivityRepository activityRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final NotificationEvent notificationEvent;
 
     @Transactional
     public JoinRequest requestJoinToAssemble(JoinRequestDto joinRequestDto) {
@@ -62,16 +53,7 @@ public class JoinRequestService {
 
         JoinRequest savedJoinRequest = joinRequestRepository.save(joinRequest);
 
-        User user = userRepository.findById(userContext.getUserId())
-                .orElseThrow(() -> new NotFoundException(User.class, userContext.getUserId()));
-        Meeting meeting = meetingRepository.findById(joinRequestDto.getMeetingId())
-                .orElseThrow(() -> new NotFoundException(Meeting.class, joinRequestDto.getMeetingId()));
-
-        notificationEvent.publish(
-                savedJoinRequest.getUser().getUserId(),
-                JOIN_REQUEST_MESSAGE,
-                meeting.getUser().getFcmToken(),
-                user.getNickname(), meeting.getName().getValue());
+        eventPublisher.publishEvent(new JoinRequestSendNotificationEvent(savedJoinRequest));
 
         return savedJoinRequest;
     }
@@ -87,13 +69,9 @@ public class JoinRequestService {
             eventPublisher.publishEvent(new JoinRequestEvent(joinRequest));
         }
 
-        String message = getJoinRequestMessage(joinRequest);
-
-        notificationEvent.publish(
-                joinRequest.getUser().getUserId(),
-                message,
-                joinRequest.getUser().getFcmToken(),
-                joinRequest.getMeeting().getName().getValue());
+        if (!joinRequest.isRequestAndBlock()) {
+            eventPublisher.publishEvent(new JoinProcessSendNotificationEvent(joinRequest));
+        }
 
         return joinRequest;
     }
@@ -134,11 +112,7 @@ public class JoinRequestService {
     }
 
     private String getJoinRequestMessage(JoinRequest joinRequest) {
-        if (JoinRequestStatus.APPROVAL.equals(joinRequest.getStatus())) {
-            return JOIN_APPROVAL_MESSAGE;
-        } else if (JoinRequestStatus.REJECT.equals(joinRequest.getStatus())) {
-            return JOIN_REJECT_MESSAGE;
-        }
+
         return null;
     }
 }

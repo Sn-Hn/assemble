@@ -1,6 +1,6 @@
 package com.assemble.notification.sqs.listener;
 
-import com.assemble.noti.dto.WebNotificationRequest;
+import com.assemble.noti.dto.WebNotificationSendRequest;
 import com.assemble.notification.fcm.service.FcmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +19,13 @@ public class SqsMessageListener {
 
     private final FcmService fcmService;
 
-    @SqsListener(value = "assemble-web-notification-queue", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void messageListener(@Payload WebNotificationRequest webNotificationRequest, @Headers Map<String, String> headers) {
-        log.info("webNotificationRequest: {}", webNotificationRequest);
+    @SqsListener(value = "${cloud.aws.sqs.queue-name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
+    public void messageListener(@Payload WebNotificationSendRequest webNotificationSendRequest, @Headers Map<String, String> headers) {
+        log.info("webNotificationRequest: {}", webNotificationSendRequest);
         log.info("headers: {}", headers);
 
-        Long userId = Long.valueOf(webNotificationRequest.getUserId());
+        Long userId = Long.valueOf(webNotificationSendRequest.getUserId());
 
-        fcmService.sendNotification(userId, webNotificationRequest.getMessage(), webNotificationRequest.getFcmToken());
+        fcmService.sendNotification(userId, webNotificationSendRequest.getMessage(), webNotificationSendRequest.getFcmToken());
     }
 }

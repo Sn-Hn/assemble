@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
-public class WebNotificationRequest {
+public class WebNotificationSendRequest {
 
     private String userId;
 

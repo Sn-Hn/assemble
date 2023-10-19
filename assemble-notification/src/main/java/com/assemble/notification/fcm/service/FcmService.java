@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class FcmService {
 
-    public void sendNotification(Long targetUserId, String message, String token) {
+    public void sendNotification(Long targetUserId, String message, String fcmToken) {
         Message msg = Message.builder()
                 .putData("targetUserId", String.valueOf(targetUserId))
                 .putData("message", message)
-                .setToken(token)
+                .setToken(fcmToken)
                 .build();
 
         FirebaseMessaging.getInstance().sendAsync(msg);
