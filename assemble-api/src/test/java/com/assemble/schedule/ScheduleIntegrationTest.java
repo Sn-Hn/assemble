@@ -8,7 +8,6 @@ import com.assemble.schedule.dto.request.ModifiedScheduleRequest;
 import com.assemble.schedule.dto.request.ScheduleCreationRequest;
 import com.assemble.schedule.dto.request.ScheduleYearAndMonthRequest;
 import com.assemble.schedule.dto.response.ScheduleResponse;
-import com.assemble.schedule.dto.response.SchedulesResponse;
 import com.assemble.schedule.fixture.ScheduleFixture;
 import com.assemble.util.IntegrationTestUtil;
 import io.restassured.RestAssured;
@@ -22,6 +21,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -54,19 +60,27 @@ public class ScheduleIntegrationTest {
         );
     }
 
+    /**
+     *  조회한 연월은 시작날짜, 종료날짜 사이에 존재해야 함
+     *  ex) 2023-10으로 검색했을 경우,
+     *  startDate: 2023-05-05, endDate: 2023-12-12 안에 포함되어야 함
+     */
     @ParameterizedTest
     @ValueSource(strings = {"2023-09", "2023-10"})
     void 일정_목록_연월_조회_검증(String yearAndMonth) {
-        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
+        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(YearMonth.parse(yearAndMonth));
         ExtractableResponse<Response> getResponse = IntegrationTestUtil.getQueryParamWithJWT("/schedule", request);
         ApiResult result = getResponse.jsonPath().getObject(".", ApiResult.class);
-        SchedulesResponse response = getResponse.jsonPath().getObject("response", SchedulesResponse.class);
+        List<LinkedHashMap> response = getResponse.jsonPath().getObject("response", List.class);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         assertAll(
                 () -> assertThat(result.isSuccess()).isTrue(),
                 () -> assertThat(result.getStatus()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.getSchedules().get(0).getSchedulesOfMonth().stream()
-                        .findAny().get().getDate()).contains(yearAndMonth)
+                () -> assertThat(LocalDate.parse(String.valueOf(response.get(0).get("startDate")), formatter))
+                        .isAfterOrEqualTo(String.valueOf(request.getYearAndMonth().atDay(1))),
+                () -> assertThat(LocalDate.parse(String.valueOf(response.get(0).get("endDate")), formatter))
+                        .isBeforeOrEqualTo(String.valueOf(request.getYearAndMonth().atEndOfMonth()))
         );
     }
 

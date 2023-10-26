@@ -17,6 +17,7 @@ public class ScheduleFixture {
                 content,
                 UserFixture.회원(),
                 dateOctober,
+                dateOctober,
                 notDeleted
         );
     }
@@ -28,6 +29,7 @@ public class ScheduleFixture {
                 content,
                 UserFixture.회원(),
                 dateSeptember,
+                dateSeptember,
                 notDeleted
         );
         schedule.setCreatedDate(LocalDateTime.now());
@@ -38,6 +40,7 @@ public class ScheduleFixture {
         return new ScheduleCreationRequest(
                 title,
                 content,
+                dateSeptember,
                 dateOctober
         );
     }

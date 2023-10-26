@@ -26,7 +26,7 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     public List<Schedule> findSchedulesByYearAndMonth(ScheduleYearAndMonthRequest scheduleYearAndMonthRequest) {
-        return scheduleRepository.findAllByYearAndMonth(scheduleYearAndMonthRequest.getYearAndMonth());
+        return scheduleRepository.findAllByYearAndMonth(String.valueOf(scheduleYearAndMonthRequest.getYearAndMonth()));
     }
 
     @Transactional(readOnly = true)

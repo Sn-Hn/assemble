@@ -27,6 +27,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.YearMonth;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -86,7 +87,8 @@ class ScheduleControllerTest {
                 requestFields(
                         fieldWithPath("title").description("일정 제목"),
                         fieldWithPath("content").description("일정 내용"),
-                        fieldWithPath("date").description("일정 날짜")
+                        fieldWithPath("startDate").description("일정 시작 날짜"),
+                        fieldWithPath("endDate").description("일정 종료 날짜")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
@@ -95,8 +97,8 @@ class ScheduleControllerTest {
                         fieldWithPath("response.id").description("일정 ID"),
                         fieldWithPath("response.title").description("일정 제목"),
                         fieldWithPath("response.content").description("일정 내용"),
-                        fieldWithPath("response.date").description("일정 날짜"),
-                        fieldWithPath("response.day").description("일"),
+                        fieldWithPath("response.startDate").description("일정 시작 날짜"),
+                        fieldWithPath("response.endDate").description("일정 종료 날짜"),
                         fieldWithPath("response.writeDate").description("작성일")
                 ))
         );
@@ -105,7 +107,7 @@ class ScheduleControllerTest {
     @Test
     void 일정_목록_연월_조회() throws Exception {
         String yearAndMonth = "2023-09";
-        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
+        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(YearMonth.parse(yearAndMonth));
         given(scheduleService.findSchedulesByYearAndMonth(any())).willReturn(List.of(ScheduleFixture.일정_9월()));
 
         ResultActions perform = mockMvc.perform(get("/schedule")
@@ -128,13 +130,12 @@ class ScheduleControllerTest {
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response.schedules[].day").description("특정 월의 일"),
-                        fieldWithPath("response.schedules[].schedulesOfMonth[].id").description("일정 ID"),
-                        fieldWithPath("response.schedules[].schedulesOfMonth[].title").description("일정 제목"),
-                        fieldWithPath("response.schedules[].schedulesOfMonth[].day").description("특정 월의 일"),
-                        fieldWithPath("response.schedules[].schedulesOfMonth[].date").description("일정 날짜"),
-                        fieldWithPath("response.schedules[].schedulesOfMonth[].writerNickname").description("작성자 닉네임"),
-                        fieldWithPath("response.schedules[].schedulesOfMonth[].writeDate").description("일정 작성일")
+                        fieldWithPath("response[].id").description("일정 ID"),
+                        fieldWithPath("response[].title").description("일정 제목"),
+                        fieldWithPath("response[].startDate").description("일정 시작 날짜"),
+                        fieldWithPath("response[].endDate").description("일정 종료 날짜"),
+                        fieldWithPath("response[].writerNickname").description("작성자 닉네임"),
+                        fieldWithPath("response[].writeDate").description("일정 작성일")
                 ))
         );
     }
@@ -166,8 +167,8 @@ class ScheduleControllerTest {
                         fieldWithPath("response.id").description("일정 ID"),
                         fieldWithPath("response.title").description("일정 제목"),
                         fieldWithPath("response.content").description("일정 내용"),
-                        fieldWithPath("response.day").description("특정 월의 일"),
-                        fieldWithPath("response.date").description("일정 날짜"),
+                        fieldWithPath("response.startDate").description("일정 시작 날짜"),
+                        fieldWithPath("response.endDate").description("일정 종료 날짜"),
                         fieldWithPath("response.writerNickname").description("작성자 닉네임"),
                         fieldWithPath("response.writeDate").description("일정 작성일")
                 ))
@@ -207,8 +208,8 @@ class ScheduleControllerTest {
                         fieldWithPath("response.id").description("일정 ID"),
                         fieldWithPath("response.title").description("일정 제목"),
                         fieldWithPath("response.content").description("일정 내용"),
-                        fieldWithPath("response.date").description("일정 날짜"),
-                        fieldWithPath("response.day").description("일"),
+                        fieldWithPath("response.startDate").description("일정 시작 날짜"),
+                        fieldWithPath("response.endDate").description("일정 종료 날짜"),
                         fieldWithPath("response.writeDate").description("작성일"),
                         fieldWithPath("response.writerNickname").description("작성자")
                 ))

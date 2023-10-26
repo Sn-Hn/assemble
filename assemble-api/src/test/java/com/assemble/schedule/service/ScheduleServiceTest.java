@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,8 @@ class ScheduleServiceTest {
                 () -> assertThat(schedule).isNotNull(),
                 () -> assertThat(schedule.getTitle()).isEqualTo(scheduleCreationRequest.getTitle()),
                 () -> assertThat(schedule.getContent()).isEqualTo(scheduleCreationRequest.getContent()),
-                () -> assertThat(schedule.getDate()).isEqualTo(scheduleCreationRequest.getDate())
+                () -> assertThat(schedule.getStartDate()).isEqualTo(scheduleCreationRequest.getStartDate()),
+                () -> assertThat(schedule.getEndDate()).isEqualTo(scheduleCreationRequest.getEndDate())
         );
     }
 
@@ -53,7 +55,7 @@ class ScheduleServiceTest {
     void 일정_목록_연월_조회_검증() {
         // given
         String yearAndMonth = "2023-09";
-        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
+        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(YearMonth.parse(yearAndMonth));
         Schedule sepSchedule = ScheduleFixture.일정_9월();
         given(scheduleRepository.findAllByYearAndMonth(any())).willReturn(List.of(sepSchedule));
 
@@ -66,7 +68,7 @@ class ScheduleServiceTest {
                 () -> assertThat(schedulesByYearAndMonth.stream()
                         .findAny()
                         .get()
-                        .getDate().format(DateTimeFormatter.ISO_DATE)).contains(yearAndMonth)
+                        .getStartDate().format(DateTimeFormatter.ISO_DATE)).contains(yearAndMonth)
         );
     }
 

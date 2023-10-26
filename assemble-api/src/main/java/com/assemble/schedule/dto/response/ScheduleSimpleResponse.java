@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -24,11 +23,11 @@ public class ScheduleSimpleResponse {
     @ApiModelProperty(value = "일정 작성자 닉네임")
     private String writerNickname;
 
-    @ApiModelProperty(value = "일정 날짜")
-    private String date;
+    @ApiModelProperty(value = "일정 시작 날짜")
+    private String startDate;
 
-    @ApiModelProperty(value = "일정 연월의 일")
-    private int day;
+    @ApiModelProperty(value = "일정 종료 날짜")
+    private String endDate;
 
     @ApiModelProperty(value = "일정 작성일")
     private String writeDate;
@@ -38,8 +37,8 @@ public class ScheduleSimpleResponse {
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getUser().getNickname(),
-                schedule.getDate().format(DateTimeFormatter.ISO_DATE),
-                schedule.getDate().getDayOfMonth(),
+                schedule.getStartDate().format(DateTimeFormatter.ISO_DATE),
+                schedule.getEndDate().format(DateTimeFormatter.ISO_DATE),
                 schedule.getCreatedDate().format(DateTimeFormatter.ISO_DATE)
         );
     }

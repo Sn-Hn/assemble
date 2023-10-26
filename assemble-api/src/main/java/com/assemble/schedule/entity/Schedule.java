@@ -31,7 +31,9 @@ public class Schedule extends BaseUserEntity {
     @JoinColumn(name = "userId")
     private User user;
 
-    private LocalDate date;
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @Convert(converter = BooleanToYNConverter.class)
     private boolean isDeleted;
@@ -39,11 +41,12 @@ public class Schedule extends BaseUserEntity {
     protected Schedule() {
     }
 
-    public Schedule(String title, String content, User user, LocalDate date) {
+    public Schedule(String title, String content, User user, LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.user = user;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public void modify(String title, String content) {
