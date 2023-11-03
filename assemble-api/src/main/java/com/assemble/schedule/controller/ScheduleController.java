@@ -29,10 +29,14 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ApiResult<List<ScheduleSimpleResponse>> getSchedulesByMonth(ScheduleYearAndMonthRequest scheduleYearAndMonthRequest) {
-        return ApiResult.ok(scheduleService.findSchedulesByYearAndMonth(scheduleYearAndMonthRequest).stream()
+    public ApiResult<SchedulesResponse> getSchedulesByMonth(ScheduleYearAndMonthRequest scheduleYearAndMonthRequest) {
+        Map<Integer, List<ScheduleSimpleResponse>> groupingSchedule = scheduleService.findSchedulesByYearAndMonth(scheduleYearAndMonthRequest).stream()
                 .map(ScheduleSimpleResponse::toResponse)
-                .collect(Collectors.toUnmodifiableList()));
+                .collect(Collectors.groupingBy(ScheduleSimpleResponse::getDay));
+
+        return ApiResult.ok(new SchedulesResponse(groupingSchedule.keySet().stream()
+                .map(key -> new ScheduleGroupingDay(key, groupingSchedule.get(key)))
+                .collect(Collectors.toUnmodifiableList())));
     }
 
     @GetMapping("{scheduleId}")

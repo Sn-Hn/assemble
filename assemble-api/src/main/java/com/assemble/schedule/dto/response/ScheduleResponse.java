@@ -26,11 +26,8 @@ public class ScheduleResponse {
     @ApiModelProperty(value = "일정 작성자")
     private String writerNickname;
 
-    @ApiModelProperty(value = "일정 시작 날짜")
-    private String startDate;
-
-    @ApiModelProperty(value = "일정 종료 날짜")
-    private String endDate;
+    @ApiModelProperty(value = "날짜")
+    private String date;
 
     @ApiModelProperty(value = "일정 작성일")
     private String writeDate;
@@ -41,8 +38,7 @@ public class ScheduleResponse {
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getUser().getNickname(),
-                schedule.getStartDate().format(DateTimeFormatter.BASIC_ISO_DATE),
-                schedule.getEndDate().format(DateTimeFormatter.BASIC_ISO_DATE),
+                schedule.getDate().format(DateTimeFormatter.BASIC_ISO_DATE),
                 schedule.getCreatedDate().format(DateTimeFormatter.BASIC_ISO_DATE)
         );
     }

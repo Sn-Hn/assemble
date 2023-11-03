@@ -46,8 +46,7 @@ class ScheduleServiceTest {
                 () -> assertThat(schedule).isNotNull(),
                 () -> assertThat(schedule.getTitle()).isEqualTo(scheduleCreationRequest.getTitle()),
                 () -> assertThat(schedule.getContent()).isEqualTo(scheduleCreationRequest.getContent()),
-                () -> assertThat(schedule.getStartDate()).isEqualTo(scheduleCreationRequest.getStartDate()),
-                () -> assertThat(schedule.getEndDate()).isEqualTo(scheduleCreationRequest.getEndDate())
+                () -> assertThat(schedule.getDate()).isEqualTo(scheduleCreationRequest.getDate())
         );
     }
 
@@ -68,7 +67,7 @@ class ScheduleServiceTest {
                 () -> assertThat(schedulesByYearAndMonth.stream()
                         .findAny()
                         .get()
-                        .getStartDate().format(DateTimeFormatter.ISO_DATE)).contains(yearAndMonth)
+                        .getDate().format(DateTimeFormatter.ISO_DATE)).contains(yearAndMonth)
         );
     }
 

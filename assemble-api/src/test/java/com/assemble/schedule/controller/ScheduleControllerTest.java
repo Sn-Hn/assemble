@@ -87,8 +87,7 @@ class ScheduleControllerTest {
                 requestFields(
                         fieldWithPath("title").description("일정 제목"),
                         fieldWithPath("content").description("일정 내용"),
-                        fieldWithPath("startDate").description("일정 시작 날짜"),
-                        fieldWithPath("endDate").description("일정 종료 날짜")
+                        fieldWithPath("date").description("날짜")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),
@@ -97,8 +96,7 @@ class ScheduleControllerTest {
                         fieldWithPath("response.id").description("일정 ID"),
                         fieldWithPath("response.title").description("일정 제목"),
                         fieldWithPath("response.content").description("일정 내용"),
-                        fieldWithPath("response.startDate").description("일정 시작 날짜"),
-                        fieldWithPath("response.endDate").description("일정 종료 날짜"),
+                        fieldWithPath("response.date").description("날짜"),
                         fieldWithPath("response.writeDate").description("작성일")
                 ))
         );
@@ -130,12 +128,13 @@ class ScheduleControllerTest {
                         fieldWithPath("success").description("성공 여부"),
                         fieldWithPath("status").description("상태값"),
                         fieldWithPath("error").description("에러 내용"),
-                        fieldWithPath("response[].id").description("일정 ID"),
-                        fieldWithPath("response[].title").description("일정 제목"),
-                        fieldWithPath("response[].startDate").description("일정 시작 날짜"),
-                        fieldWithPath("response[].endDate").description("일정 종료 날짜"),
-                        fieldWithPath("response[].writerNickname").description("작성자 닉네임"),
-                        fieldWithPath("response[].writeDate").description("일정 작성일")
+                        fieldWithPath("response.schedules[].day").description("특정 월의 일"),
+                        fieldWithPath("response.schedules[].schedulesOfMonth[].id").description("일정 ID"),
+                        fieldWithPath("response.schedules[].schedulesOfMonth[].title").description("일정 제목"),
+                        fieldWithPath("response.schedules[].schedulesOfMonth[].day").description("특정 월의 일"),
+                        fieldWithPath("response.schedules[].schedulesOfMonth[].date").description("일정 날짜"),
+                        fieldWithPath("response.schedules[].schedulesOfMonth[].writerNickname").description("작성자 닉네임"),
+                        fieldWithPath("response.schedules[].schedulesOfMonth[].writeDate").description("일정 작성일")
                 ))
         );
     }
@@ -167,8 +166,7 @@ class ScheduleControllerTest {
                         fieldWithPath("response.id").description("일정 ID"),
                         fieldWithPath("response.title").description("일정 제목"),
                         fieldWithPath("response.content").description("일정 내용"),
-                        fieldWithPath("response.startDate").description("일정 시작 날짜"),
-                        fieldWithPath("response.endDate").description("일정 종료 날짜"),
+                        fieldWithPath("response.date").description("날짜"),
                         fieldWithPath("response.writerNickname").description("작성자 닉네임"),
                         fieldWithPath("response.writeDate").description("일정 작성일")
                 ))
@@ -208,8 +206,7 @@ class ScheduleControllerTest {
                         fieldWithPath("response.id").description("일정 ID"),
                         fieldWithPath("response.title").description("일정 제목"),
                         fieldWithPath("response.content").description("일정 내용"),
-                        fieldWithPath("response.startDate").description("일정 시작 날짜"),
-                        fieldWithPath("response.endDate").description("일정 종료 날짜"),
+                        fieldWithPath("response.date").description("날짜"),
                         fieldWithPath("response.writeDate").description("작성일"),
                         fieldWithPath("response.writerNickname").description("작성자")
                 ))

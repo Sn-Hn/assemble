@@ -128,12 +128,11 @@ VALUES (
         'NORMAL'
        );
 
-INSERT INTO schedule(title, content, user_id, start_date, end_date, is_deleted, creator, created_date, modifier, modified_date)
+INSERT INTO schedule(title, content, user_id, date, is_deleted, creator, created_date, modifier, modified_date)
 VALUES (
         '테스트 일정',
         '테스트 일정입니다 ~~',
         '1',
-        '2023-09-15',
         '2023-09-15',
         'N',
         '1',
@@ -146,7 +145,6 @@ VALUES (
            '테스트 일정입니다 ~~',
            '1',
            '2023-10-15',
-           '2023-10-20',
            'N',
            '1',
            now(),

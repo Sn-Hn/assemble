@@ -23,13 +23,11 @@ public class ScheduleCreationRequest {
     @ApiModelProperty(value = "Schedule 내용")
     private String content;
 
-    @ApiModelProperty(value = "시작 날짜")
-    private LocalDate startDate;
+    @ApiModelProperty(value = "날짜")
+    private LocalDate date;
 
-    @ApiModelProperty(value = "종료 날짜")
-    private LocalDate endDate;
 
     public Schedule toEntity() {
-        return new Schedule(this.title, this.content, new User(AuthenticationUtils.getUserId()), startDate, endDate);
+        return new Schedule(this.title, this.content, new User(AuthenticationUtils.getUserId()), date);
     }
 }

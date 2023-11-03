@@ -8,6 +8,7 @@ import com.assemble.schedule.dto.request.ModifiedScheduleRequest;
 import com.assemble.schedule.dto.request.ScheduleCreationRequest;
 import com.assemble.schedule.dto.request.ScheduleYearAndMonthRequest;
 import com.assemble.schedule.dto.response.ScheduleResponse;
+import com.assemble.schedule.dto.response.SchedulesResponse;
 import com.assemble.schedule.fixture.ScheduleFixture;
 import com.assemble.util.IntegrationTestUtil;
 import io.restassured.RestAssured;
@@ -71,16 +72,13 @@ public class ScheduleIntegrationTest {
         ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(YearMonth.parse(yearAndMonth));
         ExtractableResponse<Response> getResponse = IntegrationTestUtil.getQueryParamWithJWT("/schedule", request);
         ApiResult result = getResponse.jsonPath().getObject(".", ApiResult.class);
-        List<LinkedHashMap> response = getResponse.jsonPath().getObject("response", List.class);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        SchedulesResponse response = getResponse.jsonPath().getObject("response", SchedulesResponse.class);
 
         assertAll(
                 () -> assertThat(result.isSuccess()).isTrue(),
                 () -> assertThat(result.getStatus()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(LocalDate.parse(String.valueOf(response.get(0).get("startDate")), formatter))
-                        .isAfterOrEqualTo(String.valueOf(request.getYearAndMonth().atDay(1))),
-                () -> assertThat(LocalDate.parse(String.valueOf(response.get(0).get("endDate")), formatter))
-                        .isBeforeOrEqualTo(String.valueOf(request.getYearAndMonth().atEndOfMonth()))
+                () -> assertThat(response.getSchedules().get(0).getSchedulesOfMonth().stream()
+                        .findAny().get().getDate()).contains(yearAndMonth)
         );
     }
 
