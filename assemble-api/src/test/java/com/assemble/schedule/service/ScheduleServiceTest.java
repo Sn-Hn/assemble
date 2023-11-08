@@ -54,7 +54,7 @@ class ScheduleServiceTest {
     void 일정_목록_연월_조회_검증() {
         // given
         String yearAndMonth = "2023-09";
-        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(YearMonth.parse(yearAndMonth));
+        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
         Schedule sepSchedule = ScheduleFixture.일정_9월();
         given(scheduleRepository.findAllByYearAndMonth(any())).willReturn(List.of(sepSchedule));
 

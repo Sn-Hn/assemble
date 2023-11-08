@@ -69,7 +69,7 @@ public class ScheduleIntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"2023-09", "2023-10"})
     void 일정_목록_연월_조회_검증(String yearAndMonth) {
-        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(YearMonth.parse(yearAndMonth));
+        ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
         ExtractableResponse<Response> getResponse = IntegrationTestUtil.getQueryParamWithJWT("/schedule", request);
         ApiResult result = getResponse.jsonPath().getObject(".", ApiResult.class);
         SchedulesResponse response = getResponse.jsonPath().getObject("response", SchedulesResponse.class);
