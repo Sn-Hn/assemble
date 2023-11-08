@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    @Query(value = "SELECT schedule.* FROM Schedule schedule " +
+    @Query(value = "SELECT schedule.* FROM schedule schedule " +
             "WHERE DATE_FORMAT(schedule.date, '%Y-%m') = :yearAndMonth",
             nativeQuery = true)
     List<Schedule> findAllByYearAndMonth(@Param("yearAndMonth") String yearAndMonth);
