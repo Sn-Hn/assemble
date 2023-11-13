@@ -56,7 +56,10 @@ public class AuthController {
 
     @ApiOperation(value = "로그아웃")
     @PostMapping("logout")
-    public ApiResult logout(HttpServletResponse response) {
+    public ApiResult logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = JwtUtils.getRefreshToken(request);
+        jwtService.removeRefreshToken(refreshToken);
+
         ResponseCookie cookie = createCookie(JwtType.REFRESH_TOKEN, null, 0);
         response.addHeader("Set-Cookie", cookie.toString());
 
