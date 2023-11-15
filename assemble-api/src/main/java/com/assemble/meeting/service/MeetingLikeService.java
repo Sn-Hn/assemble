@@ -7,6 +7,7 @@ import com.assemble.meeting.entity.Likes;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.repository.MeetingLikeRepository;
 import com.assemble.meeting.repository.MeetingRepository;
+import com.assemble.util.AuthenticationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -61,7 +62,7 @@ public class MeetingLikeService {
 
     @Transactional(readOnly = true)
     public boolean isAleadyLikeByUser(Long meetingId) {
-        if (meetingLikeRepository.findPostByUser(meetingId, userContext.getUserId()).isPresent()) {
+        if (meetingLikeRepository.findPostByUser(meetingId, AuthenticationUtils.getUserId()).isPresent()) {
             return true;
         }
 

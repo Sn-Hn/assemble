@@ -121,4 +121,8 @@ public class Meeting extends BaseUserEntity {
 
         return false;
     }
+
+    public void increaseHits() {
+        this.hits += 1;
+    }
 }

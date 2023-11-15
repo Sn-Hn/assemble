@@ -8,12 +8,15 @@ import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
 import com.assemble.meeting.entity.Meeting;
+import com.assemble.meeting.repository.MeetingLikeRepository;
 import com.assemble.meeting.repository.MeetingRepository;
+import com.assemble.util.AuthenticationUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ public class MeetingService {
 
     private final MeetingRepository meetingRepository;
     private final MeetingLikeService meetingLikeService;
+    private final MeetingLikeRepository meetingLikeRepository;
     private final UserContext userContext;
     private final ApplicationEventPublisher eventPublisher;
     private final ActivityRepository activityRepository;
@@ -51,12 +55,10 @@ public class MeetingService {
 
     @Transactional
     public Meeting getMeeting(Long meetingId) {
-        // TODO: 2023-07-22 리팩터링 필요 (조회수 계속 올라감) -신한
-        meetingRepository.increaseHits(meetingId);
-
-        Meeting meeting = meetingRepository.findById(meetingId)
+        Meeting meeting = meetingRepository.findByIdForUpdate(meetingId)
                 .orElseThrow(() -> new NotFoundException(Meeting.class, meetingId));
 
+        meeting.increaseHits();
         meeting.setIsLike(meetingLikeService.isAleadyLikeByUser(meetingId));
 
         return meeting;

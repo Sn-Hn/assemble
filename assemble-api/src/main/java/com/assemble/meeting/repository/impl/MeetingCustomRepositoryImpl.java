@@ -17,7 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
@@ -124,5 +126,26 @@ public class MeetingCustomRepositoryImpl implements MeetingCustomRepository {
         Sort.Order order = pageable.getSort().get().findFirst().orElseGet(() -> new Sort.Order(Sort.Direction.DESC, "total"));
 
         return MeetingOrderByType.findPostOrderQuery(order.getProperty());
+    }
+
+    @Override
+    public Optional<Meeting> findByIdAndLikeForUpdate(Long meetingId, Long userId) {
+        return queryFactory.select(QMeeting.meeting, QLikes.likes)
+                .from(QMeeting.meeting)
+                .leftJoin(QLikes.likes).on(QMeeting.meeting.meetingId.eq(QLikes.likes.meeting.meetingId),
+                        QLikes.likes.user.userId.eq(userId)).fetchJoin()
+                .where(QMeeting.meeting.meetingId.eq(meetingId))
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .fetch()
+                .stream()
+                .findAny()
+                .map(tuple -> {
+                    Meeting meeting = tuple.get(QMeeting.meeting);
+                    Likes likes = tuple.get(QLikes.likes);
+
+                    setIsLike(meeting, likes);
+
+                    return meeting;
+                });
     }
 }

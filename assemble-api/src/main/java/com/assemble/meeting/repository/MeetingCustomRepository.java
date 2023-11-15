@@ -5,6 +5,7 @@ import com.assemble.meeting.entity.Meeting;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MeetingCustomRepository {
 
@@ -15,4 +16,6 @@ public interface MeetingCustomRepository {
     long countByUserId(Long userId);
 
     long countBySearch(MeetingSearchRequest meetingSearchRequest);
+
+    Optional<Meeting> findByIdAndLikeForUpdate(Long meetingId, Long userId);
 }
