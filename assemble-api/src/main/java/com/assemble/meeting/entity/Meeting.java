@@ -114,12 +114,10 @@ public class Meeting extends BaseUserEntity {
         }
     }
 
-    public boolean isHost(Long userId) {
-        if (this.user.getUserId().equals(userId)) {
-            return true;
+    public void isHost(Long userId) {
+        if (!this.user.getUserId().equals(userId)) {
+            throw new IllegalStateException("모임장이 아닙니다.");
         }
-
-        return false;
     }
 
     public void increaseHits() {

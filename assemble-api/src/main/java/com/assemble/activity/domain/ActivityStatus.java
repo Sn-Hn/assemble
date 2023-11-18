@@ -2,7 +2,8 @@ package com.assemble.activity.domain;
 
 public enum ActivityStatus {
     NORMAL("정상"),
-    WITHDRAWAL("탈퇴");
+    WITHDRAWAL("탈퇴"),
+    DISMISS("강제 퇴장");
 
     private String description;
 

@@ -72,4 +72,8 @@ public class Activity extends BaseUserEntity {
             throw new IllegalStateException("이미 활동 중인 회원입니다.");
         }
     }
+
+    public void dismiss() {
+        this.status = ActivityStatus.DISMISS;
+    }
 }
