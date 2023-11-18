@@ -1,6 +1,5 @@
 package com.assemble.meeting.service;
 
-import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.event.publish.MeetingEvent;
 import com.assemble.commons.exception.NotFoundException;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +27,9 @@ import java.util.List;
 public class MeetingService {
 
     private final MeetingRepository meetingRepository;
-    private final MeetingLikeService meetingLikeService;
     private final MeetingLikeRepository meetingLikeRepository;
     private final UserContext userContext;
     private final ApplicationEventPublisher eventPublisher;
-    private final ActivityRepository activityRepository;
 
     @Transactional
     public Meeting createPost(MeetingCreationRequest meetingCreationRequest) {
@@ -59,7 +55,7 @@ public class MeetingService {
                 .orElseThrow(() -> new NotFoundException(Meeting.class, meetingId));
 
         meeting.increaseHits();
-        meeting.setIsLike(meetingLikeService.isAleadyLikeByUser(meetingId));
+        meeting.setIsLike(meetingLikeRepository.findPostByUser(meetingId, AuthenticationUtils.getUserId()).isPresent());
 
         return meeting;
     }

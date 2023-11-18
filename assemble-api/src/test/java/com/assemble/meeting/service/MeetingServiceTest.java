@@ -7,6 +7,7 @@ import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
 import com.assemble.meeting.entity.Meeting;
 import com.assemble.meeting.fixture.MeetingFixture;
+import com.assemble.meeting.repository.MeetingLikeRepository;
 import com.assemble.meeting.repository.MeetingRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,13 @@ class MeetingServiceTest {
     private MeetingRepository meetingRepository;
 
     @Mock
-    private MeetingLikeService meetingLikeService;
-
-    @Mock
     private UserContext userContext;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
+
+    @Mock
+    private MeetingLikeRepository meetingLikeRepository;
 
     @Test
     void 모임_작성() {
@@ -88,8 +89,8 @@ class MeetingServiceTest {
     void 모임_상세_조회() {
         // given
         Meeting mockMeeting = MeetingFixture.모임();
-        given(meetingRepository.findById(any())).willReturn(Optional.of(mockMeeting));
-        given(meetingLikeService.isAleadyLikeByUser(any())).willReturn(false);
+        given(meetingRepository.findByIdForUpdate(any())).willReturn(Optional.of(mockMeeting));
+        given(meetingLikeRepository.findPostByUser(any(), any())).willReturn(Optional.empty());
 
         // when
         Meeting meeting = meetingService.getMeeting(1L);

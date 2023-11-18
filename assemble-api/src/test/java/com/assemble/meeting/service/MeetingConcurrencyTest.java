@@ -32,9 +32,10 @@ public class MeetingConcurrencyTest {
         AuthenticationUtils.setSecurityContextToUser(1L);
 
         for (int i = 0; i < threadCount; i++) {
+            Long userId = Long.valueOf(i);
             executorService.submit(() -> {
                 try {
-                    AuthenticationUtils.setSecurityContextToUser(1L);
+                    AuthenticationUtils.setSecurityContextToUser(userId);
                     meetingService.getMeeting(meetingId);
                 } finally {
                     countDownLatch.countDown();

@@ -30,13 +30,13 @@ public class AuthenticationUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getPrincipal() == null || "anonymousUser".equals(authentication.getPrincipal())) {
-            return null;
+            return -1L;
         }
 
         if (authentication.getPrincipal() instanceof Long) {
             return (Long) authentication.getPrincipal();
         }
 
-        return null;
+        return -1L;
     }
 }

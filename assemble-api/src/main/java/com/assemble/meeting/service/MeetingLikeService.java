@@ -62,11 +62,7 @@ public class MeetingLikeService {
 
     @Transactional(readOnly = true)
     public boolean isAleadyLikeByUser(Long meetingId) {
-        if (meetingLikeRepository.findPostByUser(meetingId, AuthenticationUtils.getUserId()).isPresent()) {
-            return true;
-        }
-
-        return false;
+        return meetingLikeRepository.findPostByUser(meetingId, AuthenticationUtils.getUserId()).isPresent();
     }
 
     @Transactional(readOnly = true)

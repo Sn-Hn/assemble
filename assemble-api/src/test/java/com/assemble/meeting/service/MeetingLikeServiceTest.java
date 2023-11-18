@@ -9,6 +9,7 @@ import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.meeting.fixture.MeetingLikeFixture;
 import com.assemble.meeting.repository.MeetingLikeRepository;
 import com.assemble.meeting.repository.MeetingRepository;
+import com.assemble.util.AuthenticationUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,10 +46,11 @@ class MeetingLikeServiceTest {
     @Test
     void 모임_좋아요() {
         // given
-        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
+        given(postLikeRepository.findPostByUser(anyLong(), anyLong())).willReturn(Optional.empty());
         given(postLikeRepository.save(any())).willReturn(MeetingLikeFixture.좋아요_객체());
         given(meetingRepository.findById(any())).willReturn(Optional.of(MeetingFixture.모임()));
         given(userContext.getUserId()).willReturn(1L);
+        AuthenticationUtils.setSecurityContextToUser(1L);
         MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
 
         // when
@@ -78,7 +80,7 @@ class MeetingLikeServiceTest {
         // given
         MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
         given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.of(MeetingLikeFixture.좋아요_객체()));
-        given(userContext.getUserId()).willReturn(1L);
+        AuthenticationUtils.setSecurityContextToUser(1L);
 
         // when
         boolean aleadyLikeByUser = meetingLikeService.isAleadyLikeByUser(meetingLikeRequest.getMeetingId());
@@ -91,8 +93,8 @@ class MeetingLikeServiceTest {
     void 좋아요_하지_않은_모임() {
         // given
         MeetingLikeRequest meetingLikeRequest = MeetingLikeFixture.모임_좋아요_요청();
-        given(postLikeRepository.findPostByUser(any(), anyLong())).willReturn(Optional.empty());
-        given(userContext.getUserId()).willReturn(1L);
+        given(postLikeRepository.findPostByUser(anyLong(), anyLong())).willReturn(Optional.empty());
+        AuthenticationUtils.setSecurityContextToUser(1L);
 
         // when
         boolean aleadyLikeByUser = meetingLikeService.isAleadyLikeByUser(meetingLikeRequest.getMeetingId());
