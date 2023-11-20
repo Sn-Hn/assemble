@@ -2,6 +2,7 @@ package com.assemble.schedule.entity;
 
 import com.assemble.commons.base.BaseUserEntity;
 import com.assemble.commons.converter.BooleanToYNConverter;
+import com.assemble.meeting.entity.Meeting;
 import com.assemble.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public class Schedule extends BaseUserEntity {
     @JoinColumn(name = "userId")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meetingId")
+    private Meeting meeting;
+
     private LocalDate date;
 
     @Convert(converter = BooleanToYNConverter.class)
@@ -39,10 +44,11 @@ public class Schedule extends BaseUserEntity {
     protected Schedule() {
     }
 
-    public Schedule(String title, String content, User user, LocalDate date) {
+    public Schedule(String title, String content, User user, Meeting meeting, LocalDate date) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.meeting = meeting;
         this.date = date;
     }
 

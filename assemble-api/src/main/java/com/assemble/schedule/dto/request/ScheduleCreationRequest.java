@@ -1,5 +1,6 @@
 package com.assemble.schedule.dto.request;
 
+import com.assemble.meeting.entity.Meeting;
 import com.assemble.schedule.entity.Schedule;
 import com.assemble.user.entity.User;
 import com.assemble.util.AuthenticationUtils;
@@ -27,7 +28,12 @@ public class ScheduleCreationRequest {
     private LocalDate date;
 
 
-    public Schedule toEntity() {
-        return new Schedule(this.title, this.content, new User(AuthenticationUtils.getUserId()), date);
+    public Schedule toEntity(Long meetingId) {
+        return new Schedule(
+                this.title,
+                this.content,
+                new User(AuthenticationUtils.getUserId()),
+                new Meeting(meetingId),
+                date);
     }
 }

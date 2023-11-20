@@ -23,14 +23,18 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @PostMapping
-    public ApiResult<ScheduleCreationResponse> registerSchedule(@RequestBody ScheduleCreationRequest scheduleCreationRequest) {
-        return ApiResult.ok(ScheduleCreationResponse.toResponse(scheduleService.registerSchdule(scheduleCreationRequest)), HttpStatus.CREATED);
+    @PostMapping("{meetingId}")
+    public ApiResult<ScheduleCreationResponse> registerSchedule(@PathVariable Long meetingId,
+                                                                @RequestBody ScheduleCreationRequest scheduleCreationRequest) {
+        return ApiResult.ok(
+                ScheduleCreationResponse.toResponse(scheduleService.registerSchdule(meetingId, scheduleCreationRequest)),
+                HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ApiResult<SchedulesResponse> getSchedulesByMonth(ScheduleYearAndMonthRequest scheduleYearAndMonthRequest) {
-        Map<Integer, List<ScheduleSimpleResponse>> groupingSchedule = scheduleService.findSchedulesByYearAndMonth(scheduleYearAndMonthRequest).stream()
+    @GetMapping("list/{meetingId}")
+    public ApiResult<SchedulesResponse> getSchedulesByMonth(@PathVariable Long meetingId,
+                                                            ScheduleYearAndMonthRequest scheduleYearAndMonthRequest) {
+        Map<Integer, List<ScheduleSimpleResponse>> groupingSchedule = scheduleService.findSchedulesByYearAndMonth(meetingId, scheduleYearAndMonthRequest).stream()
                 .map(ScheduleSimpleResponse::toResponse)
                 .collect(Collectors.groupingBy(ScheduleSimpleResponse::getDay));
 
