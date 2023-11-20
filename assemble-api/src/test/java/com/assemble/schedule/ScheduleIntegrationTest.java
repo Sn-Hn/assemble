@@ -51,8 +51,9 @@ public class ScheduleIntegrationTest {
 
     @Test
     void 일정_등록_성공() {
+        Long meetingId = 1L;
         ScheduleCreationRequest scheduleCreationRequest = ScheduleFixture.일정_생성_요청();
-        ExtractableResponse<Response> postResponse = IntegrationTestUtil.post("/schedule", scheduleCreationRequest);
+        ExtractableResponse<Response> postResponse = IntegrationTestUtil.post("/schedule/" + meetingId, scheduleCreationRequest);
         ApiResult result = postResponse.jsonPath().getObject(".", ApiResult.class);
 
         assertAll(
@@ -69,8 +70,9 @@ public class ScheduleIntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"2023-09", "2023-10"})
     void 일정_목록_연월_조회_검증(String yearAndMonth) {
+        Long meetingId = 1L;
         ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
-        ExtractableResponse<Response> getResponse = IntegrationTestUtil.getQueryParamWithJWT("/schedule", request);
+        ExtractableResponse<Response> getResponse = IntegrationTestUtil.getQueryParamWithJWT("/schedule/list/" + meetingId, request);
         ApiResult result = getResponse.jsonPath().getObject(".", ApiResult.class);
         SchedulesResponse response = getResponse.jsonPath().getObject("response", SchedulesResponse.class);
 
@@ -116,7 +118,7 @@ public class ScheduleIntegrationTest {
     
     @Test
     void 일정_삭제_검증() {
-        Long id = 2L;
+        Long id = 3L;
 
         ExtractableResponse<Response> deleteResponse = IntegrationTestUtil.delete("/schedule/" + id);
         ApiResult result = deleteResponse.jsonPath().getObject(".", ApiResult.class);

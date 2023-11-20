@@ -1,5 +1,7 @@
 package com.assemble.schedule.service;
 
+import com.assemble.activity.fixture.ActivityFixture;
+import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.schedule.dto.request.ModifiedScheduleRequest;
 import com.assemble.schedule.dto.request.ScheduleCreationRequest;
 import com.assemble.schedule.dto.request.ScheduleYearAndMonthRequest;
@@ -32,14 +34,19 @@ class ScheduleServiceTest {
     @Mock
     private ScheduleRepository scheduleRepository;
 
+    @Mock
+    private ActivityRepository activityRepository;
+
     @Test
     void 일정_등록_검증() {
         // given
+        Long meetingId = 1L;
         ScheduleCreationRequest scheduleCreationRequest = ScheduleFixture.일정_생성_요청();
-        given(scheduleRepository.save(any())).willReturn(scheduleCreationRequest.toEntity());
+        given(scheduleRepository.save(any())).willReturn(scheduleCreationRequest.toEntity(meetingId));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(ActivityFixture.특정_모임_활동_중인_회원()));
 
         // when
-        Schedule schedule = scheduleService.registerSchdule(scheduleCreationRequest);
+        Schedule schedule = scheduleService.registerSchdule(meetingId, scheduleCreationRequest);
 
         // then
         assertAll(
@@ -53,13 +60,15 @@ class ScheduleServiceTest {
     @Test
     void 일정_목록_연월_조회_검증() {
         // given
+        Long meetingId = 1L;
         String yearAndMonth = "2023-09";
         ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
         Schedule sepSchedule = ScheduleFixture.일정_9월();
-        given(scheduleRepository.findAllByYearAndMonth(any())).willReturn(List.of(sepSchedule));
+        given(scheduleRepository.findAllByYearAndMonth(anyLong(), any())).willReturn(List.of(sepSchedule));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(ActivityFixture.특정_모임_활동_중인_회원()));
 
         // when
-        List<Schedule> schedulesByYearAndMonth = scheduleService.findSchedulesByYearAndMonth(request);
+        List<Schedule> schedulesByYearAndMonth = scheduleService.findSchedulesByYearAndMonth(meetingId, request);
 
         // then
         assertAll(
@@ -76,6 +85,7 @@ class ScheduleServiceTest {
         // given
         Long id = 1L;
         given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(ScheduleFixture.일정_9월()));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(ActivityFixture.특정_모임_활동_중인_회원()));
 
         // when
         Schedule schedule = scheduleService.findScheduleById(id);
@@ -90,6 +100,7 @@ class ScheduleServiceTest {
         Long id = 1L;
         ModifiedScheduleRequest modifiedScheduleRequest = ScheduleFixture.일정_변경_요청();
         given(scheduleRepository.findById(id)).willReturn(Optional.of(ScheduleFixture.일정_9월()));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(ActivityFixture.특정_모임_활동_중인_회원()));
 
         // when
         Schedule modifiedSchedule = scheduleService.modifySchedule(modifiedScheduleRequest);
@@ -104,7 +115,9 @@ class ScheduleServiceTest {
     @Test
     void 일정_삭제_검증() {
         // given
-        Long deleteId = 2L;
+        Long deleteId = 3L;
+        given(scheduleRepository.findById(deleteId)).willReturn(Optional.of(ScheduleFixture.일정_9월()));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(ActivityFixture.특정_모임_활동_중인_회원()));
 
         // when
         boolean isDeleted = scheduleService.deleteSchedule(deleteId);

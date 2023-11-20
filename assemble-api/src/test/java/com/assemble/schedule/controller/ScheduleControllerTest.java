@@ -67,10 +67,11 @@ class ScheduleControllerTest {
 
     @Test
     void 일정_등록() throws Exception {
+        Long meetingId = 1L;
         ScheduleCreationRequest scheduleCreationRequest = ScheduleFixture.일정_생성_요청();
-        given(scheduleService.registerSchdule(any())).willReturn(ScheduleFixture.일정_9월());
+        given(scheduleService.registerSchdule(anyLong(), any())).willReturn(ScheduleFixture.일정_9월());
 
-        ResultActions perform = mockMvc.perform(post("/schedule")
+        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.post("/schedule/{meetingId}", meetingId)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -83,6 +84,9 @@ class ScheduleControllerTest {
         perform.andDo(document("schedule/creation",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
+                ),
+                pathParameters(
+                        parameterWithName("meetingId").description("모임 ID")
                 ),
                 requestFields(
                         fieldWithPath("title").description("일정 제목"),
@@ -104,11 +108,12 @@ class ScheduleControllerTest {
 
     @Test
     void 일정_목록_연월_조회() throws Exception {
+        Long meetingId = 1L;
         String yearAndMonth = "2023-09";
         ScheduleYearAndMonthRequest request = new ScheduleYearAndMonthRequest(yearAndMonth);
-        given(scheduleService.findSchedulesByYearAndMonth(any())).willReturn(List.of(ScheduleFixture.일정_9월()));
+        given(scheduleService.findSchedulesByYearAndMonth(anyLong(), any())).willReturn(List.of(ScheduleFixture.일정_9월()));
 
-        ResultActions perform = mockMvc.perform(get("/schedule")
+        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/schedule/list/{meetingId}", meetingId)
                 .header("Authorization", TokenFixture.AccessToken_생성())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .params(MultiValueMapConverter.convert(objectMapper, request)));
@@ -120,6 +125,9 @@ class ScheduleControllerTest {
         perform.andDo(document("schedule/list",
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer AccessToken")
+                ),
+                pathParameters(
+                        parameterWithName("meetingId").description("모임 ID")
                 ),
                 requestParameters(
                         parameterWithName("yearAndMonth").description("특정 연월")

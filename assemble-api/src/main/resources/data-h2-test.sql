@@ -126,12 +126,14 @@ VALUES (
         '3',
         '1',
         'NORMAL'
-       );
+       ),
+        ('1', '1', 'NORMAL');
 
-INSERT INTO schedule(title, content, user_id, date, is_deleted, creator, created_date, modifier, modified_date)
+INSERT INTO schedule(title, content, user_id, meeting_id, date, is_deleted, creator, created_date, modifier, modified_date)
 VALUES (
         '테스트 일정',
         '테스트 일정입니다 ~~',
+        '1',
         '1',
         '2023-09-15',
         'N',
@@ -143,6 +145,19 @@ VALUES (
        (
            '테스트 일정',
            '테스트 일정입니다 ~~',
+           '1',
+           '1',
+           '2023-10-15',
+           'N',
+           '1',
+           now(),
+           '1',
+           now()
+       ),
+       (
+           '테스트 일정',
+           '테스트 일정입니다 ~~',
+           '1',
            '1',
            '2023-10-15',
            'N',

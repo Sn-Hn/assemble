@@ -1,5 +1,6 @@
 package com.assemble.schedule.fixture;
 
+import com.assemble.meeting.fixture.MeetingFixture;
 import com.assemble.schedule.dto.request.ModifiedScheduleRequest;
 import com.assemble.schedule.dto.request.ScheduleCreationRequest;
 import com.assemble.schedule.entity.Schedule;
@@ -16,6 +17,7 @@ public class ScheduleFixture {
                 title,
                 content,
                 UserFixture.회원(),
+                MeetingFixture.모임(),
                 dateOctober,
                 notDeleted
         );
@@ -27,6 +29,7 @@ public class ScheduleFixture {
                 title,
                 content,
                 UserFixture.회원(),
+                MeetingFixture.모임(),
                 dateSeptember,
                 notDeleted
         );
