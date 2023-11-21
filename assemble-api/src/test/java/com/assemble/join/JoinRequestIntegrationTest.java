@@ -46,7 +46,7 @@ public class JoinRequestIntegrationTest {
 
     @Test
     void 모임_가입_신청() {
-        JoinRequestDto joinRequestDto = JoinRequestFixture.가입_신청();
+        JoinRequestDto joinRequestDto = new JoinRequestDto(4L, "가입 신청합니다.");
         given()
                 .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
                 .basePath(basePath)

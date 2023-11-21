@@ -79,6 +79,17 @@ VALUES (
            'N',
            'PROGRESS',
            '서울시 강남구'
+       ),
+       (
+           '2',
+           '네 번째 모임 ~',
+           '네 번째 모임 설명',
+           0,
+           1,
+           1,
+           'N',
+           'PROGRESS',
+           '서울시 강남구'
        );
 INSERT INTO comment(meeting_id, user_id, contents, is_deleted, created_date, modified_date)
 VALUES (
