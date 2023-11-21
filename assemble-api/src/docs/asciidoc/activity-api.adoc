@@ -42,14 +42,13 @@ include::{snippets}/activity/user/response-fields.adoc[]
 include::{snippets}/activity/user/response-body.adoc[]
 
 === 모임 탈퇴
-DELETE /activity/withdrawal/{meetingId} +
+PUT /activity/withdrawal/{meetingId} +
 모임을 탈퇴합니다.
 
 ==== REQUEST
 include::{snippets}/activity/withdrawal/curl-request.adoc[]
 include::{snippets}/activity/withdrawal/http-request.adoc[]
 include::{snippets}/activity/withdrawal/httpie-request.adoc[]
-include::{snippets}/join/list/request-headers.adoc[]
 include::{snippets}/activity/withdrawal/path-parameters.adoc[]
 
 ==== RESPONSE
@@ -58,3 +57,21 @@ include::{snippets}/activity/withdrawal/response-fields.adoc[]
 
 ===== example
 include::{snippets}/activity/withdrawal/response-body.adoc[]
+
+=== 모임 강제 퇴장
+PUT /activity/dismissal +
+모임의 특정 회원을 강제 퇴장시킵니다.
+
+==== REQUEST
+include::{snippets}/activity/dismissal/curl-request.adoc[]
+include::{snippets}/activity/dismissal/http-request.adoc[]
+include::{snippets}/activity/dismissal/httpie-request.adoc[]
+include::{snippets}/activity/dismissal/request-fields.adoc[]
+include::{snippets}/activity/dismissal/request-body.adoc[]
+
+==== RESPONSE
+include::{snippets}/activity/dismissal/http-response.adoc[]
+include::{snippets}/activity/dismissal/response-fields.adoc[]
+
+===== example
+include::{snippets}/activity/dismissal/response-body.adoc[]
