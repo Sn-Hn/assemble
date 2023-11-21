@@ -56,7 +56,7 @@ public class ActivityService {
         meeting.isHost(AuthenticationUtils.getUserId());
 
         Activity activity = activityRepository.findByMeetingIdAndUserId(dismissUserRequest.getMeetingId(), dismissUserRequest.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("강퇴할 회원을 모임에 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("강퇴할 회원이 모임에 존재하지 않습니다."));
 
         activity.dismiss();
 

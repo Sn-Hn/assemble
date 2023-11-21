@@ -138,7 +138,8 @@ VALUES (
         '1',
         'NORMAL'
        ),
-        ('1', '1', 'NORMAL');
+        ('1', '1', 'NORMAL'),
+        ('2', '2', 'NORMAL');
 
 INSERT INTO schedule(title, content, user_id, meeting_id, date, is_deleted, creator, created_date, modifier, modified_date)
 VALUES (

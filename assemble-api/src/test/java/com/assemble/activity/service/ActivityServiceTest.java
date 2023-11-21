@@ -1,12 +1,16 @@
 package com.assemble.activity.service;
 
 import com.assemble.activity.domain.ActivityStatus;
+import com.assemble.activity.dto.request.DismissUserRequest;
 import com.assemble.activity.entity.Activity;
 import com.assemble.activity.fixture.ActivityFixture;
 import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.meeting.entity.Meeting;
+import com.assemble.meeting.fixture.MeetingFixture;
+import com.assemble.meeting.repository.MeetingRepository;
+import com.assemble.util.AuthenticationUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +42,9 @@ class ActivityServiceTest {
 
     @Mock
     private UserContext userContext;
+
+    @Mock
+    private MeetingRepository meetingRepository;
 
     @Test
     void 회원이_활동_중인_모임_목록_조회() {
@@ -119,5 +126,20 @@ class ActivityServiceTest {
         // when, then
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> activityService.withdrawJoinAssemble(meetingId));
+    }
+
+    @Test
+    void 모임_강제_퇴장() {
+        // given
+        DismissUserRequest dismissUserRequest = ActivityFixture.회원_강퇴_요청();
+        given(meetingRepository.findById(anyLong())).willReturn(Optional.of(MeetingFixture.모임()));
+        given(activityRepository.findByMeetingIdAndUserId(anyLong(), anyLong())).willReturn(Optional.of(ActivityFixture.특정_모임_활동_중인_회원()));
+        AuthenticationUtils.setSecurityContextToUser(1L);
+
+        // when
+        boolean isDismiss = activityService.dismissUserOfMeeting(dismissUserRequest);
+
+        // then
+        assertThat(isDismiss).isTrue();
     }
 }

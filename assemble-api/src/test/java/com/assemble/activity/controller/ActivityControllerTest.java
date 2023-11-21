@@ -1,5 +1,6 @@
 package com.assemble.activity.controller;
 
+import com.assemble.activity.dto.request.DismissUserRequest;
 import com.assemble.activity.fixture.ActivityFixture;
 import com.assemble.activity.service.ActivityService;
 import com.assemble.commons.TokenFixture;
@@ -9,7 +10,9 @@ import com.assemble.commons.filter.JwtFilter;
 import com.assemble.commons.interceptor.TokenInformationInterceptor;
 import com.assemble.fixture.PageableFixture;
 import com.assemble.meeting.fixture.MeetingFixture;
+import com.assemble.util.IntegrationTestUtil;
 import com.assemble.util.MultiValueMapConverter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,11 +38,11 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -181,7 +184,35 @@ class ActivityControllerTest {
 
         perform.andDo(document("activity/withdrawal",
                 pathParameters(
-                        parameterWithName("meetingId").description("모임 Id")
+                        parameterWithName("meetingId").description("모임 ID")
+                ),
+                responseFields(
+                        fieldWithPath("success").description("성공 여부"),
+                        fieldWithPath("status").description("상태값"),
+                        fieldWithPath("error").description("에러 내용"),
+                        fieldWithPath("response").description("모임 탈퇴 성공 여부")
+                ))
+        );
+    }
+
+    @Test
+    void 모임_강제_퇴장() throws Exception {
+        DismissUserRequest dismissUserRequest = ActivityFixture.회원_강퇴_요청();
+
+        given(activityService.dismissUserOfMeeting(any())).willReturn(true);
+        ResultActions perform = mockMvc.perform(put("/activity/dismissal")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(dismissUserRequest)));
+
+        perform.andDo(print())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.response").value(true));
+
+        perform.andDo(document("activity/dismissal",
+                requestFields(
+                        fieldWithPath("meetingId").description("모임 ID"),
+                        fieldWithPath("userId").description("회원 ID")
                 ),
                 responseFields(
                         fieldWithPath("success").description("성공 여부"),

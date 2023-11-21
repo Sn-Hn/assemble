@@ -47,7 +47,7 @@ public class ActivityController {
     }
 
     @ApiOperation("활동 중인 회원 강제 퇴장")
-    @PutMapping("dismiss")
+    @PutMapping("dismissal")
     public ApiResult<Boolean> dismissUser(@RequestBody DismissUserRequest dismissUserRequest) {
         return ApiResult.ok(activityService.dismissUserOfMeeting(dismissUserRequest));
     }
