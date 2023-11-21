@@ -1,12 +1,19 @@
 package com.assemble.auth;
 
 import com.assemble.annotation.CustomIntegrationTest;
+import com.assemble.auth.domain.Jwt;
 import com.assemble.auth.dto.request.LoginRequest;
+import com.assemble.auth.repository.JwtRedisRepository;
 import com.assemble.auth.service.JwtService;
+import com.assemble.commons.response.ApiResult;
 import com.assemble.mock.RestAssuredSpecificationSpy;
 import com.assemble.user.fixture.UserFixture;
+import com.assemble.util.IntegrationTestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import javax.servlet.http.HttpServletResponseWrapper;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -32,6 +41,9 @@ public class AuthIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private JwtRedisRepository jwtRedisRepository;
 
     @BeforeEach
     void setUp() {
@@ -54,6 +66,8 @@ public class AuthIntegrationTest {
                 .body("success", is(true),
                         "response.email", equalTo(loginRequest.getEmail()))
                 .log().all();
+
+        로그아웃();
     }
 
     @Test
@@ -90,5 +104,13 @@ public class AuthIntegrationTest {
                 .body("success", is(true),
                         "response", notNullValue())
                 .log().all();
+    }
+
+    void 로그아웃() {
+        ExtractableResponse<Response> postResponse = IntegrationTestUtil.post("logout");
+
+        ApiResult result = postResponse.jsonPath().getObject(".", ApiResult.class);
+
+        Assertions.assertThat(result.isSuccess()).isTrue();
     }
 }

@@ -71,6 +71,20 @@ public class IntegrationTestUtil {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> post(String path) {
+        return given()
+                .spec(RestAssuredSpecificationSpy.setTokenRestAssuredSpec(jwtService))
+                .basePath(basePath)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .log().all()
+        .when()
+                .post(path)
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .log().all()
+                .extract();
+    }
 
     public static ExtractableResponse<Response> post(String path, Object object) {
         return given()
