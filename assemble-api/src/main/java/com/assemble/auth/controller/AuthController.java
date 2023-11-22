@@ -8,7 +8,6 @@ import com.assemble.commons.response.ApiResult;
 import com.assemble.auth.dto.request.LoginRequest;
 import com.assemble.auth.dto.response.LoginResponse;
 import com.assemble.user.entity.User;
-import com.assemble.user.service.UserService;
 import com.assemble.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -72,6 +71,7 @@ public class AuthController {
                 .secure(true)
                 .maxAge(expireTime)
                 .path("/assemble/")
+                .domain("assemble.com")
                 .sameSite("None")
                 .build();
     }

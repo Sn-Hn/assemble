@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,19 +19,11 @@ import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("UploadFile")
 @TestCustomProperty
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 class UploadFileTest {
 
+    @Autowired
     private UploadFile uploadFile;
-
-    @BeforeEach
-    void setUp() throws NoSuchFieldException, IllegalAccessException {
-        uploadFile = new UploadFile();
-        Class<? extends UploadFile> uploadFileClass = uploadFile.getClass();
-        Field field = uploadFileClass.getDeclaredField("basePath");
-        field.setAccessible(true);
-        field.set(uploadFile, "D:/shinhan/project/test-file");
-    }
 
     @Test
     void 파일_업로드_Null_검증() {

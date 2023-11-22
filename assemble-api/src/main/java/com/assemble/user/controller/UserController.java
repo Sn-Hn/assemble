@@ -47,7 +47,13 @@ public class UserController {
         AuthenticationUtils.setSecurityContextToUser(user.getUserId());
 
         Optional<CustomMultipartFile> profile = CustomMultipartFile.from(profileImage);
-        CompletableFuture.runAsync(() -> profile.ifPresent(file -> fileService.uploadFile(file, user.getUserId())), executor)
+        CompletableFuture.runAsync(() -> profile.ifPresent(file -> {
+                    try {
+                        fileService.uploadFile(file, user.getUserId());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }), executor)
                 .exceptionally(e -> {
                     log.warn("fail file upload!!!");
                     log.warn("FileUploadException={}", e.getMessage(), e);
@@ -85,7 +91,13 @@ public class UserController {
         userService.removeUserProfile();
 
         CustomMultipartFile.from(profileImage)
-                .ifPresent(file -> fileService.uploadFile(file, AuthenticationUtils.getUserId()));
+                .ifPresent(file -> {
+                    try {
+                        fileService.uploadFile(file, AuthenticationUtils.getUserId());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
         return ApiResult.ok(true);
     }

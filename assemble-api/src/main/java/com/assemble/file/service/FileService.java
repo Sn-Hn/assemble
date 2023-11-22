@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -24,7 +26,7 @@ public class FileService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void uploadFile(MultipartFile file, Long userId) {
+    public void uploadFile(MultipartFile file, Long userId) throws IOException {
         if (!existFile(file)) {
             throw new FileUploadException();
         }
