@@ -2,7 +2,8 @@
 목적에 상관없이 다양한 모임을 만들고 참여할 수 있는 웹 애플리케이션입니다.
 
 ## 아키텍처
-![assemble](https://github.com/Sn-Hn/assemble/assets/40006670/97048f8e-7c4c-4e43-b067-2a3ce903cf2d)
+![Assemble 아키텍처](https://github.com/Sn-Hn/assemble/assets/40006670/1e5eb755-c117-49c1-a6f8-346a78fc97e9)
+
 
 
 ## 기술 스택
