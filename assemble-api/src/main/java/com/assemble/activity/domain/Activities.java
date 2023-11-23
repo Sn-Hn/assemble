@@ -25,4 +25,10 @@ public class Activities {
                 .findAny()
                 .isPresent();
     }
+
+    public void validationActivityUser(Long userId) {
+        if (!isActivityUser(userId)) {
+            throw new IllegalArgumentException("모임에서 활동 중인 회원이 아닙니다.");
+        }
+    }
 }

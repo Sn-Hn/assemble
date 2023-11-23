@@ -60,7 +60,7 @@ public class Activity extends BaseUserEntity {
     }
 
     public boolean isActivityUser(Long userId) {
-        if (this.user.getUserId().equals(userId)) {
+        if (this.user.getUserId().equals(userId) && this.status.equals(ActivityStatus.NORMAL)) {
             return true;
         }
 

@@ -1,8 +1,10 @@
 package com.assemble.meeting.service;
 
+import com.assemble.activity.repository.ActivityRepository;
 import com.assemble.commons.base.UserContext;
 import com.assemble.event.publish.MeetingEvent;
 import com.assemble.commons.exception.NotFoundException;
+import com.assemble.meeting.dto.request.DelegationRequest;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
@@ -30,6 +32,7 @@ public class MeetingService {
     private final MeetingLikeRepository meetingLikeRepository;
     private final UserContext userContext;
     private final ApplicationEventPublisher eventPublisher;
+    private final ActivityRepository activityRepository;
 
     @Transactional
     public Meeting createPost(MeetingCreationRequest meetingCreationRequest) {
@@ -93,6 +96,18 @@ public class MeetingService {
         if (!userContext.getUserId().equals(meeting.getUser().getUserId())) {
             throw new IllegalArgumentException("not writer");
         }
+
+        return meeting;
+    }
+
+    @Transactional
+    public Meeting delegateMeetingHost(DelegationRequest delegationRequest) {
+        Meeting meeting = meetingRepository.findById(delegationRequest.getMeetingId())
+                .orElseThrow(() -> new NotFoundException(Meeting.class, delegationRequest.getMeetingId()));
+
+        meeting.getActivities().validationActivityUser(delegationRequest.getUserId());
+        meeting.isHost(AuthenticationUtils.getUserId());
+        meeting.delegateMeetingHost(delegationRequest.getUserId());
 
         return meeting;
     }

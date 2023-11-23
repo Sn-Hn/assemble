@@ -1,9 +1,11 @@
 package com.assemble.meeting.controller;
 
 import com.assemble.commons.response.ApiResult;
+import com.assemble.meeting.dto.request.DelegationRequest;
 import com.assemble.meeting.dto.request.ModifiedMeetingRequest;
 import com.assemble.meeting.dto.request.MeetingCreationRequest;
 import com.assemble.meeting.dto.request.MeetingSearchRequest;
+import com.assemble.meeting.dto.response.DelegationResponse;
 import com.assemble.meeting.dto.response.MeetingCreationResponse;
 import com.assemble.meeting.dto.response.MeetingResponse;
 import com.assemble.meeting.dto.response.MeetingsResponse;
@@ -65,5 +67,11 @@ public class MeetingController {
                                                             @PageableDefault(size = 12) Pageable pageable) {
         return ApiResult.ok(meetingService.getMeetingsByUser(userId, pageable)
                 .map(MeetingsResponse::new));
+    }
+    
+    @ApiOperation(value = "모임장 위임")
+    @PutMapping(path = "delegation")
+    public ApiResult<DelegationResponse> delegateMeetingHost(@RequestBody @Valid DelegationRequest delegationRequest) {
+        return ApiResult.ok(DelegationResponse.toResponse(meetingService.delegateMeetingHost(delegationRequest)));
     }
 }

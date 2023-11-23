@@ -123,4 +123,8 @@ public class Meeting extends BaseUserEntity {
     public void increaseHits() {
         this.hits += 1;
     }
+
+    public void delegateMeetingHost(Long userId) {
+        this.user = new User(userId);
+    }
 }
